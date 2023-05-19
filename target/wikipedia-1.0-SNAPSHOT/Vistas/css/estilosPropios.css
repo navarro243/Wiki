@@ -1,0 +1,107 @@
+body{
+    font-family: 'Inter';
+}
+
+/* Estilos navegador */
+ 
+nav{
+    display: flex;
+    justify-content: space-between;
+    background-color: rgb(199, 199, 199);
+    height: 30px;
+    width: auto;
+    align-items: center;
+}
+
+.alinear-derecha{
+    justify-self: end;
+}
+
+/* Contenedor del sistema */
+.wiki-contenedor{
+    margin-left: 40vh;
+    display: flex;
+    flex-direction: row;
+}
+
+/* Notificaciones */
+
+.color-asunto{
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    color: #FFC700;
+}
+
+.pedirAscenso{
+    background-color: #FFC700;
+    position: absolute;
+    bottom: 30px;
+    width: 100%;
+    border: none;
+}
+
+.notificaciones{
+    border-bottom: 1px solid black;
+}
+
+.notificacion-estado{
+    background-color: rgb(31, 194, 31);
+    border-radius: 5px;
+    font-size: 14px;
+    width: 70px;
+    text-align: center;
+    justify-self: end;
+}
+
+.notificaciones-contenedor{
+    position: fixed;
+    height: 100%;
+    width: 40vh;
+    background-color: #2c2c2c;
+}
+
+/* Registro de Usuario */
+
+form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
+    max-width: 400px;
+    margin: 0 auto;
+}
+input[type="text"], input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: inset 0px 0px 5px rgba(0,0,0,0.1);
+    font-size: 16px;
+}
+input[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+input[type="submit"]:hover {
+    background-color: #0062cc;
+}   
+
+/* Articulos */
+
+.contenido-Articulo{
+    background-color: #0062cc;
+    margin: 15px;
+    width: 1000px;
+    height: 630px;
+    background: #F3F3F3;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+}

@@ -46,4 +46,17 @@ public class WikisDao {
         return false;
         
     }
+    
+    public boolean eliminar(int id){
+        String sql = "delete from wikis where id="+id;
+        try{
+            con=cn.getConnection();
+            ps=con.prepareStatement(sql);
+            ps.executeUpdate();
+            
+        }catch(Exception e){
+        
+    }
+        return false;
+    }
 }

@@ -76,7 +76,10 @@
                         <td><a href="gestor_gestionArticulos.jsp"><%= wik.getNombre()%></a></td>
                         <td>
                             <a href="/Controlador" class="btn btn-warning" id="<%wik.getId();%>">Editar</a>
-                            <button type="button" class="btn btn-danger" id="<%wik.getId();%>">Eliminar</button>
+                            <button type="button" class="btn btn-danger" id="<%= wik.getId()%>">
+                                <a href="../ControladorWikis?accion=eliminar&id=<%= wik.getId()%>">eliminar</a>
+                            </button>
+
                         </td>
                     </tr>
                     <%}%>

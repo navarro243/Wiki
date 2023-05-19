@@ -31,13 +31,8 @@
         </div>
         
         <div  class="alinear-derecha">
-            
             <button><a href="../Controlador?accion=iniciosesion">Iniciar Sesion</a></button>
-            
-            
-            
         </div>
-        
     </nav>
     
     <div class="notificaciones-contenedor">

@@ -75,7 +75,7 @@
                         <td><%= wik.getId()%></td>
                         <td><a href="gestor_gestionArticulos.jsp"><%= wik.getNombre()%></a></td>
                         <td>
-                            <a href="/Controlador" class="btn btn-warning" id="<%wik.getId();%>">Editar</a>
+                            <a href="#?id=<%wik.getId();%>" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="<% wik.getId();%>">Editar</a>
                             <button type="button" class="btn btn-danger" id="<%wik.getId();%>">Eliminar</button>
                         </td>
                     </tr>
@@ -85,9 +85,9 @@
             </table>
         </section>
 
-
-
         <!-- Modal -->
+        <!-- Modal Crear-->
+
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -103,16 +103,33 @@
                             <input type="submit" name="accion" value="agregar"></input>
 
                         </form>
-
                     </div>
-                    <div class="modal-footer">
 
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Editar-->
+
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar Wiki</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="../ControladorWikis?accion=editar&id=<%=wik.getId()%>" method="get">
+
+                            <input type="hidden" name="id" value="<%= wik.getId()%>">
+                            <input type="text" name="cambioNombre" placeholder="Ingrese el nuevo nombre">
+                            <input type="submit" name="accion"value="editar">
+                        </form>
 
                     </div>
                 </div>
             </div>
         </div>
-        
 
         <script src="js/bootstrap.min.js"></script>
     </body>

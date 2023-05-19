@@ -1,4 +1,3 @@
-
 package Controlador;
 
 import Modelo.Wiki;
@@ -23,6 +22,7 @@ public class ControladorWikis extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
         String action = request.getParameter("accion");
+       
         
         if(action.equalsIgnoreCase("agregar")){
             String nombre = request.getParameter("nombre");
@@ -30,8 +30,20 @@ public class ControladorWikis extends HttpServlet {
             wiki.setNombre(nombre);
             wikiDao.agregarWiki(wiki);
 
-            response.sendRedirect(crearWiki);
+            response.sendRedirect(crearWiki);    
+            
+        }else if(action.equalsIgnoreCase("editar")){
+            
+            String idPasado = request.getParameter("id");
+            int id = Integer.parseInt(idPasado);
                 
+            String nombreCambio = request.getParameter("cambioNombre");
+                
+            wiki.setId(id);
+            wiki.setNombre(nombreCambio);
+            wikiDao.editarWiki(wiki);
+            
+            response.sendRedirect(crearWiki);
         }
         
         if(action.equalsIgnoreCase("inicioSesion")){

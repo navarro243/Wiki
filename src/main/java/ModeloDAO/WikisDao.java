@@ -46,4 +46,18 @@ public class WikisDao {
         return false;
         
     }
+    
+    public void editarWiki( Wiki wiki){
+        String sql = "UPDATE wikis SET nombre = '" + wiki.getNombre() + "' WHERE id = " + wiki.getId();
+
+        try{
+            con = cn.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.executeUpdate();
+            
+        }catch(SQLException e){
+            e.printStackTrace();   
+            
+        }
+    }
 }

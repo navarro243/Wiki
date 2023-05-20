@@ -14,7 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "ControladorWikis", urlPatterns = {"/ControladorWikis"})
 public class ControladorWikis extends HttpServlet {
     String crearWiki = "Vistas/gestor_GestionWikis.jsp";
-    
+    String editarWiki = "Vistas/modificaciones_wikisArticulos.jsp";
+    int id;
     Wiki wiki = new Wiki();
     WikisDao wikiDao = new WikisDao();
     
@@ -22,7 +23,11 @@ public class ControladorWikis extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
         String action = request.getParameter("accion");
+
        
+
+        String acceso ="";
+
         
         if(action.equalsIgnoreCase("agregar")){
             String nombre = request.getParameter("nombre");
@@ -32,11 +37,16 @@ public class ControladorWikis extends HttpServlet {
 
             response.sendRedirect(crearWiki);    
             
-        }else if(action.equalsIgnoreCase("editar")){
+        }else if (action.equalsIgnoreCase("editar")){
+            request.setAttribute("idWiki",request.getParameter("id"));
             
-            String idPasado = request.getParameter("id");
-            int id = Integer.parseInt(idPasado);
-                
+            RequestDispatcher dispatcher = request.getRequestDispatcher(editarWiki);
+            dispatcher.forward(request, response);
+            
+        }else if(action.equalsIgnoreCase("Actualizar")){
+            
+            id=Integer.parseInt(request.getParameter("txtid"));
+
             String nombreCambio = request.getParameter("cambioNombre");
                 
             wiki.setId(id);
@@ -44,6 +54,15 @@ public class ControladorWikis extends HttpServlet {
             wikiDao.editarWiki(wiki);
             
             response.sendRedirect(crearWiki);
+
+        }else if (action.equalsIgnoreCase("eliminar")){
+            id=Integer.parseInt(request.getParameter("id"));
+            wiki.setId(id);
+            wikiDao.eliminar(id);
+            
+            response.sendRedirect(request.getContextPath() + "/Vistas/gestor_GestionWikis.jsp");
+
+
         }
         
         if(action.equalsIgnoreCase("inicioSesion")){

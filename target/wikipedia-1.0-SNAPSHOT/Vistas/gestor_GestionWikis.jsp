@@ -65,8 +65,8 @@
                 <tbody>
                     <%
                         WikisDao dao = new WikisDao();
-                        List<Wiki> list = dao.obtenerWikis();
-                        Iterator<Wiki> iter = list.iterator();
+                        List<Wiki> lista = dao.obtenerWikis();
+                        Iterator<Wiki> iter = lista.iterator();
                         Wiki wik = null;
                         while (iter.hasNext()) {
                             wik = iter.next();
@@ -75,8 +75,14 @@
                         <td><%= wik.getId()%></td>
                         <td><a href="gestor_gestionArticulos.jsp"><%= wik.getNombre()%></a></td>
                         <td>
-                            <a href="#?id=<%wik.getId();%>" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="<% wik.getId();%>">Editar</a>
-                            <button type="button" class="btn btn-danger" id="<%wik.getId();%>">Eliminar</button>
+                            <a class="btn btn-warning" href="../ControladorWikis?accion=editar&id=<%= wik.getId()%>">Editar</a>
+
+                            
+                            
+                            <button type="button" class="btn btn-danger" id="<%= wik.getId()%>">
+                                <a href="../ControladorWikis?accion=eliminar&id=<%= wik.getId()%>">eliminar</a>
+                            </button>
+
                         </td>
                     </tr>
                     <%}%>
@@ -85,7 +91,9 @@
             </table>
         </section>
 
-        <!-- Modal -->
+        
+                
+                  <!-- Modal -->
         <!-- Modal Crear-->
 
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -108,29 +116,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Modal Editar-->
-
-        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar Wiki</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="../ControladorWikis?accion=editar&id=<%=wik.getId()%>" method="get">
-
-                            <input type="hidden" name="id" value="<%= wik.getId()%>">
-                            <input type="text" name="cambioNombre" placeholder="Ingrese el nuevo nombre">
-                            <input type="submit" name="accion"value="editar">
-                        </form>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <script src="js/bootstrap.min.js"></script>
     </body>
 </html>

@@ -1,13 +1,12 @@
 package Modelo;
 public class Wiki {
     private int id;
-    private String nombre;
-    private int id_Articulo;
-    private int id_Usuario;
+    private String nombre; 
+    private int id_Rol;
 
     public Wiki() {
     }
-    
+
     public int getId() {
         return id;
     }
@@ -24,21 +23,14 @@ public class Wiki {
         this.nombre = nombre;
     }
 
-    public int getId_Articulo() {
-        return id_Articulo;
+    public int getId_Rol() {
+        return id_Rol;
     }
 
-    public void setId_Articulo(int id_Articulo) {
-        this.id_Articulo = id_Articulo;
+    public void setId_Rol(int id_Rol) {
+        this.id_Rol = id_Rol;
     }
 
-    public int getId_Usuario() {
-        return id_Usuario;
-    }
-
-    public void setId_Usuario(int id_Usuario) {
-        this.id_Usuario = id_Usuario;
-    }
     
     
 }

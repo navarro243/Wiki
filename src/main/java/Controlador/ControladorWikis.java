@@ -61,8 +61,6 @@ public class ControladorWikis extends HttpServlet {
             wikiDao.eliminar(id);
             
             response.sendRedirect(request.getContextPath() + "/Vistas/gestor_GestionWikis.jsp");
-
-
         }
         
         if(action.equalsIgnoreCase("inicioSesion")){

@@ -92,7 +92,6 @@ public class WikisDao {
             ps.executeUpdate();
             
         }catch(Exception e){
-        
     }
         return false;
 

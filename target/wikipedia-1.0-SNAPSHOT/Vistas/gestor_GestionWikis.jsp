@@ -4,9 +4,11 @@
     Author     : vamil
 --%>
 
-<%@page import="java.util.*"%>
 <%@page import="Modelo.Wiki"%>
 <%@page import="ModeloDAO.WikisDao"%>
+<%@page import="Modelo.Notificacion"%>
+<%@page import="ModeloDAO.NotificacionesDao"%>
+<%@page import="java.util.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
@@ -41,14 +43,30 @@
 
         <div class="notificaciones-contenedor">
             <h4 class="text-center text-light">Notificaciones</h4>
+            <%
+                NotificacionesDao notificacionDao = new NotificacionesDao();
+                List<Notificacion> listaNotificaciones = notificacionDao.listarNotificaciones(1);
+                Iterator<Notificacion> iteradorNotificacion = listaNotificaciones.iterator();
+                
+                Notificacion notificacion = null;
+                String estado = "";
+                
+                while (iteradorNotificacion.hasNext()) {
+                    notificacion = iteradorNotificacion.next();
+                    if(notificacion.getEstado() == 0){
+                        estado = "Pendiente";
+                    }
+                
+            %>
             <div class="notificaciones">
-                <label class="notificacion-estado">Resuelto</label><br>
-                <label class="color-asunto">Asunto - Propuesta para supervisor</label>
-                <p class="text-light">123456783 - Juanes Gonzales quiere ser supervisor del articulo Tecnologia</p>
+                <label class="notificacion-estado"><%=estado%></label><br>
+                <label class="color-asunto">Asunto - <%= notificacion.getAsunto() %></label>
+                <p class="text-light"><%= notificacion.getCedula_usuario() %> - Juanes Gonzales quiere ser supervisor del articulo Tecnologia</p>
 
-                <button type="button" class="btn btn-success">Aceptar</button>
+                <a href="../ControladorNotificaciones?accion=aceptarAscenso&cedula=<% notificacion.getCedula_usuario(); %>" class="btn btn-success">Aceptar</a>
                 <button type="button" class="btn btn-danger">Rechazar</button>
             </div>
+            <%}%>
 
         </div>
 
@@ -79,12 +97,9 @@
                         <td>
                             <a class="btn btn-warning" href="../ControladorWikis?accion=editar&id=<%= wik.getId()%>">Editar</a>
 
-                            
-                            
-                           
-                                <a class="btn btn-danger" href="../ControladorWikis?accion=eliminar&id=<%= wik.getId()%>">eliminar</a>
-                           
+                            <a class="btn btn-danger" href="../ControladorWikis?accion=eliminar&id=<%= wik.getId()%>">eliminar</a>
 
+                            
                         </td>
                     </tr>
                     <%

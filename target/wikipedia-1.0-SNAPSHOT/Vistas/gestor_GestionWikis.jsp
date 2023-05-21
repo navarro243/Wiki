@@ -35,7 +35,7 @@
 
             </div>
             <div  class="alinear-derecha">
-                <button>Cerrar Sesion</button>
+                <button><a href="../Controlador?accion=cerrarsesion">Cerrar Sesion</a></button>
 
             </div>
 
@@ -91,17 +91,28 @@
                     %>
                     <tr>
                         <td><%= wik.getId()%></td>
+                        
+
                         <td><a href="gestor_gestionArticulos.jsp"><%= wik.getNombre()%></a></td>
                         <td>
                             <a class="btn btn-warning" href="../ControladorWikis?accion=editar&id=<%= wik.getId()%>">Editar</a>
+
                             <a class="btn btn-danger" href="../ControladorWikis?accion=eliminar&id=<%= wik.getId()%>">eliminar</a>
+
+                            
                         </td>
                     </tr>
+                    <%
+
+                            Integer variable = wik.getId();
+                            request.getSession().setAttribute("variable", variable);
+                         %>
                     <%}%>
                 </tbody>
 
             </table>
         </section>
+                  
 
         
                 

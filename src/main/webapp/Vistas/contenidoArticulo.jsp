@@ -3,7 +3,9 @@
     Created on : 9 may. 2023, 22:51:13
     Author     : vamil
 --%>
-
+<%@page import="java.util.*"%>
+<%@page import="Modelo.Wiki"%>
+<%@page import="ModeloDAO.WikisDao"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
@@ -52,15 +54,23 @@
 
                 <td>Id Wiki</td>
                 <td>Nombre Wiki</td>
-                <td>Acciones</td>
+               
             </thead>
-            <tr>
-                <td>1</td>
-                <td>Tecnologia</td>
-                <td>
-                    
-                </td>
-            </tr>
+             <tbody>
+                    <%
+                        WikisDao dao = new WikisDao();
+                        List<Wiki> lista = dao.obtenerWikis();
+                        Iterator<Wiki> iter = lista.iterator();
+                        Wiki wik = null;
+                        while (iter.hasNext()) {
+                            wik = iter.next();
+                    %>
+                    <tr>
+                        <td><%= wik.getId()%></td>
+                        <td><a href="gestor_gestionArticulos.jsp"><%= wik.getNombre()%></a></td>
+                    </tr>
+                    <%}%>
+                </tbody>
     </section>
 <script src="js/bootstrap.min.js"></script>
 </body>

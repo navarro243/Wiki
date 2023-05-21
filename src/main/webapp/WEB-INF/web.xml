@@ -16,6 +16,10 @@
         <servlet-name>ControlIngresoUsuario</servlet-name>
         <servlet-class>Controlador.ControlIngresoUsuario</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ControladorArticulos</servlet-name>
+        <servlet-class>Controlador.ControladorArticulos</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>controlador</servlet-name>
         <url-pattern>/controlador</url-pattern>
@@ -31,6 +35,10 @@
     <servlet-mapping>
         <servlet-name>ControlIngresoUsuario</servlet-name>
         <url-pattern>/ControlIngresoUsuario</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ControladorArticulos</servlet-name>
+        <url-pattern>/ControladorArticulos</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

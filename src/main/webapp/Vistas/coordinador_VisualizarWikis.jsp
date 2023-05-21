@@ -4,11 +4,9 @@
     Author     : vamil
 --%>
 
-<%@page import="java.util.ArrayList"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="java.util.List"%>
-<%@page import="Modelo.Usuario"%>
-<%@page import="ModeloDAO.UsuariosDao"%>
+<%@page import="java.util.*"%>
+<%@page import="Modelo.Wiki"%>
+<%@page import="ModeloDAO.WikisDao"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
@@ -24,23 +22,10 @@
 <body>
     <nav>
         <div>
-            <%
-                    UsuariosDao daoUsuario = new UsuariosDao();
-                    List<Usuario> listUsusario = new ArrayList<>();
-                    Usuario usu =null ;
-                    listUsusario.add(usu);
-                    Iterator<Usuario> iterUsuario =listUsusario.iterator();
-
-                    while(iterUsuario.hasNext()){
-                    usu= iterUsuario.next();
-                %>
-                <label><%= usu.getNombre() %> <%= usu.getApellido() %> y <%= usu.getId_rol() %></label>
-            <% } %>
+            
         </div>
 
-        <div class= "alinear-centro">
-            <button type="button" class="btn btn-primary">Nueva Wiki</button>
-        </div>
+       
         
         <div  class="alinear-derecha">
             <button><a href="../Controlador?accion=cerrarsesion">Cerrar Sesion</a></button>
@@ -70,14 +55,31 @@
                 <td>Nombre Articulo</td>
                 <td>Acciones</td>
             </thead>
-            <tr>
-                <td>1</td>
-                <td>Inteligencia Artificial</td>
-                <td>
-                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">Editar  </button>
-                    <button type="button" class="btn btn-danger">Eliminar</button>
-                </td>
-            </tr>
+            <tbody>
+                    <%
+                        WikisDao dao = new WikisDao();
+                        List<Wiki> lista = dao.obtenerWikis();
+                        Iterator<Wiki> iter = lista.iterator();
+                        Wiki wik = null;
+                        while (iter.hasNext()) {
+                            wik = iter.next();
+                    %>
+                    <tr>
+                        <td><%= wik.getId()%></td>
+                        <td><a href="gestor_gestionArticulos.jsp"><%= wik.getNombre()%></a></td>
+                        <td>
+                            <a class="btn btn-warning" href="../ControladorWikis?accion=editar&id=<%= wik.getId()%>">Editar</a>
+
+                            
+                            
+                           
+                                
+                           
+
+                        </td>
+                    </tr>
+                    <%}%>
+                </tbody>
     </section>
 <script src="js/bootstrap.min.js"></script>
 </body>

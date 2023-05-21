@@ -26,7 +26,7 @@
         </div>
 
          <div  class="alinear-centro">
-                <a href="#" class="btn btn-primary"data-bs-toggle="modal" data-bs-target="#exampleModal">Nueva Wiki</a>
+                <a href="#" class="btn btn-primary"data-bs-toggle="modal" data-bs-target="#ModalArticulos">Nueva Wiki</a>
 
             </div>
         
@@ -95,7 +95,7 @@
 
  <!-- Modal -->
 <!-- Modal Crear--> 
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="ModalArticulos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author user
  */
-@WebServlet(name = "ControladorWikis", urlPatterns = {"/ControladorWikis"})
+@WebServlet(name = "ControladorArticulos", urlPatterns = {"/ControladorArticulos"})
 
 public class ControladorArticulos extends HttpServlet {
     String vistaG ="Vistas/gestor_gestionArticulos.jsp";

@@ -69,6 +69,7 @@ public class ControladorArticulos extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("accion");
+        int id;
 
        
 
@@ -85,6 +86,12 @@ public class ControladorArticulos extends HttpServlet {
             articuDao.agregarArticulo(articu);
 
             response.sendRedirect(vistaG);    
+        }else if(action.equalsIgnoreCase("eliminar")){
+            id=Integer.parseInt(request.getParameter("id"));
+            articu.setId(id);
+            articuDao.eliminar(id);
+            
+            response.sendRedirect(request.getContextPath() + "/Vistas/gestor_gestionArticulos.jsp");
         }
         
     }

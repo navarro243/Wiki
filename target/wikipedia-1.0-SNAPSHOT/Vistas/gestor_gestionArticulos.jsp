@@ -63,20 +63,25 @@
           
                     int id_wiki_origen = ((Integer) request.getSession().getAttribute("variable")).intValue();
 
-                        ArticulosDao dao = new ArticulosDao();
-                        List<Articulo> lista = dao.obtenerArticulos(id_wiki_origen);
-                        Iterator<Articulo> Intenerator = lista.iterator();
-                        Articulo art = null;  
-                        System.out.println("8=================================================================================================================================D");
-                        while (Intenerator.hasNext()) {
-                            art = Intenerator.next();
+        ArticulosDao dao = new ArticulosDao();
+        List<Articulo> lista = dao.obtenerArticulos(id_wiki_origen);
+        Iterator<Articulo> iter = lista.iterator();
+        Articulo art = null;  
+        System.out.println("8=================================================================================================================================D"+lista);
+        while (iter.hasNext()) {
+            art = iter.next();
                           
                     %>
                     <tr>
                         <td><%= art.getId() %></td>
                         <td><a href="#"><%= art.getTitulo() %></a></td>
                         <td>
-                                
+                                <a class="btn btn-warning" href="../ControladorArticulos?accion=editar&id=<%= art.getId()%>">Editar</a>
+
+                            
+                            
+                           
+                                <a class="btn btn-danger" href="../ControladorArticulos?accion=eliminar&id=<%= art.getId()%>">eliminar</a>
                         </td>
                     </tr>
                     <%}%>

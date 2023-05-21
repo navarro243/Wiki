@@ -21,25 +21,21 @@ public class ArticulosDao {
         
         public List obtenerArticulos(int idart) throws SQLException {
         ArrayList<Articulo> list= new ArrayList<>();
-        String sql = "select * from articulos";
+        String sql = "select * from articulos where id_Wiki = "+idart;
         try{
             con = cn.getConnection();
             ps= con.prepareStatement(sql);
             rs=ps.executeQuery();
             while(rs.next()){
-                Articulo Arti = new Articulo();
+                Articulo artuci = new Articulo();
                
-               if(idart == rs.getInt("id_Wiki")){
-                    Arti.setId(rs.getInt("id"));
-                    Arti.setTitulo(rs.getString("titulo"));
-                    Arti.setContenido(rs.getNString("contenido"));
-                   Arti.setId_Wiki(rs.getInt("id_Wiki"));
-               }
+             
+                    artuci.setId(rs.getInt("id"));
+                    artuci.setTitulo(rs.getString("titulo"));
+                    artuci.setContenido(rs.getString("contenido"));
+                   artuci.setId_Wiki(rs.getInt("id_Wiki"));
                
-               
-                
-                
-                list.add(Arti);
+                list.add(artuci );
             }
             
         }catch(Exception e){
@@ -65,4 +61,18 @@ public class ArticulosDao {
             
             return false;
         } 
+        
+         public boolean eliminar(int id){
+        String sql = "delete from articulos where id="+id;
+        try{
+            con=cn.getConnection();
+            ps=con.prepareStatement(sql);
+            ps.executeUpdate();
+            
+        }catch(Exception e){
+        
+    }
+        return false;
+
+    }
 }

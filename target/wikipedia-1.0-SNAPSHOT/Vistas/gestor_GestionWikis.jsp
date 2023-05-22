@@ -24,10 +24,30 @@
         <title>Gestor - Gestion Wikis</title>
     </head>
     <body>
-        <nav>
+        <nav><%
+                Cookie[] cookies = request.getCookies();
+                int cedula = 0;
+                String nombre = "";
+                int rol = 0;
+                if (cookies != null) {
+                    for (Cookie cookie : cookies) {
+                        if (cookie.getName().equals("usuario")) {
+                            String value = cookie.getValue();
+                            String[] values = value.split(":");
+
+                            cedula = Integer.parseInt(values[0]);
+                            nombre = values[1];
+                            
+                        }
+                    }
+                }
+                
+                
+
+            %>
             <div>
 
-                <label>Nombre y Rol</label>
+                <label name="accion" value="nombreYrol"><%= nombre + " - Gestor" %></label>
             </div>
 
             <div  class="alinear-centro">
@@ -46,6 +66,7 @@
             <%
                 NotificacionesDao notificacionDao = new NotificacionesDao();
                 List<Notificacion> listaNotificaciones = notificacionDao.listarNotificaciones(1);
+                
                 Iterator<Notificacion> iteradorNotificacion = listaNotificaciones.iterator();
                 
                 Notificacion notificacion = null;
@@ -102,11 +123,7 @@
                             
                         </td>
                     </tr>
-                    <%
-
-                            Integer variable = wik.getId();
-                            request.getSession().setAttribute("variable", variable);
-                         %>
+                     
                     <%}%>
                 </tbody>
 

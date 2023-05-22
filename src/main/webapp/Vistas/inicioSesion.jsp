@@ -17,12 +17,12 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="ControlIU"   >
+    <form action="../ControlIU">
         <h1>Iniciar Sesion</h1> 
 		<label for="cedula">Cédula:</label>
 		<input type="text" id="cedula" name="cedula" required>
 
-                <input type="submit" name="accion" value="InicioDeSesion">
+                <input type="submit" name="accion" value="iniciosesion">
 	</form>
 </body>
 </html>

@@ -9,9 +9,6 @@ import config.conexion;
 
 import Modelo.Usuario;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class UsuariosDao {
 
     conexion cn = new conexion();
@@ -20,6 +17,7 @@ public class UsuariosDao {
     Connection con;
 
     Usuario usua = new Usuario();
+    NotificacionesDao notificacionDao = new NotificacionesDao();
 
     public int Obtenerusuario(int CEDULA) {
         String sql = "SELECT * FROM usuarios WHERE cedula = ?";
@@ -75,7 +73,9 @@ public class UsuariosDao {
             con = cn.getConnection();
             ps = con.prepareStatement(consultarRol);
             rs = ps.executeQuery();
-            id = rs.getInt("id");
+            if (rs.next()) {
+                id = rs.getInt("id_Rol");
+            }
         } catch (SQLException e) {
             System.out.println(e);
         }
@@ -94,23 +94,32 @@ public class UsuariosDao {
                 nombre = rs.getString("nombre");
             }
         } catch (SQLException e) {
-            System.out.println("============================" + e);
+            System.out.println(e);
         }
 
         return nombre;
     }
 
-    public void ascenderUsuario(int cedula) {
+    public void ascenderUsuario(int cedula, int idNotificacion) {
         int consultarRol = consultarRol(cedula);
-
-        String sql = "UPDATE usuarios SET id_Rol = " + consultarRol;
+        int rolAscender = --consultarRol;
+        notificacionDao.cambiarEstadoNotificacion(idNotificacion, 1);
+        
+        String sqlUsuarios = "UPDATE usuarios SET id_Rol = ? WHERE cedula = ?";
+        
         try {
             con = cn.getConnection();
-            ps = con.prepareStatement(sql);
-            rs = ps.executeQuery();
+            ps = con.prepareStatement(sqlUsuarios);
+            ps.setInt(1, rolAscender);
+            ps.setInt(2, cedula);
+            ps.executeUpdate();
+
         } catch (SQLException e) {
             System.out.println(e);
         }
+
     }
+    
+    
 
 }

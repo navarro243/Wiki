@@ -64,7 +64,7 @@ public class ControlIngresoUsuario extends HttpServlet {
             int rol_vista = dao.Obtenerusuario(cedula);
             String nombre_usuario = dao.consultarNombre(cedula);
 
-            String valorCookie = cedula + ":" + nombre_usuario;
+            String valorCookie = cedula + ":" + nombre_usuario + ":" + rol_vista;
             Cookie cookie = new Cookie("usuario", valorCookie);
 
             response.addCookie(cookie);

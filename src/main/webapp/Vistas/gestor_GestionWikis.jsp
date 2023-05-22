@@ -37,13 +37,12 @@
 
                             cedula = Integer.parseInt(values[0]);
                             nombre = values[1];
+                            rol = Integer.parseInt(values[2]);
                             
                         }
                     }
                 }
                 
-                
-
             %>
             <div>
 
@@ -65,27 +64,41 @@
             <h4 class="text-center text-light">Notificaciones</h4>
             <%
                 NotificacionesDao notificacionDao = new NotificacionesDao();
-                List<Notificacion> listaNotificaciones = notificacionDao.listarNotificaciones(1);
+                List<Notificacion> listaNotificaciones = notificacionDao.listarNotificaciones(rol);
                 
                 Iterator<Notificacion> iteradorNotificacion = listaNotificaciones.iterator();
                 
                 Notificacion notificacion = null;
                 String estado = "";
+                String asunto = "";
                 
                 while (iteradorNotificacion.hasNext()) {
                     notificacion = iteradorNotificacion.next();
+                    
+                    if(notificacion.getAsunto().equals("Acenso")){
+                        asunto = "ascenso";
+                    }else if(notificacion.getAsunto().equals("modificacion")){
+                        asunto = "modificacion";
+                    }
+                    
                     if(notificacion.getEstado() == 0){
                         estado = "Pendiente";
+                    }else if(notificacion.getEstado() == 1){
+                        estado = "Aceptado";
+                        asunto = "resuelto";
+                    }else if(notificacion.getEstado() == 2){
+                        estado = "Rechazado";
                     }
                 
             %>
             <div class="notificaciones">
                 <label class="notificacion-estado"><%=estado%></label><br>
                 <label class="color-asunto">Asunto - <%= notificacion.getAsunto() %></label>
-                <p class="text-light"><%= notificacion.getCedula_usuario() %> - Juanes Gonzales quiere ser supervisor del articulo Tecnologia</p>
+                <p class="text-light"><%= notificacion.getCedula_usuario() +" - "+ notificacion.getAsunto()%></p>
 
-                <a href="../ControladorNotificaciones?accion=aceptarAscenso&cedula=<% notificacion.getCedula_usuario(); %>" class="btn btn-success">Aceptar</a>
-                <button type="button" class="btn btn-danger">Rechazar</button>
+                <a href="../ControladorNotificaciones?accion=<%=asunto+"Aceptar"%>&id=<%= notificacion.getId()%>&cedula=<%=notificacion.getCedula_usuario()%>" class="btn btn-success">Aceptar</a>
+
+                <a href="../ControladorNotificaciones?accion=<%=asunto+"Rechazar"%>&id=<%= notificacion.getId()%>" class="btn btn-danger">Rechazar</a>
             </div>
             <%}%>
 

@@ -65,7 +65,7 @@
                         Wiki wik = null;
                         while (iter.hasNext()) {
                             wik = iter.next();
-                    %>
+                    %> 
                     <tr>
                         <td><%= wik.getId()%></td>
                         <td><a href="gestor_gestionArticulos.jsp"><%= wik.getNombre()%></a></td>

@@ -6,6 +6,7 @@ package Controlador;
 
 import Modelo.Notificacion;
 import ModeloDAO.NotificacionesDao;
+import ModeloDAO.UsuariosDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -19,9 +20,11 @@ import javax.servlet.http.HttpServletResponse;
 public class ControladorNotificaciones extends HttpServlet {
 
     String vistaSupervisor = "Vistas/supervisor_wikis.jsp";
+    String vistaGestor = "Vistas/gestor_GestionWikis.jsp";
 
     Notificacion notificacion = new Notificacion();
     NotificacionesDao notificacionDao = new NotificacionesDao();
+    UsuariosDao usuarioDao = new UsuariosDao();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -48,14 +51,13 @@ public class ControladorNotificaciones extends HttpServlet {
         if (action.equalsIgnoreCase("ascenso")) {
             acceso = vistaSupervisor;
             Cookie[] cookies = request.getCookies();
-            String nombreCookie = "usuario"; // Nombre de la cookie que deseas obtener
+            String nombreCookie = "usuario"; 
 
             Cookie cookieUsuario = null;
 
             if (cookies != null) {
                 for (Cookie cookie : cookies) {
                     if (cookie.getName().equals(nombreCookie)) {
-                        System.out.println("COKIEEEEEEESSSS"+cookie);
                         cookieUsuario = cookie;
                         break;
                     }
@@ -67,7 +69,7 @@ public class ControladorNotificaciones extends HttpServlet {
                 cedula_usuario = Integer.parseInt(usuarioJson);
             }
 
-            System.out.println("Esta es la cedulaaaaa"+cedula_usuario);
+            
             notificacion.setEstado(0);
             notificacion.setAsunto("Propuesta para ascenso");
             notificacion.setId_modificacion(0);
@@ -76,7 +78,30 @@ public class ControladorNotificaciones extends HttpServlet {
 
             notificacionDao.enviarNotificacionAscenso(notificacion);
         }
-
+        
+        else if(action.equalsIgnoreCase("ascensoAceptar")){          
+            String idNotificacionURL = request.getParameter("id");
+            String cedulaURL = request.getParameter("cedula");
+            
+            
+            int idNotificacion = Integer.parseInt(idNotificacionURL);
+            int cedula = Integer.parseInt(cedulaURL);            
+            
+            usuarioDao.ascenderUsuario(cedula, idNotificacion);
+            acceso = vistaGestor;
+            
+        }
+        
+        else if(action.equalsIgnoreCase("ascensoRechazar") || action.equalsIgnoreCase("resueltoRechazar")){
+            String idNotificacionURL = request.getParameter("id");
+            int idNotificacion = Integer.parseInt(idNotificacionURL);
+            
+            notificacionDao.cambiarEstadoNotificacion(idNotificacion, 2);
+            
+            acceso = vistaGestor;
+        }else{
+            acceso = vistaGestor;
+        }
         response.sendRedirect(acceso);
     }
 

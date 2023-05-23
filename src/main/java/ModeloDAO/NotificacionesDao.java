@@ -49,7 +49,21 @@ public class NotificacionesDao {
             System.out.println(e);
         }
         
+        
         return listaNotificaciones;
+    }
+    
+    public void cambiarEstadoNotificacion(int idNotificacion, int estado){
+        String sql = "UPDATE notificaciones SET estado = "+estado+" WHERE id = "+idNotificacion;
+
+        try{
+            con = cn.getConnection();
+            ps= con.prepareStatement(sql);
+            rs=ps.executeQuery();
+            
+        }catch(SQLException e){
+            System.out.println(e);
+        }
     }
     
     

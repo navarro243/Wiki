@@ -19,8 +19,29 @@
     </head>
     <body>
         <nav>
+            <%
+                Cookie[] cookies = request.getCookies();
+                int cedula = 0;
+                String nombre = "";
+                int rol = 0;
+                if (cookies != null) {
+                    for (Cookie cookie : cookies) {
+                        if (cookie.getName().equals("usuario")) {
+                            String value = cookie.getValue();
+                            String[] values = value.split(":");
+
+                            cedula = Integer.parseInt(values[0]);
+                            nombre = values[1];
+                            rol = Integer.parseInt(values[2]);
+                        }
+                    }
+                }
+
+
+            %>
             <div>
-                <label>Nombre Y Rol</label>
+                <label name="accion" value="nombreYrol"><%= nombre + " - Supervisor"%></label>
+
             </div>
 
             <div  class="alinear-derecha">
@@ -33,9 +54,9 @@
         <div class="notificaciones-contenedor">
             <h4 class="text-center text-light">Notificaciones</h4>
             <div class="notificaciones">
-                <label class="notificacion-estado">Resuelto</label><br>
-                <label class="color-asunto">Asunto - Propuesta para supervisor</label>
-                <p class="text-light">123456783 - Juanes Gonzales quiere ser supervisor del articulo Tecnologia</p>
+                <label class="notificacion-estado"></label><br>
+                <label class="color-asunto"></label>
+                <p class="text-light"></p>
 
                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Aceptar</button>
                 <button type="button" class="btn btn-danger">Rechazar</button>

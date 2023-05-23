@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "ControladorWikis", urlPatterns = {"/ControladorWikis"})
 public class ControladorWikis extends HttpServlet {
     String crearWiki = "Vistas/gestor_GestionWikis.jsp";
-    String editarWiki = "Vistas/modificaciones_wikisArticulos.jsp";
+    String editarWiki = "Vistas/modificaciones_wikis.jsp";
     int id;
     Wiki wiki = new Wiki();
     WikisDao wikiDao = new WikisDao();

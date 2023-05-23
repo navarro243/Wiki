@@ -25,7 +25,7 @@
     <nav>
         <div>
             
-            <label>Nombre Y Rol</label>
+            <label></label>
         </div>
 
        

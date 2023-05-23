@@ -16,6 +16,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/estilosPropios.css">
+    <link rel="stylesheet" href="Vistas/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="Vistas/css/estilosPropios.css">
+    
     <title>Gestor - Gestion Articulos</title>
 </head>
 <body>
@@ -26,7 +29,10 @@
         </div>
 
          <div  class="alinear-centro">
-                <a href="#" class="btn btn-primary"data-bs-toggle="modal" data-bs-target="#ModalArticulos">Nueva Wiki</a>
+               
+                <a href="#" class="btn btn-primary"data-bs-toggle="modal" data-bs-target="#exampleModal">Nueva Articulo</a>
+
+
 
             </div>
         
@@ -61,27 +67,29 @@
                     <%
                
           
-                    int id_wiki_origen = ((Integer) request.getSession().getAttribute("variable")).intValue();
+                    
+                      int valorEntero = (int) request.getAttribute("valorEntero");
 
-        ArticulosDao dao = new ArticulosDao();
-        List<Articulo> lista = dao.obtenerArticulos(id_wiki_origen);
-        Iterator<Articulo> iter = lista.iterator();
-        Articulo art = null;  
-        System.out.println("8=================================================================================================================================D"+lista);
-        while (iter.hasNext()) {
-            art = iter.next();
+                        ArticulosDao dao = new ArticulosDao();
+                        List<Articulo> lista = dao.obtenerArticulos(valorEntero);
+                        Iterator<Articulo> iter = lista.iterator();
+                        Articulo art = null;  
+        
+                        while (iter.hasNext()) {
+                            art = iter.next();
+                            
                           
                     %>
                     <tr>
                         <td><%= art.getId() %></td>
                         <td><a href="#"><%= art.getTitulo() %></a></td>
                         <td>
-                                <a class="btn btn-warning" href="../ControladorArticulos?accion=editar&id=<%= art.getId()%>">Editar</a>
+                                <a class="btn btn-warning" href="ControladorArticulos?accion=editar&id=<%= art.getId()%>">Editar</a>
 
                             
                             
                            
-                                <a class="btn btn-danger" href="../ControladorArticulos?accion=eliminar&id=<%= art.getId()%>">eliminar</a>
+                                <a class="btn btn-danger" href="ControladorArticulos?accion=eliminar&id=<%= art.getId()%>">eliminar</a>
                         </td>
                     </tr>
                     <%}%>
@@ -95,29 +103,28 @@
 
  <!-- Modal -->
 <!-- Modal Crear--> 
-<div class="modal fade" id="ModalArticulos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Crear Wiki</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="../ControladorArticulos?accion=agregar" method="get">
-                    <div class="mb-3">
-                        <label for="titulo">Título</label>
-                        <input type="text" class="form-control" id="titulo" name="titulo" required>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Crear Articulo</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="mb-3">
-                        <label for="contenido">Contenido</label>
-                        <textarea class="form-control" id="contenido" name="contenido" rows="5" required></textarea>
+                    <div class="modal-body">
+                        <form action="ControladorArticulos" method="get">
+                            <label>Titulo articulo</label>
+                            <input type="text" name="titulo"></input>
+                            
+                            <input type="submit" name="accion" value="agregar"></input>
+
+                        </form>
                     </div>
-                    <input type="submit" class="btn btn-primary" name="accion" value="agregar">
-                </form>
+
+                </div>
             </div>
         </div>
-    </div>
-</div>
-<script src="js/bootstrap.min.js"></script>
+
+ <script src="js/bootstrap.min.js"></script>
+<script src="Vistas/js/bootstrap.min.js"></script>
 </body>
 </html>

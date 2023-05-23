@@ -1,9 +1,11 @@
 <%-- 
-    Document   : supervisor_Articulos
-    Created on : 12 may. 2023, 18:23:53
+    Document   : inicioSesion
+    Created on : 9 may. 2023, 22:51:13
     Author     : vamil
 --%>
-
+<%@page import="java.util.*"%>
+<%@page import="Modelo.Articulo"%>
+<%@page import="ModeloDAO.ArticulosDao"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
@@ -13,8 +15,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/estilosPropios.css">
-    <title>Articulos</title>
+    <link rel="stylesheet" type="text/css" href="css/estilosPropios.css">
+    <link rel="stylesheet" href="Vistas/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="Vistas/css/estilosPropios.css">
+    
+    <title>Gestor - Gestion Articulos</title>
 </head>
 <body>
     <nav>
@@ -22,9 +27,11 @@
             
             <label></label>
         </div>
+
+       
         
         <div  class="alinear-derecha">
-           <button><a href="../Controlador?accion=cerrarsesion">Cerrar Sesion</a></button>
+            <button><a href="../Controlador?accion=cerrarsesion">Cerrar Sesion</a></button>
             
         </div>
         
@@ -40,25 +47,52 @@
 
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Aceptar</button>
             <button type="button" class="btn btn-danger">Rechazar</button>
-
         </div>
-        <button class="pedirAscenso">Pedir Ascenso</button>
+
     </div>
-    
     <section class="wiki-contenedor">
         <table class="table border">
             <thead class="table-light">
                 <td>Id Articulos</td>
                 <td>Nombre Articulo</td>
-                <td>Acciones</td>
+               
             </thead>
-            <tr>
-                <td>1</td>
-                <td>Inteligencia Artificial</td>
-                <td>
-                </td>
-            </tr>
+             <tbody>
+                    <%
+               
+          
+                    
+                      int valorEntero = (int) request.getAttribute("valorEntero");
+
+                        ArticulosDao dao = new ArticulosDao();
+                        List<Articulo> lista = dao.obtenerArticulos(valorEntero);
+                        Iterator<Articulo> iter = lista.iterator();
+                        Articulo art = null;  
+        
+                        while (iter.hasNext()) {
+                            art = iter.next();
+                            
+                          
+                    %>
+                    <tr>
+                        <td><%= art.getId() %></td>
+                        <td><a href="#"><%= art.getTitulo() %></a></td>
+                        
+                    </tr>
+                    <%}%>
+                </tbody>
+                
+        </table>
     </section>
-<script src="js/bootstrap.min.js"></script>
+                
+
+
+
+ <!-- Modal -->
+<!-- Modal Crear--> 
+
+
+ <script src="js/bootstrap.min.js"></script>
+<script src="Vistas/js/bootstrap.min.js"></script>
 </body>
 </html>

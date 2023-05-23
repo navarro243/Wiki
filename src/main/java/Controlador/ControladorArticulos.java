@@ -10,6 +10,7 @@ import ModeloDAO.ArticulosDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -26,8 +27,11 @@ import javax.servlet.http.HttpServletResponse;
 
 public class ControladorArticulos extends HttpServlet {
     String vistaG ="Vistas/gestor_gestionArticulos.jsp";
+            String editarArticulo = "/Vistas/Modificacion_Articulos.jsp";
        Articulo articu = new Articulo();
     ArticulosDao articuDao = new ArticulosDao();
+    String valorRecibido = "";
+        int valorEntero =0;
     
 
     /**
@@ -69,31 +73,60 @@ public class ControladorArticulos extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("accion");
+        String action2 = request.getParameter("volver");
+
         int id;
-
+      
        
-
+          
+          
+         if(action.equalsIgnoreCase("vista")){
+             valorRecibido = request.getParameter("valorEnviado");
+               valorEntero = Integer.parseInt(valorRecibido);
+                request.setAttribute("valorEntero", valorEntero);
+                
+              
+         }
+                 
+         
      
-        if(action.equalsIgnoreCase("agregar")){
+        else if(action.equalsIgnoreCase("agregar")){
+             
+           
              String titulo = request.getParameter("titulo");
-            String contenido = request.getParameter("contenido");
-            Integer id_wiki_origen = (Integer) request.getSession().getAttribute("variable");
+            
+            
             
             articu.setTitulo(titulo);
-            articu.setContenido(contenido);
-            articu.setId_Wiki(id_wiki_origen);
+           
+            articu.setId_Wiki(valorEntero);
+            
             
             articuDao.agregarArticulo(articu);
 
-            response.sendRedirect(vistaG);    
+            
         }else if(action.equalsIgnoreCase("eliminar")){
             id=Integer.parseInt(request.getParameter("id"));
             articu.setId(id);
             articuDao.eliminar(id);
             
-            response.sendRedirect(request.getContextPath() + "/Vistas/gestor_gestionArticulos.jsp");
+            
+        }else if (action.equalsIgnoreCase("editar")){
+            request.setAttribute("idArticulo",request.getParameter("id")); 
+        request.getRequestDispatcher(editarArticulo).forward(request, response);
+        }else if(action.equalsIgnoreCase("actualizar")){
+             id=Integer.parseInt(request.getParameter("txtid"));
+
+            String cambioTitulo = request.getParameter("cambioTitulo");
+                
+            articu.setId(id);
+            articu.setTitulo(cambioTitulo);
+            articuDao.editarArticulos(articu);
+            
+            
         }
-        
+        request.setAttribute("valorEntero", valorEntero);
+        request.getRequestDispatcher(vistaG).forward(request, response);
     }
 
     /**

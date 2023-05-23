@@ -48,6 +48,7 @@
             <div>
 
                 <label name="accion" value="nombreYrol"><%= nombre + " - Gestor"%></label>
+
             </div>
 
             <div  class="alinear-centro">
@@ -66,21 +67,24 @@
             <%
                 UsuariosDao  usuarioDao = new UsuariosDao();
                 NotificacionesDao notificacionDao = new NotificacionesDao();
+
                 List<Notificacion> listaNotificaciones = notificacionDao.listarNotificaciones(rol);
-                
                 
 
                 Iterator<Notificacion> iteradorNotificacion = listaNotificaciones.iterator();
 
                 Notificacion notificacion = null;
                 String estado = "";
+
                 String asunto = "";
                 String mensajeAscenso = "" ;
                 String rolAscender = "";
+
                 
 
                 while (iteradorNotificacion.hasNext()) {
                     notificacion = iteradorNotificacion.next();
+
                     nombre = usuarioDao.consultarNombre(notificacion.getCedula_usuario());
                     rol = usuarioDao.consultarRol(notificacion.getCedula_usuario());
                     switch (rol){
@@ -112,16 +116,19 @@
                     } else if (notificacion.getEstado() == 2) {
                         estado = "Rechazado";
                         asunto = "resuelto";
+
                     }
 
             %>
             <div class="notificaciones">
                 <label class="notificacion-estado"><%=estado%></label><br>
+
                 <label class="color-asunto">Asunto - <%= notificacion.getAsunto()%></label>
                 <p class="text-light"><%= notificacion.getCedula_usuario() + " - " + nombre + " "+ mensajeAscenso%> </p>
 
                 <a href="../ControladorNotificaciones?accion=<%=asunto + "Aceptar"%>&id=<%= notificacion.getId()%>&cedula=<%=notificacion.getCedula_usuario()%>" class="btn btn-success">Aceptar</a>
                 <a href="../ControladorNotificaciones?accion=<%=asunto + "Rechazar"%>&id=<%= notificacion.getId()%>" class="btn btn-danger">Rechazar</a>
+
             </div>
             <%}%>
 
@@ -143,6 +150,7 @@
                         List<Wiki> lista = dao.obtenerWikis();
                         Iterator<Wiki> iter = lista.iterator();
                         Wiki wik = null;
+                        List<Integer> variableList = new ArrayList<>();
                         while (iter.hasNext()) {
                             wik = iter.next();
                     %>
@@ -150,7 +158,7 @@
                         <td><%= wik.getId()%></td>
 
 
-                        <td><a href="gestor_gestionArticulos.jsp"><%= wik.getNombre()%></a></td>
+                        <td><a href="../ControladorArticulos?valorEnviado=<%=  String.valueOf(wik.getId())%>&accion=vista"><%= wik.getNombre()%></a></td>
                         <td>
                             <a class="btn btn-warning" href="../ControladorWikis?accion=editar&id=<%= wik.getId()%>">Editar</a>
 
@@ -159,7 +167,6 @@
 
                         </td>
                     </tr>
-
                     <%}%>
                 </tbody>
 

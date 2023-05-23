@@ -29,13 +29,14 @@ public class ArticulosDao {
             while(rs.next()){
                 Articulo artuci = new Articulo();
                
-             
+             if(idart==rs.getInt("id_Wiki")){
                     artuci.setId(rs.getInt("id"));
                     artuci.setTitulo(rs.getString("titulo"));
                     artuci.setContenido(rs.getString("contenido"));
                    artuci.setId_Wiki(rs.getInt("id_Wiki"));
                
                 list.add(artuci );
+             }
             }
             
         }catch(Exception e){
@@ -47,14 +48,17 @@ public class ArticulosDao {
         
         
         public boolean agregarArticulo(Articulo artu){
-            String sql = "INSERT INTO articulos (titulo , contenido, id_Wiki) VALUES (' "+ artu.getTitulo() + "', '" +artu.getContenido()+"', '"+artu.getId_Wiki()+"' )";
+            String sql = "INSERT INTO articulos (titulo, id_wiki, contenido) values (' "+artu.getTitulo()+" ',' "+artu.getId_Wiki()+" ', 'a' )";
         try{
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
             ps.executeUpdate();
             return true;
         }catch(SQLException e){
-            e.printStackTrace();   
+            System.out.println("*************************************************************************************************");
+            System.out.println(e);
+            System.out.println(artu.getId_Wiki());
+
             
         }
             
@@ -75,4 +79,39 @@ public class ArticulosDao {
         return false;
 
     }
+         
+             public Articulo list(int id) {
+                String sql = "SELECT * FROM articulos WHERE id=" + id;
+
+                try {
+                    con = cn.getConnection();
+                    ps = con.prepareStatement(sql);
+                    rs = ps.executeQuery();
+                    while (rs.next()) {
+                        Arti.setId(rs.getInt("id"));
+                        Arti.setTitulo(rs.getString("titulo"));
+                        
+                    }
+                } catch (SQLException e) {
+                    System.out.println("*****************************************************************");
+                    System.out.println(e);     
+                } 
+                return Arti;
+            }
+         
+         public void editarArticulos (Articulo articulo){
+             String sql = "UPDATE articulos SET titulo = '"+articulo.getTitulo()+"' WHERE id = " + articulo.getId() ;
+
+
+        try{
+            con = cn.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.executeUpdate();
+            
+        }catch(SQLException e){
+           System.out.println("*****************************************************************");
+            System.out.println(e);     
+            
+        }
+         } 
 }

@@ -86,6 +86,7 @@
                         List<Wiki> lista = dao.obtenerWikis();
                         Iterator<Wiki> iter = lista.iterator();
                         Wiki wik = null;
+                        List<Integer> variableList = new ArrayList<>();
                         while (iter.hasNext()) {
                             wik = iter.next();
                     %>
@@ -93,7 +94,7 @@
                         <td><%= wik.getId()%></td>
                         
 
-                        <td><a href="gestor_gestionArticulos.jsp"><%= wik.getNombre()%></a></td>
+                        <td><a href="../ControladorArticulos?valorEnviado=<%=  String.valueOf(wik.getId())%>&accion=vista"><%= wik.getNombre()%></a></td>
                         <td>
                             <a class="btn btn-warning" href="../ControladorWikis?accion=editar&id=<%= wik.getId()%>">Editar</a>
 
@@ -102,12 +103,13 @@
                             
                         </td>
                     </tr>
-                    <%
+                    
 
-                            Integer variable = wik.getId();
-                            request.getSession().setAttribute("variable", variable);
-                         %>
-                    <%}%>
+                    <%
+                            variableList.add(wik.getId()); // Agregar el valor de wik.getId() a la lista
+                        }
+                        request.getSession().setAttribute("variableList", variableList); // Almacenar la lista en la sesión
+                        %>
                 </tbody>
 
             </table>

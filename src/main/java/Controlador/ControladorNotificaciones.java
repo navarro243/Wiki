@@ -99,6 +99,8 @@ public class ControladorNotificaciones extends HttpServlet {
             notificacionDao.cambiarEstadoNotificacion(idNotificacion, 2);
             
             acceso = vistaGestor;
+        }else if(action.equalsIgnoreCase("ascensoAceptar") || action.equalsIgnoreCase("ascensoRechazar")){
+            acceso = vistaGestor;
         }else{
             acceso = vistaGestor;
         }

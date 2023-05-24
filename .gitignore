@@ -1,2 +1,3 @@
 config/
 target/wikipedia-1.0-SNAPSHOT/WEB-INF/classes/config/conexion.class
+src/main/java/config/conexion.java

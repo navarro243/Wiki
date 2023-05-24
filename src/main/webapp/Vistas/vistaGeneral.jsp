@@ -68,7 +68,7 @@
                     %> 
                     <tr>
                         <td><%= wik.getId()%></td>
-                        <td><a href="gestor_gestionArticulos.jsp"><%= wik.getNombre()%></a></td>
+                         <td><a href="../ControladorArticulos?valorEnviado=<%=  String.valueOf(wik.getId())%>&accion=vista"><%= wik.getNombre()%></a></td>
 
                     </tr>
                     <%}%>

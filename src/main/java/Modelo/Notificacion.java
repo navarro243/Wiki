@@ -7,7 +7,6 @@ public class Notificacion {
     private int cedula_usuario;
     private int id_Rol;
     private String asunto;
-    private String mensaje;
 
     public Notificacion() {
     }
@@ -59,14 +58,6 @@ public class Notificacion {
 
     public void setAsunto(String asunto) {
         this.asunto = asunto;
-    }
-
-    public String getMensaje() {
-        return mensaje;
-    }
-
-    public void setMensaje(String mensaje) {
-        this.mensaje = mensaje;
     }
     
     

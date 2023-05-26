@@ -44,10 +44,10 @@ nav{
 
 .notificaciones{
     border-bottom: 1px solid black;
-} 
+}
 
-.notificacion-estado-Pendiente{
-   background-color: #E6E6E6;
+.notificacion-estado{
+    background-color: rgb(31, 194, 31);
     border-radius: 5px;
     font-size: 14px;
     width: 70px;
@@ -55,23 +55,6 @@ nav{
     justify-self: end;
 }
 
-.notificacion-estado-Aceptado{
-   background-color: #45CF15;
-    border-radius: 5px;
-    font-size: 14px;
-    width: 70px;
-    text-align: center;
-    justify-self: end;
-}
-
-.notificacion-estado-Rechazado{
-   background-color: #EC0B0B;
-    border-radius: 5px;
-    font-size: 14px;
-    width: 70px;
-    text-align: center;
-    justify-self: end;
-}
 .notificaciones-contenedor{
     position: fixed;
     height: 100%;

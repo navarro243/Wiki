@@ -8,7 +8,6 @@ import java.sql.*;
 import config.conexion;
 
 import Modelo.Usuario;
-import java.util.ArrayList;
 
 public class UsuariosDao {
 
@@ -105,9 +104,9 @@ public class UsuariosDao {
         int consultarRol = consultarRol(cedula);
         int rolAscender = --consultarRol;
         notificacionDao.cambiarEstadoNotificacion(idNotificacion, 1);
-
+        
         String sqlUsuarios = "UPDATE usuarios SET id_Rol = ? WHERE cedula = ?";
-
+        
         try {
             con = cn.getConnection();
             ps = con.prepareStatement(sqlUsuarios);
@@ -120,18 +119,7 @@ public class UsuariosDao {
         }
 
     }
-
-    public void registrarUsuario(Usuario usuario) {
-        String sql = "INSERT INTO usuarios(cedula, nombre, apellido, id_Rol) VALUES ('" + usuario.getCedula() + "','" + usuario.getNombre() + "','" + usuario.getApellido() + "','" + usuario.getId_rol() + "')";
-
-        try{
-            con = cn.getConnection();
-            ps = con.prepareStatement(sql);
-            ps.executeUpdate();
-        }catch(SQLException e){
-            System.out.println("Excepcion en insertar usuario" + e);
-        }
-
-    }
+    
+    
 
 }

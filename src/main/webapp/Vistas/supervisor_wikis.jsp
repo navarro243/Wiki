@@ -3,9 +3,6 @@
     Created on : 12 may. 2023, 17:20:19
     Author     : vamil
 --%>
-<%@page import="Modelo.Notificacion"%>
-<%@page import="ModeloDAO.NotificacionesDao"%>
-<%@page import="ModeloDAO.UsuariosDao"%>
 <%@page import="java.util.*"%>
 <%@page import="Modelo.Wiki"%>
 <%@page import="ModeloDAO.WikisDao"%>
@@ -43,7 +40,7 @@
 
             %>
             <div>
-                <label name="accion" value="nombreYrol"><%= nombre + rol%></label>
+                <label name="accion" value="nombreYrol"><%= nombre + " - Supervisor"%></label>
 
             </div>
 
@@ -56,56 +53,14 @@
 
         <div class="notificaciones-contenedor">
             <h4 class="text-center text-light">Notificaciones</h4>
-            <%
-                UsuariosDao usuarioDao = new UsuariosDao();
-                NotificacionesDao notificacionDao = new NotificacionesDao();
-                List<Notificacion> listaNotificaciones = notificacionDao.listarNotificaciones(rol, cedula);
-                Iterator<Notificacion> iteradorNotificacion = listaNotificaciones.iterator();
-                Collections.reverse(listaNotificaciones);
-                
-                Notificacion notificacion = null;
-
-                String estado = "";
-                String asunto = "";
-               
-
-                while (iteradorNotificacion.hasNext()) {
-                    notificacion = iteradorNotificacion.next();
-                    nombre = usuarioDao.consultarNombre(notificacion.getCedula_usuario());
-                    rol = usuarioDao.consultarRol(notificacion.getCedula_usuario());
-                    
-                    if (notificacion.getEstado() == 0) {
-                        estado = "Pendiente";
-                        
-                    } else if (notificacion.getEstado() == 1) {
-                        estado = "Aceptado";
-                        
-                    } else if (notificacion.getEstado() == 2) {
-                        estado = "Rechazado";
-                    }
-                    
-                    if (notificacion.getAsunto().equals("Ascenso") || notificacion.getAsunto().equals("Nuevo Usuario")) {
-                        asunto = "ascenso";
-                        
-                    } else if (notificacion.getAsunto().equals("modificacion")) {
-                        asunto = "modificacion";
-                    }
-                    
-            %>
             <div class="notificaciones">
-                <label class="notificacion-estado-<%=estado%>"><%=estado%></label><br>
-                <label class="color-asunto">Asunto - <%= notificacion.getAsunto()%></label>
-                <p class="text-light"><%= notificacion.getMensaje() %> </p> 
+                <label class="notificacion-estado"></label><br>
+                <label class="color-asunto"></label>
+                <p class="text-light"></p>
 
-                <%
-                    if(estado.equals("Pendiente")){
-                %>
-                <a href="../ControladorNotificaciones?accion=<%=asunto + "Aceptar"%>&id=<%= notificacion.getId()%>&cedula=<%=notificacion.getCedula_usuario()%>" class="btn btn-success">Aceptar</a>
-                <a href="../ControladorNotificaciones?accion=<%=asunto + "Rechazar"%>&id=<%= notificacion.getId()%>" class="btn btn-danger">Rechazar</a>
-                <%}%> 
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Aceptar</button>
+                <button type="button" class="btn btn-danger">Rechazar</button>
             </div>
-            
-            <%}%>
             <a href="../ControladorNotificaciones?accion=ascenso" class="pedirAscenso">Pedir Ascenso</a>
         </div>
 
@@ -128,7 +83,7 @@
                     %>
                     <tr>
                         <td><%= wik.getId()%></td>
-                        <td><a href="supervisor_Articulos.jsp"><%= wik.getNombre()%></a></td>
+                        <td><a href="gestor_gestionArticulos.jsp"><%= wik.getNombre()%></a></td>
                     </tr>
                     <%}%>
                 </tbody>

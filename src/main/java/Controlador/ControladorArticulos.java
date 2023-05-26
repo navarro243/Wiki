@@ -4,6 +4,7 @@
  */
 package Controlador;
 
+
 import Modelo.Articulo;
 import ModeloDAO.ArticulosDao;
 import java.io.IOException;
@@ -24,20 +25,10 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "ControladorArticulos", urlPatterns = {"/ControladorArticulos"})
 
 public class ControladorArticulos extends HttpServlet {
-<<<<<<< Updated upstream
     String vistaG ="Vistas/gestor_gestionArticulos.jsp";
        Articulo articu = new Articulo();
     ArticulosDao articuDao = new ArticulosDao();
     
-=======
-
-    String vistaG = "Vistas/gestor_gestionArticulos.jsp";
-    String editarArticulo = "/Vistas/Modificacion_Articulos.jsp";
-    Articulo articu = new Articulo();
-    ArticulosDao articuDao = new ArticulosDao();
-    String valorRecibido = "";
-    int valorEntero = 0;
->>>>>>> Stashed changes
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -56,7 +47,7 @@ public class ControladorArticulos extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ControladorArticulos</title>");
+            out.println("<title>Servlet ControladorArticulos</title>");            
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet ControladorArticulos at " + request.getContextPath() + "</h1>");
@@ -75,11 +66,11 @@ public class ControladorArticulos extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         String action = request.getParameter("accion");
         int id;
 
-<<<<<<< Updated upstream
        
 
      
@@ -97,44 +88,10 @@ public class ControladorArticulos extends HttpServlet {
             response.sendRedirect(vistaG);    
         }else if(action.equalsIgnoreCase("eliminar")){
             id=Integer.parseInt(request.getParameter("id"));
-=======
-        if (action.equalsIgnoreCase("vista")) {
-            valorRecibido = request.getParameter("valorEnviado");
-            valorEntero = Integer.parseInt(valorRecibido);
-            request.setAttribute("valorEntero", valorEntero);
-            
-        } else if (action.equalsIgnoreCase("agregar")) {
-
-            String titulo = request.getParameter("titulo");
-            
-            articu.setTitulo(titulo);
-            articu.setId_Wiki(valorEntero);
-            articuDao.agregarArticulo(articu);
-
-        } else if (action.equalsIgnoreCase("eliminar")) {
-            id = Integer.parseInt(request.getParameter("id"));
->>>>>>> Stashed changes
             articu.setId(id);
             articuDao.eliminar(id);
-
-        } else if (action.equalsIgnoreCase("editar")) {
-            request.setAttribute("idArticulo", request.getParameter("id"));
             
-<<<<<<< Updated upstream
             response.sendRedirect(request.getContextPath() + "/Vistas/gestor_gestionArticulos.jsp");
-=======
-            request.getRequestDispatcher(editarArticulo).forward(request, response);
-            
-        } else if (action.equalsIgnoreCase("actualizar")) {
-            id = Integer.parseInt(request.getParameter("txtid"));
-
-            String cambioTitulo = request.getParameter("cambioTitulo");
-
-            articu.setId(id);
-            articu.setTitulo(cambioTitulo);
-            articuDao.editarArticulos(articu);
-
->>>>>>> Stashed changes
         }
         
     }

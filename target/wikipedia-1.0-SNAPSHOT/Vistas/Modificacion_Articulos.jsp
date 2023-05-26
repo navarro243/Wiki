@@ -3,55 +3,26 @@
     Created on : 9 may. 2023, 22:51:13
     Author     : vamil
 --%>
-<<<<<<< Updated upstream
-    
-=======
+
+<%@page import="Modelo.Notificacion"%>
+<%@page import="ModeloDAO.NotificacionesDao"%>
 <%@page import="ModeloDAO.UsuariosDao"%>
 <%@page import="java.util.*"%>
 <%@page import="Modelo.Articulo"%>
 <%@page import="ModeloDAO.ArticulosDao"%>
-<%@page import="Modelo.Notificacion"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="java.util.List"%>
-<%@page import="ModeloDAO.NotificacionesDao"%>
->>>>>>> Stashed changes
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
 <html lang="en">
-<<<<<<< Updated upstream
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/estilosPropios.css">
-    <title>Articulos</title>
-</head>
-<body>
-    <nav>
-        <div>
-            
-            <label>Nombre Y Rol</label>
-        </div>
-
-        <div class= "alinear-centro">
-            <button type="button" class="btn btn-primary"> Nueva Articulo</button>
-        </div>
-        
-        <div  class="alinear-derecha">
-            <button><a href="../Controlador?accion=cerrarsesion">Cerrar Sesion</a></button>
-=======
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="css/estilosPropios.css">
         <link rel="stylesheet" href="Vistas/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/estilosPropios.css">
         <link rel="stylesheet" type="text/css" href="Vistas/css/estilosPropios.css">
-
-        <title>Gestor - Gestion Articulos</title>
+        <title>Gestor - Gestion Wikis</title>
     </head>
     <body>
         <nav>
@@ -87,7 +58,38 @@
             </div>
         </nav>
 
-       
+                <nav>
+            <%
+                Cookie[] cookies = request.getCookies();
+                int cedula = 0;
+                String nombre = "";
+                int rol = 0;
+                if (cookies != null) {
+                    for (Cookie cookie : cookies) {
+                        if (cookie.getName().equals("usuario")) {
+                            String value = cookie.getValue();
+                            String[] values = value.split(":");
+
+                            cedula = Integer.parseInt(values[0]);
+                            nombre = values[1];
+                            rol = Integer.parseInt(values[2]);
+                        }
+                    }
+                }
+
+
+            %>
+            <div>
+                <label name="accion" value="nombreYrol"><%= nombre + " - Supervisor"%></label>
+
+            </div>
+
+            <div  class="alinear-derecha">
+                <button><a href="../Controlador?accion=cerrarsesion">Cerrar Sesion</a></button>
+
+            </div>
+
+        </nav>
 
         <div class="notificaciones-contenedor">
             <h4 class="text-center text-light">Notificaciones</h4>
@@ -97,6 +99,7 @@
                 List<Notificacion> listaNotificaciones = notificacionDao.listarNotificaciones(rol, cedula);
                 Iterator<Notificacion> iteradorNotificacion = listaNotificaciones.iterator();
                 Collections.reverse(listaNotificaciones);
+                
                 Notificacion notificacion = null;
 
                 String estado = "";
@@ -138,106 +141,50 @@
                 <a href="../ControladorNotificaciones?accion=<%=asunto + "Rechazar"%>&id=<%= notificacion.getId()%>" class="btn btn-danger">Rechazar</a>
                 <%}%> 
             </div>
->>>>>>> Stashed changes
             
             <%}%>
+            <%
+                if(rol != 1){
+            %>
             <a href="../ControladorNotificaciones?accion=ascenso" class="pedirAscenso">Pedir Ascenso</a>
+            <%}%>
         </div>
-<<<<<<< Updated upstream
-        
-    </nav>
-    
-    <div class="notificaciones-contenedor">
-        <h4 class="text-center text-light">Notificaciones</h4>
-        <div class="notificaciones">
-            <label class="notificacion-estado">Resuelto</label>
-            <br>
-            <label class="color-asunto">Asunto - Propuesta para supervisor</label>
-            <p class="text-light">123456783 - Juanes Gonzales quiere ser supervisor del articulo Tecnologia</p>
 
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Aceptar</button>
-            <button type="button" class="btn btn-danger">Rechazar</button>
 
-        </div>
-        <button class="pedirAscenso">Pedir Ascenso</button>
-    </div>
-    
-    <section class="wiki-contenedor">
-        <table class="table border">
-            <thead class="table-light">
-                <td>Id Articulos</td>
-                <td>Nombre Articulo</td>
-                <td>Acciones</td>
-            </thead>
-            <tr>
-                <%@page import="config.*" %>
-                <td> <%= request.getAttribute("nombre") %></td>
-                <td>Inteligencia Artificial</td>
-                <td>
-                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">Editar  </button>
-                    <button type="button" class="btn btn-danger">Eliminar</button>
-                </td>
-            </tr>
-    </section>
-<script src="js/bootstrap.min.js"></script>
-</body>
-=======
+
         <section class="wiki-contenedor">
             <table class="table border">
                 <thead class="table-light">
-                <td>Id Articulos</td>
-                <td>Nombre Articulo</td>
+                
+                <td>id</td>
+                <td>Nombre Wiki</td>
                 <td>Acciones</td>
-                </thead>
-                <tbody>
-                    <%
-                        int valorEntero = (int) request.getAttribute("valorEntero");
+                </thead>    
 
-                        ArticulosDao dao = new ArticulosDao();
-                        List<Articulo> lista = dao.obtenerArticulos(valorEntero);
-                        Iterator<Articulo> iter = lista.iterator();
-                        Articulo art = null;
+                <%
+                    String idArticuloStr = request.getAttribute("idArticulo").toString();
+                    int idArticulo = Integer.parseInt(idArticuloStr);
 
-                        while (iter.hasNext()) {
-                            art = iter.next();
+                    ArticulosDao ArtiDao = new ArticulosDao();
+                    Articulo articu = ArtiDao.list(idArticulo);
+                    System.out.println(articu.getId());
+                    System.out.println(articu.getTitulo());
 
-
-                    %>
-                    <tr>
-                        <td><%= art.getId()%></td>
-                        <td><a href="#"><%= art.getTitulo()%></a></td>
-                        <td>
-                            <a class="btn btn-danger" href="ControladorArticulos?accion=eliminar&id=<%= art.getId()%>">eliminar</a>
-                        </td>
-                    </tr>
-                    <%}%>
-                </tbody>
+                %>
+                <form action="ControladorArticulos" method="get"> 
+                    <tbody>
+                        <tr>
+                            <td><input type="hidden" name="txtid" value="<%= articu.getId()%>" readonly></td>
+                            
+                            <td><input type="text" name="cambioTitulo" value="<%= articu.getTitulo() %>"></td>
+                            
+                            <td><input type="submit" name="accion" value="Actualizar"></td>
+                        </tr>
+                    </tbody>
+                </form>
 
             </table>
         </section>
-
-        <!-- Modal Crear--> 
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Crear Articulo</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="ControladorArticulos" method="get">
-                            <label>Titulo articulo</label>
-                            <input type="text" name="titulo"></input>
-
-                            <input type="submit" name="accion" value="agregar"></input>
-
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
         <script src="js/bootstrap.min.js"></script>
-        <script src="Vistas/js/bootstrap.min.js"></script>
     </body>
->>>>>>> Stashed changes
 </html>

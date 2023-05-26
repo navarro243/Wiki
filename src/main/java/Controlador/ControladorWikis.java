@@ -21,13 +21,7 @@ public class ControladorWikis extends HttpServlet {
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        
         String action = request.getParameter("accion");
-
-       
-
-        String acceso ="";
-
         
         if(action.equalsIgnoreCase("agregar")){
             String nombre = request.getParameter("nombre");

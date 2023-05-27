@@ -31,6 +31,7 @@
                 int cedula = 0;
                 String nombre = "";
                 int rol = 0;
+                String nombreRol;
                 if (cookies != null) {
                     for (Cookie cookie : cookies) {
                         if (cookie.getName().equals("usuario")) {
@@ -43,10 +44,25 @@
                         }
                     }
                 }
+                switch (rol){
+                    case 1:
+                        nombreRol = "Gestor";
+                        break;
+                    case 2:
+                        nombreRol = "Coordinador";
+                        break;
+                    case 3:
+                        nombreRol = "Supervisor";
+                        break;
+                    case 4:
+                        nombreRol = "Colaborador";
+                        break;
+                    default:
+                        nombreRol = "Sin cuenta";
+                }
             %>
-
             <div>
-                <label name="accion" value="nombreYrol"><%= nombre + rol%></label>
+                <label name="accion" value="nombreYrol"><%= nombre +" - "+ nombreRol%></label>
             </div>
 
             <div  class="alinear-centro">
@@ -56,39 +72,6 @@
             <div  class="alinear-derecha">
                 <button><a href="../Controlador?accion=cerrarsesion">Cerrar Sesion</a></button>
             </div>
-        </nav>
-
-                <nav>
-            <%
-                Cookie[] cookies = request.getCookies();
-                int cedula = 0;
-                String nombre = "";
-                int rol = 0;
-                if (cookies != null) {
-                    for (Cookie cookie : cookies) {
-                        if (cookie.getName().equals("usuario")) {
-                            String value = cookie.getValue();
-                            String[] values = value.split(":");
-
-                            cedula = Integer.parseInt(values[0]);
-                            nombre = values[1];
-                            rol = Integer.parseInt(values[2]);
-                        }
-                    }
-                }
-
-
-            %>
-            <div>
-                <label name="accion" value="nombreYrol"><%= nombre + " - Supervisor"%></label>
-
-            </div>
-
-            <div  class="alinear-derecha">
-                <button><a href="../Controlador?accion=cerrarsesion">Cerrar Sesion</a></button>
-
-            </div>
-
         </nav>
 
         <div class="notificaciones-contenedor">

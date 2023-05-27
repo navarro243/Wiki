@@ -3,75 +3,17 @@
     Created on : 12 may. 2023, 18:23:53
     Author     : vamil
 --%>
-<<<<<<< Updated upstream
-
-=======
 <%@page import="Modelo.Notificacion"%>
 <%@page import="ModeloDAO.NotificacionesDao"%>
 <%@page import="ModeloDAO.UsuariosDao"%>
 <%@page import="java.util.*"%>
 <%@page import="Modelo.Articulo"%>
 <%@page import="ModeloDAO.ArticulosDao"%>
->>>>>>> Stashed changes
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
 <html lang="en">
-<<<<<<< Updated upstream
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/estilosPropios.css">
-    <title>Articulos</title>
-</head>
-<body>
-    <nav>
-        <div>
-            
-            <label></label>
-        </div>
-        
-        <div  class="alinear-derecha">
-           <button><a href="../Controlador?accion=cerrarsesion">Cerrar Sesion</a></button>
-            
-        </div>
-        
-    </nav>
-    
-    <div class="notificaciones-contenedor">
-        <h4 class="text-center text-light">Notificaciones</h4>
-        <div class="notificaciones">
-            <label class="notificacion-estado">Resuelto</label>
-            <br>
-            <label class="color-asunto">Asunto - Propuesta para supervisor</label>
-            <p class="text-light">123456783 - Juanes Gonzales quiere ser supervisor del articulo Tecnologia</p>
 
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Aceptar</button>
-            <button type="button" class="btn btn-danger">Rechazar</button>
-
-        </div>
-        <button class="pedirAscenso">Pedir Ascenso</button>
-    </div>
-    
-    <section class="wiki-contenedor">
-        <table class="table border">
-            <thead class="table-light">
-                <td>Id Articulos</td>
-                <td>Nombre Articulo</td>
-                <td>Acciones</td>
-            </thead>
-            <tr>
-                <td>1</td>
-                <td>Inteligencia Artificial</td>
-                <td>
-                </td>
-            </tr>
-    </section>
-<script src="js/bootstrap.min.js"></script>
-</body>
-=======
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -90,6 +32,7 @@
                 int cedula = 0;
                 String nombre = "";
                 int rol = 0;
+                String nombreRol;
                 if (cookies != null) {
                     for (Cookie cookie : cookies) {
                         if (cookie.getName().equals("usuario")) {
@@ -103,11 +46,25 @@
                     }
                 }
 
-
+                switch (rol) {
+                    case 1:
+                        nombreRol = "Gestor";
+                        break;
+                    case 2:
+                        nombreRol = "Coordinador";
+                        break;
+                    case 3:
+                        nombreRol = "Supervisor";
+                        break;
+                    case 4:
+                        nombreRol = "Colaborador";
+                        break;
+                    default:
+                        nombreRol = "Sin cuenta";
+                }
             %>
             <div>
-                <label name="accion" value="nombreYrol"><%= nombre + rol%></label>
-
+                <label name="accion" value="nombreYrol"><%= nombre + " - " + nombreRol%></label>
             </div>
 
             <div  class="alinear-derecha">
@@ -125,7 +82,7 @@
                 List<Notificacion> listaNotificaciones = notificacionDao.listarNotificaciones(rol, cedula);
                 Iterator<Notificacion> iteradorNotificacion = listaNotificaciones.iterator();
                 Collections.reverse(listaNotificaciones);
-                
+
                 Notificacion notificacion = null;
 
                 String estado = "";
@@ -194,7 +151,6 @@
                     <tr>
                         <td><%= art.getId()%></td>
                         <td><a href="#"><%= art.getTitulo()%></a></td>
-
                     </tr>
                     <%}%>
                 </tbody>
@@ -206,5 +162,4 @@
         <script src="js/bootstrap.min.js"></script>
         <script src="Vistas/js/bootstrap.min.js"></script>
     </body>
->>>>>>> Stashed changes
 </html>

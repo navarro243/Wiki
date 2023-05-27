@@ -149,6 +149,7 @@
                         <td>
                             <a class="btn btn-warning" href="../ControladorArticulos?accion=editar&id=<%= art.getId()%>">Editar</a>
                             <a class="btn btn-danger" href="../ControladorArticulos?accion=eliminar&id=<%= art.getId()%>">eliminar</a>
+                            <a class="btn btn-primary" href="../ControladorArticulos?accion=accesoWiki&id=<%= art.getId() %>&rol=3">Asignar Supervisor</a>
                         </td>
                     </tr>
                     <%}%>

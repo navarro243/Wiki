@@ -9,6 +9,7 @@ import config.conexion;
 
 import Modelo.Usuario;
 import java.util.ArrayList;
+import java.util.List;
 
 public class UsuariosDao {
 
@@ -16,8 +17,11 @@ public class UsuariosDao {
     PreparedStatement ps;
     ResultSet rs;
     Connection con;
+    
 
     Usuario usua = new Usuario();
+    Usuario usuario = new Usuario();
+    
     NotificacionesDao notificacionDao = new NotificacionesDao();
 
     public int Obtenerusuario(int CEDULA) {
@@ -134,4 +138,28 @@ public class UsuariosDao {
 
     }
 
+    
+     public List listarSupervisores(int rol) {
+        ArrayList<Usuario> listaSupervisores = new ArrayList<>();
+        String sql = "SELECT * FROM usuarios where id_Rol = "+ rol;
+        try {
+            con = cn.getConnection();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Usuario usuario = new Usuario();
+                usuario.setCedula(rs.getInt("cedula"));
+                usuario.setNombre(rs.getString("nombre"));
+                usuario.setId_rol(rs.getInt("id_Rol"));
+                
+                listaSupervisores.add(usuario);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+         
+        return listaSupervisores;
+    }
+    
+    
 }

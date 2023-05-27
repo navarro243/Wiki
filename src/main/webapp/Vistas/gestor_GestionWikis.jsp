@@ -150,7 +150,8 @@
                         <td><a href="../ControladorArticulos?valorEnviado=<%=  String.valueOf(wik.getId())%>&accion=vista"><%= wik.getNombre()%></a></td>
                         <td>
                             <a class="btn btn-warning" href="../ControladorWikis?accion=editar&id=<%= wik.getId()%>">Editar</a>
-                            <a class="btn btn-danger" href="../ControladorWikis?accion=eliminar&id=<%= wik.getId()%>">eliminar</a>
+                            <a class="btn btn-danger" href="../ControladorWikis?accion=eliminar&id=<%= wik.getId()%>">Eliminar</a>
+                            <a class="btn btn-primary" href="../ControladorWikis?accion=accesoWiki&id=<%= wik.getId() %>&rol=3">Asignar Supervisor</a>
                         </td>
                     </tr>
                     <%}%>

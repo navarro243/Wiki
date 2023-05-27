@@ -3,6 +3,8 @@
     Created on : 9 may. 2023, 22:51:13
     Author     : vamil
 --%>
+<%@page import="Modelo.Articulo"%>
+<%@page import="ModeloDAO.ArticulosDao"%>
 <%@page import="java.util.*"%>
 <%@page import="Modelo.Wiki"%>
 <%@page import="ModeloDAO.WikisDao"%>
@@ -16,6 +18,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/estilosPropios.css">
+    <link rel="stylesheet" type="text/css" href="Vistas/css/estilosPropios.css">
+    <link rel="stylesheet" type="text/css" href="Vistas/css/bootstrap.min.css">
+
     <title>Portal Wikis</title>
 </head>
 <body>
@@ -26,7 +31,11 @@
         </div>
 
         <div class= "alinear-centro">
-            <img  src="" alt="">
+            <div class="d-flex">
+                <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#uploadModal">Subir</button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#downloadModal">Descargar</button>
+            </div>
+
         </div>
         
         <div  class="alinear-derecha">
@@ -49,29 +58,53 @@
 
     </div>
     <section class="wiki-contenedor">
-        <table class="table border">
-            <thead class="table-light">
-
-                <td>Id Wiki</td>
-                <td>Nombre Wiki</td>
-               
-            </thead>
-             <tbody>
-                    <%
-                        WikisDao dao = new WikisDao();
-                        List<Wiki> lista = dao.obtenerWikis();
-                        Iterator<Wiki> iter = lista.iterator();
-                        Wiki wik = null;
-                        while (iter.hasNext()) {
-                            wik = iter.next();
-                    %>
-                    <tr>
-                        <td><%= wik.getId()%></td>
-                        <td><a href="gestor_gestionArticulos.jsp"><%= wik.getNombre()%></a></td>
-                    </tr>
-                    <%}%>
-                </tbody>
+       <%
+            String idArticuloStr = request.getAttribute("idArticulo").toString();
+            int idArticulo = Integer.parseInt(idArticuloStr);
+            ArticulosDao ArtiDao = new ArticulosDao();
+            Articulo articu = ArtiDao.list(idArticulo);
+            if( articu.getContenido()==null ){
+   %>
+       
     </section>
+       <%}%>
+  
+   <!-- Modal para subir archivo -->
+   <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+       <div class="modal-dialog">
+           <div class="modal-content">
+               <div class="modal-header">
+                   <h5 class="modal-title" id="uploadModalLabel">Subir archivo HTML</h5>
+                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+               </div>
+               <div class="modal-body">
+                   <!-- Aquí puedes colocar el formulario o el código necesario para subir el archivo -->
+                   <form action="ControladorContenidoA" method="post" enctype="multipart/form-data">
+                       <input type="file" name="file">
+                       <input type="submit" value="Subir">
+                   </form>
+               </div>
+           </div>
+       </div>
+   </div>
+
+   <!-- Modal para descargar archivo -->
+   <div class="modal fade" id="downloadModal" tabindex="-1" aria-labelledby="downloadModalLabel" aria-hidden="true">
+       <div class="modal-dialog">
+           <div class="modal-content">
+               <div class="modal-header">
+                   <h5 class="modal-title" id="downloadModalLabel">Descargar archivo HTML</h5>
+                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+               </div>
+               <div class="modal-body">
+                   <!-- Aquí puedes colocar el enlace o el código necesario para descargar el archivo -->
+                   <a href="ruta_del_archivo.html" download class="btn btn-primary">Descargar</a>
+               </div>
+           </div>
+       </div>
+   </div>
+
 <script src="js/bootstrap.min.js"></script>
+<script src="Vistas/js/bootstrap.min.js"></script>
 </body>
 </html>

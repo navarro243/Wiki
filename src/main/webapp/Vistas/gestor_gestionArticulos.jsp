@@ -82,7 +82,7 @@
                     %>
                     <tr>
                         <td><%= art.getId() %></td>
-                        <td><a href="#"><%= art.getTitulo() %></a></td>
+                        <td><a href="ControladorArticulos?accion=contenido&id=<%= art.getId()%>"><%= art.getTitulo() %></a></td>
                         <td>
                                 <a class="btn btn-warning" href="ControladorArticulos?accion=editar&id=<%= art.getId()%>">Editar</a>
 

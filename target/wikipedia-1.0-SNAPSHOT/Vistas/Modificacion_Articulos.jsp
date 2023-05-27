@@ -66,10 +66,6 @@
                 <%
                      String idArticuloStr = request.getAttribute("idArticulo").toString();
                     int idArticulo = Integer.parseInt(idArticuloStr);
-                    
-
-                    
-
                     ArticulosDao ArtiDao = new ArticulosDao();
                     Articulo articu = ArtiDao.list(idArticulo);
                     System.out.println("************************************************************");

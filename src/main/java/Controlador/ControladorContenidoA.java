@@ -19,6 +19,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import ModeloDAO.ArticulosDao;
 
 
 /**
@@ -28,7 +29,9 @@ import java.io.OutputStream;
 @WebServlet(name = "ControladorContenidoA", urlPatterns = {"/ControladorContenidoA"})
 @MultipartConfig
 public class ControladorContenidoA extends HttpServlet {
-
+    String idTxt =""; 
+    int id=0;
+    ArticulosDao cargar = new ArticulosDao();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -101,6 +104,9 @@ public class ControladorContenidoA extends HttpServlet {
     @Override
    protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
+       //obtener id del articulo
+      idTxt =  request.getParameter("id");
+      id = Integer.parseInt(idTxt);
     // Obtiene el archivo enviado en la solicitud
     Part filePart = request.getPart("file");
 
@@ -127,26 +133,12 @@ public class ControladorContenidoA extends HttpServlet {
             outputStream.write(buffer, 0, bytesRead);
         }
     }
-   String htmlContent = readHtmlFile(filePath);
-
-    // Envía el contenido como respuesta al cliente
-    response.setContentType("text/html");
-    try (PrintWriter out = response.getWriter()) {
-        out.println(htmlContent);
-    }
+    cargar.agregarRuta(filePath, id);
+  
 }
 
 // Método para leer el contenido de un archivo HTML
-private String readHtmlFile(String filePath) throws IOException {
-    StringBuilder content = new StringBuilder();
-    try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-        String line;
-        while ((line = reader.readLine()) != null) {
-            content.append(line);
-        }
-    }
-    return content.toString();
-}
+
     /**
      * Returns a short description of the servlet.
      *

@@ -93,8 +93,14 @@
                     if (notificacion.getEstado() == 0) {
                         estado = "Pendiente";
 
+
+         <div  class="alinear-centro">
+               
+                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Nueva Articulo</a>
+
                     } else if (notificacion.getEstado() == 1) {
                         estado = "Aceptado";
+
 
                     } else if (notificacion.getEstado() == 2) {
                         estado = "Rechazado";
@@ -172,8 +178,11 @@
                     <div class="modal-body">
                         <form action="ControladorArticulos" method="get">
                             <label>Titulo articulo</label>
-                            <input type="text" name="titulo"></input>
-                            <input type="submit" name="accion" value="agregar"></input>
+
+                            <input type="text" name="titulo">
+                            
+                            <input type="submit" name="accion" value="agregar">
+
 
                         </form>
                     </div>

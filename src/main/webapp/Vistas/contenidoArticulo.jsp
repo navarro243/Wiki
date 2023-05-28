@@ -4,9 +4,13 @@
     Author     : vamil
 --%>
 
+<%@page import="java.io.PrintWriter"%>
+
+
 <%@page import="Modelo.Notificacion"%>
 <%@page import="ModeloDAO.NotificacionesDao"%>
 <%@page import="ModeloDAO.UsuariosDao"%>
+
 <%@page import="Modelo.Articulo"%>
 <%@page import="ModeloDAO.ArticulosDao"%>
 <%@page import="java.util.*"%>
@@ -70,8 +74,48 @@
                 if (articu.getContenido() == null) {
             %>
 
+
+    </div>
+    <section class="wiki-contenedor">
+       <%
+            String idArticuloStr = request.getAttribute("idArticulo").toString();
+            int idArticulo = Integer.parseInt(idArticuloStr);
+            ArticulosDao ArtiDao = new ArticulosDao();
+            Articulo articu = ArtiDao.list(idArticulo);
+            if( false ){
+   %>
+   <%String htmlContent = ArtiDao.readHtmlFile(articu.getContenido());
+
+    // Envía el contenido como respuesta al cliente
+    response.setContentType("text/html");
+    
+        out.println(htmlContent);
+     %>
+    </section>
+       <%}%>
+  
+   <!-- Modal para subir archivo -->
+   <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+       <div class="modal-dialog">
+           <div class="modal-content">
+               <div class="modal-header">
+                   <h5 class="modal-title" id="uploadModalLabel">Subir archivo HTML</h5>
+                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+               </div>
+               <div class="modal-body">
+                   <!-- Aquí puedes colocar el formulario o el código necesario para subir el archivo -->
+                   <form action="ControladorContenidoA?id=<%=articu.getId()%>" method="post" enctype="multipart/form-data">
+                       <input type="file" name="file">
+                       <input type="submit" value="Subir">
+                   </form>
+               </div>
+           </div>
+       </div>
+   </div>
+
         </section>
         <%}%>
+
 
         <!-- Modal para subir archivo -->
         <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">

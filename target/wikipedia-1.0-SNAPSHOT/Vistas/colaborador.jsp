@@ -1,8 +1,9 @@
 <%-- 
-    Document   : colaborador
-    Created on : 12 may. 2023, 18:28:08
+    Document   : inicioSesion
+    Created on : 9 may. 2023, 22:51:13
     Author     : vamil
 --%>
+
 <%@page import="ModeloDAO.UsuariosDao"%>
 <%@page import="java.util.*"%>
 <%@page import="Modelo.Articulo"%>
@@ -12,6 +13,7 @@
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.List"%>
 <%@page import="ModeloDAO.NotificacionesDao"%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
@@ -46,7 +48,7 @@
                     }
                 }
 
-                switch (rol){
+                switch (rol) {
                     case 1:
                         nombreRol = "Gestor";
                         break;
@@ -64,7 +66,7 @@
                 }
             %>
             <div>
-                <label name="accion" value="nombreYrol"><%= nombre +" - "+ nombreRol%></label>
+                <label name="accion" value="nombreYrol"><%= nombre + " - " + nombreRol%></label>
             </div>
             <div  class="alinear-derecha">
                 <button><a href="../Controlador?accion=cerrarsesion">Cerrar Sesion</a></button>
@@ -118,7 +120,9 @@
             <a href="../ControladorNotificaciones?accion=ascenso" class="pedirAscenso">Pedir Ascenso</a>
         </div>
 
+
     </nav>
+
 
 
     <section class="wiki-contenedor">
@@ -129,30 +133,32 @@
             <td>Acciones</td>
             </thead>
             <tbody>
-                <%--
+                <%
 
-                        int valorEntero = (int) request.getAttribute("valorEntero");
+                    int valorEntero = (int) request.getAttribute("valorEntero");
 
-                        ArticulosDao dao = new ArticulosDao();
-                        List<Articulo> lista = dao.obtenerArticulos(valorEntero);
-                        Iterator<Articulo> iter = lista.iterator();
-                        Articulo art = null;
+                    ArticulosDao dao = new ArticulosDao();
+                    List<Articulo> lista = dao.obtenerArticulos(valorEntero);
+                    Iterator<Articulo> iter = lista.iterator();
 
-                        while (iter.hasNext()) {
-                            art = iter.next();
+                    Articulo art = null;
+
+                    while (iter.hasNext()) {
+                        art = iter.next();
 
 
-                    %>
-                    <tr>
-                        <td><%= art.getId()%></td>
-                        <td><a href="#"><%= art.getTitulo()%></a></td>
+                %>
+                <tr>
+                    <td><%= art.getId()%></td>
+                    <td><a href="#"><%= art.getTitulo()%></a></td>
 
-                    </tr>
-                    <%}--%>
+                </tr>
+                <%}%>
             </tbody>
 
         </table>
     </section>
+
     <script src="js/bootstrap.min.js"></script>
     <script src="Vistas/js/bootstrap.min.js"></script>
 </body>

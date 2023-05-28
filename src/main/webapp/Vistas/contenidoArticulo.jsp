@@ -2,7 +2,7 @@
     Document   : inicioSesion
     Created on : 9 may. 2023, 22:51:13
     Author     : vamil
---%>
+%>
 <%@page import="Modelo.Notificacion"%>
 <%@page import="ModeloDAO.NotificacionesDao"%>
 <%@page import="ModeloDAO.UsuariosDao"%>
@@ -72,6 +72,7 @@
 
         <div class="notificaciones-contenedor">
             <h4 class="text-center text-light">Notificaciones</h4>
+<<<<<<< Updated upstream
             <%
                 UsuariosDao usuarioDao = new UsuariosDao();
                 NotificacionesDao notificacionDao = new NotificacionesDao();
@@ -110,12 +111,62 @@
                 <label class="notificacion-estado-<%=estado%>"><%=estado%></label><br>
                 <label class="color-asunto">Asunto - <%= notificacion.getAsunto()%></label>
                 <p class="text-light"><%= notificacion.getMensaje()%> </p> 
+=======
+            <div class="notificaciones">
+                <label class="notificacion-estado">pendiente</label><br>
+                <label class="color-asunto"></label>
+                <p class="text-light"></p>
+
+                <img src="" alt="">
+                <img src="" alt="">
+            </div>
+
+
+
+
+        </div>
+        <section class="wiki-contenedor">
+            <%
+                String idArticuloStr = request.getAttribute("idArticulo").toString();
+                int idArticulo = Integer.parseInt(idArticuloStr);
+                ArticulosDao ArtiDao = new ArticulosDao();
+                Articulo articu = ArtiDao.list(idArticulo);
+                if (false) {
+            %>
+            <%String htmlContent = ArtiDao.readHtmlFile(articu.getContenido());
+
+                // Envía el contenido como respuesta al cliente
+                response.setContentType("text/html");
+
+                out.println(htmlContent);
+            %>
+        </section>
+        <%}%>
+
+        <!-- Modal para subir archivo -->
+        <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="uploadModalLabel">Subir archivo HTML</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Aquí puedes colocar el formulario o el código necesario para subir el archivo -->
+                        <form action="ControladorContenidoA?id=<%=articu.getId()%>" method="post" enctype="multipart/form-data">
+                            <input type="file" name="file">
+                            <input type="submit" value="Subir">
+                        </form>
+                    </div>
+                </div>
+>>>>>>> Stashed changes
             </div>
 
             <%}%>
             <a href="../ControladorNotificaciones?accion=ascenso" class="pedirAscenso">Pedir Ascenso</a>
         </div>
 
+<<<<<<< Updated upstream
         <section class="wiki-contenedor">
             <table class="table border">
                 <thead class="table-light">
@@ -142,4 +193,26 @@
         </section>
         <script src="js/bootstrap.min.js"></script>
     </body>
-</html>
+=======
+    
+
+    <!-- Modal para descargar archivo -->
+    <div class="modal fade" id="downloadModal" tabindex="-1" aria-labelledby="downloadModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="downloadModalLabel">Descargar archivo HTML</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Aquí puedes colocar el enlace o el código necesario para descargar el archivo -->
+                    <a href="ruta_del_archivo.html" download class="btn btn-primary">Descargar</a>
+                </div>
+            </div>
+        </div>
+    </div>${htmlContent}
+    <script src="js/bootstrap.min.js"></script>
+    <script src="Vistas/js/bootstrap.min.js"></script>
+</body>
+>>>>>>> Stashed changes
+</html>--%>

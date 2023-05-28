@@ -17,8 +17,8 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="css/estilosPropios.css">
+        <link rel="stylesheet" href="Vistas/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="Vistas/css/estilosPropios.css">
         <title>Gestor - Gestion Articulos</title>
     </head>
     <body>
@@ -67,7 +67,7 @@
             </div>
 
             <div  class="alinear-derecha">
-                <button><a href="../Controlador?accion=cerrarsesion">Cerrar Sesion</a></button>
+                <button><a href="../ControlIU?accion=cerrarsesion">Cerrar Sesion</a></button>
             </div>
         </nav>
 
@@ -145,13 +145,14 @@
                     %>
                     <tr>
                         <td><%= art.getId()%></td>
-                        <td><a href="#"><%= art.getTitulo()%></a></td>
+                        <td><a href="ControladorArticulos?accion=contenido&id=<%= art.getId()%>"><%= art.getTitulo()%></a></td>
                         <td>
-                            <a class="btn btn-warning" href="../ControladorArticulos?accion=editar&id=<%= art.getId()%>">Editar</a>
-                            <a class="btn btn-danger" href="../ControladorArticulos?accion=eliminar&id=<%= art.getId()%>">eliminar</a>
-                            <a class="btn btn-primary" href="../ControladorArticulos?accion=accesoWiki&id=<%= art.getId() %>&rol=3">Asignar Supervisor</a>
+                            <a class="btn btn-warning" href="ControladorArticulos?accion=editar&id=<%= art.getId()%>">Editar</a>
+                            <a class="btn btn-danger" href="ControladorArticulos?accion=eliminar&id=<%= art.getId()%>">Eliminar</a>
+                            <a class="btn btn-primary" href="ControladorArticulos?accion=accesoArticulo&id=<%= art.getId()%>&rol=3">Asignar Supervisor</a>
+
                         </td>
-                    </tr>
+                    </tr>   
                     <%}%>
                 </tbody>
 
@@ -171,9 +172,7 @@
                         <form action="ControladorArticulos" method="get">
                             <label>Titulo articulo</label>
                             <input type="text" name="titulo"></input>
-
-                            <input type="submit" name="accion" value="agregar"></input>
-
+                            <input type="submit" name="accion" value="agregar">
                         </form>
                     </div>
                     <input type="submit" class="btn btn-primary" name="accion" value="agregar">

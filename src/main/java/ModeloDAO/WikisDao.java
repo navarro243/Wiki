@@ -172,7 +172,6 @@ public class WikisDao {
             while (rs.next()) {
                 wiki.setNombre(rs.getString("respuesta"));
                 wiki.setId(rs.getInt("id_wiki"));
-                System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
                 listaRespuesta.add(wiki);
             }
 

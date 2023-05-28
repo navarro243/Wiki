@@ -1,17 +1,18 @@
-<%@page import="java.util.Collections"%>
+
+
 <%-- 
     Document   : inicioSesion
     Created on : 9 may. 2023, 22:51:13
     Author     : vamil
 --%>
-
+<%@page import="java.util.Collections"%>
 <%@page import="ModeloDAO.UsuariosDao"%>
 <%@page import="Modelo.Wiki"%>
 <%@page import="ModeloDAO.WikisDao"%>
 <%@page import="Modelo.Notificacion"%>
+<%@page import="java.util.Iterator"%>
+<%@page import="java.util.List"%>
 <%@page import="ModeloDAO.NotificacionesDao"%>
-<%@page import="java.util.*"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +33,7 @@
                 int cedula = 0;
                 String nombre = "";
                 int rol = 0;
-                String nombreRol;
+                String nombreRol = "";
                 if (cookies != null) {
                     for (Cookie cookie : cookies) {
                         if (cookie.getName().equals("usuario")) {
@@ -45,7 +46,8 @@
                         }
                     }
                 }
-                switch (rol){
+
+                switch (rol) {
                     case 1:
                         nombreRol = "Gestor";
                         break;
@@ -63,7 +65,7 @@
                 }
             %>
             <div>
-                <label name="accion" value="nombreYrol"><%= nombre +" - "+ nombreRol%></label>
+                <label name="accion" value="nombreYrol"><%= nombre + " - " + nombreRol%></label>
             </div>
 
             <div  class="alinear-centro">
@@ -75,58 +77,59 @@
             </div>
 
         </nav>
+        <div>
 
-        <div class="notificaciones-contenedor">
-            <h4 class="text-center text-light">Notificaciones</h4>
-            <%
-                UsuariosDao usuarioDao = new UsuariosDao();
-                NotificacionesDao notificacionDao = new NotificacionesDao();
-                List<Notificacion> listaNotificaciones = notificacionDao.listarNotificaciones(rol, cedula);
-                Iterator<Notificacion> iteradorNotificacion = listaNotificaciones.iterator();
-                Collections.reverse(listaNotificaciones);
-
-                Notificacion notificacion = null;
-
-                String estado = "";
-                String asunto = "";
-
-                while (iteradorNotificacion.hasNext()) {
-                    notificacion = iteradorNotificacion.next();
-                    nombre = usuarioDao.consultarNombre(notificacion.getCedula_usuario());
-                    rol = usuarioDao.consultarRol(notificacion.getCedula_usuario());
-
-                    if (notificacion.getEstado() == 0) {
-                        estado = "Pendiente";
-
-                    } else if (notificacion.getEstado() == 1) {
-                        estado = "Aceptado";
-
-                    } else if (notificacion.getEstado() == 2) {
-                        estado = "Rechazado";
-                    }
-
-                    if (notificacion.getAsunto().equals("Ascenso") || notificacion.getAsunto().equals("Nuevo Usuario")) {
-                        asunto = "ascenso";
-
-                    } else if (notificacion.getAsunto().equals("modificacion")) {
-                        asunto = "modificacion";
-                    }
-
-            %>
-            <div class="notificaciones">
-                <label class="notificacion-estado-<%=estado%>"><%=estado%></label><br>
-                <label class="color-asunto">Asunto - <%= notificacion.getAsunto()%></label>
-                <p class="text-light"><%= notificacion.getMensaje()%> </p> 
-
+            <div class="notificaciones-contenedor">
+                <h4 class="text-center text-light">Notificaciones</h4>
                 <%
-                    if (estado.equals("Pendiente")) {
-                %>
-                <a href="../ControladorNotificaciones?accion=<%=asunto + "Aceptar"%>&id=<%= notificacion.getId()%>&cedula=<%=notificacion.getCedula_usuario()%>" class="btn btn-success">Aceptar</a>
-                <a href="../ControladorNotificaciones?accion=<%=asunto + "Rechazar"%>&id=<%= notificacion.getId()%>" class="btn btn-danger">Rechazar</a>
-                <%}%> 
-            </div>
-            <%}%>
+                    UsuariosDao usuarioDao = new UsuariosDao();
+                    NotificacionesDao notificacionDao = new NotificacionesDao();
+                    List<Notificacion> listaNotificaciones = notificacionDao.listarNotificaciones(rol, cedula);
+                    Iterator<Notificacion> iteradorNotificacion = listaNotificaciones.iterator();
+                    Collections.reverse(listaNotificaciones);
 
+                    Notificacion notificacion = null;
+
+                    String estado = "";
+                    String asunto = "";
+
+                    while (iteradorNotificacion.hasNext()) {
+                        notificacion = iteradorNotificacion.next();
+                        nombre = usuarioDao.consultarNombre(notificacion.getCedula_usuario());
+                        rol = usuarioDao.consultarRol(notificacion.getCedula_usuario());
+
+                        if (notificacion.getEstado() == 0) {
+                            estado = "Pendiente";
+
+                        } else if (notificacion.getEstado() == 1) {
+                            estado = "Aceptado";
+
+                        } else if (notificacion.getEstado() == 2) {
+                            estado = "Rechazado";
+                        }
+
+                        if (notificacion.getAsunto().equals("Ascenso") || notificacion.getAsunto().equals("Nuevo Usuario")) {
+                            asunto = "ascenso";
+
+                        } else if (notificacion.getAsunto().equals("modificacion")) {
+                            asunto = "modificacion";
+                        }
+
+                %>
+                <div class="notificaciones">
+                    <label class="notificacion-estado-<%=estado%>"><%=estado%></label><br>
+                    <label class="color-asunto">Asunto - <%= notificacion.getAsunto()%></label>
+                    <p class="text-light"><%= notificacion.getMensaje()%> </p> 
+
+                    <%
+                        if (estado.equals("Pendiente")) {
+                    %>
+                    <a href="../ControladorNotificaciones?accion=<%=asunto + "Aceptar"%>&id=<%= notificacion.getId()%>&cedula=<%=notificacion.getCedula_usuario()%>" class="btn btn-success">Aceptar</a>
+                    <a href="../ControladorNotificaciones?accion=<%=asunto + "Rechazar"%>&id=<%= notificacion.getId()%>" class="btn btn-danger">Rechazar</a>
+                    <%}%> 
+                </div>
+                <%}%>
+            </div>
         </div>
 
         <section class="wiki-contenedor">
@@ -151,7 +154,7 @@
                         <td>
                             <a class="btn btn-warning" href="../ControladorWikis?accion=editar&id=<%= wik.getId()%>">Editar</a>
                             <a class="btn btn-danger" href="../ControladorWikis?accion=eliminar&id=<%= wik.getId()%>">Eliminar</a>
-                            <a class="btn btn-primary" href="../ControladorWikis?accion=accesoWiki&id=<%= wik.getId() %>&rol=3">Asignar Supervisor</a>
+                            <a class="btn btn-primary" href="../ControladorWikis?accion=accesoWiki&id=<%= wik.getId()%>&rol=3">Asignar Supervisor</a>
                         </td>
                     </tr>
                     <%}%>
@@ -178,6 +181,6 @@
                 </div>
             </div>
         </div>
-        <script src="js/bootstrap.min.js"></script>
+            <script src="js/bootstrap.min.js"></script>
     </body>
 </html>

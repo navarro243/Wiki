@@ -3,6 +3,7 @@
     Created on : 9 may. 2023, 22:51:13
     Author     : vamil
 --%>
+
 <%@page import="ModeloDAO.UsuariosDao"%>
 <%@page import="java.util.*"%>
 <%@page import="Modelo.Articulo"%>
@@ -11,6 +12,7 @@
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.List"%>
 <%@page import="ModeloDAO.NotificacionesDao"%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
@@ -30,7 +32,7 @@
                 int cedula = 0;
                 String nombre = "";
                 int rol = 0;
-                String nombreRol ;
+                String nombreRol;
                 if (cookies != null) {
                     for (Cookie cookie : cookies) {
                         if (cookie.getName().equals("usuario")) {
@@ -43,7 +45,7 @@
                         }
                     }
                 }
-                switch (rol){
+                switch (rol) {
                     case 1:
                         nombreRol = "Gestor";
                         break;
@@ -61,7 +63,7 @@
                 }
             %>
             <div>
-                <label name="accion" value="nombreYrol"><%= nombre +" - "+ nombreRol%></label>
+                <label name="accion" value="nombreYrol"><%= nombre + " - " + nombreRol%></label>
             </div>
 
             <div  class="alinear-centro">
@@ -126,8 +128,7 @@
             <%}%>
             <a href="../ControladorNotificaciones?accion=ascenso" class="pedirAscenso">Pedir Ascenso</a>
         </div>
-    </nav>
-
+    </nav>    
 
     <section class="wiki-contenedor">
         <table class="table border">
@@ -136,8 +137,10 @@
             <td>Nombre Articulo</td>
             <td>Acciones</td>
             </thead>
+            <<<<<<< HEAD
             <tbody>
                 <%
+
                     int valorEntero = (int) request.getAttribute("valorEntero");
 
                     ArticulosDao dao = new ArticulosDao();
@@ -147,11 +150,18 @@
 
                     while (iter.hasNext()) {
                         art = iter.next();
+
+
                 %>
                 <tr>
                     <td><%= art.getId()%></td>
                     <td><a href="#"><%= art.getTitulo()%></a></td>
                     <td>
+
+
+
+
+
                         <a class="btn btn-danger" href="ControladorArticulos?accion=eliminar&id=<%= art.getId()%>">eliminar</a>
                     </td>
                 </tr>
@@ -161,6 +171,10 @@
         </table>
     </section>
 
+
+
+
+    <!-- Modal -->
     <!-- Modal Crear--> 
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -178,10 +192,13 @@
 
                     </form>
                 </div>
+
             </div>
         </div>
     </div>
+
     <script src="js/bootstrap.min.js"></script>
     <script src="Vistas/js/bootstrap.min.js"></script>
+
 </body>
 </html>

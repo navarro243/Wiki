@@ -1,8 +1,9 @@
 <%-- 
-    Document   : supervisor_Articulos
-    Created on : 12 may. 2023, 18:23:53
+    Document   : inicioSesion
+    Created on : 9 may. 2023, 22:51:13
     Author     : vamil
 --%>
+
 <%@page import="Modelo.Notificacion"%>
 <%@page import="ModeloDAO.NotificacionesDao"%>
 <%@page import="ModeloDAO.UsuariosDao"%>
@@ -13,7 +14,6 @@
 
 <!DOCTYPE html>
 <html lang="en">
-
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -141,6 +141,7 @@
                         ArticulosDao dao = new ArticulosDao();
                         List<Articulo> lista = dao.obtenerArticulos(valorEntero);
                         Iterator<Articulo> iter = lista.iterator();
+
                         Articulo art = null;
 
                         while (iter.hasNext()) {
@@ -151,15 +152,15 @@
                     <tr>
                         <td><%= art.getId()%></td>
                         <td><a href="#"><%= art.getTitulo()%></a></td>
+
                     </tr>
                     <%}%>
                 </tbody>
 
             </table>
         </section>
-
-
+                
         <script src="js/bootstrap.min.js"></script>
         <script src="Vistas/js/bootstrap.min.js"></script>
-    </body>
+
 </html>

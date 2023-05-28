@@ -41,7 +41,7 @@
                         }
                     }
                 }
-                switch (rol){
+                switch (rol) {
                     case 1:
                         nombreRol = "Gestor";
                         break;
@@ -59,7 +59,7 @@
                 }
             %>
             <div>
-                <label name="accion" value="nombreYrol"><%= nombre +" - "+ nombreRol%></label>
+                <label name="accion" value="nombreYrol"><%= nombre + " - " + nombreRol%></label>
             </div>
 
             <div  class="alinear-centro">
@@ -93,8 +93,14 @@
                     if (notificacion.getEstado() == 0) {
                         estado = "Pendiente";
 
+
+         <div  class="alinear-centro">
+               
+                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Nueva Articulo</a>
+
                     } else if (notificacion.getEstado() == 1) {
                         estado = "Aceptado";
+
 
                     } else if (notificacion.getEstado() == 2) {
                         estado = "Rechazado";
@@ -132,6 +138,7 @@
                 </thead>
                 <tbody>
                     <%
+
                         int valorEntero = (int) request.getAttribute("valorEntero");
 
                         ArticulosDao dao = new ArticulosDao();
@@ -142,14 +149,17 @@
                         while (iter.hasNext()) {
                             art = iter.next();
 
+
                     %>
                     <tr>
+
                         <td><%= art.getId()%></td>
                         <td><a href="ControladorArticulos?accion=contenido&id=<%= art.getId()%>"><%= art.getTitulo()%></a></td>
                         <td>
                             <a class="btn btn-warning" href="ControladorArticulos?accion=editar&id=<%= art.getId()%>">Editar</a>
                             <a class="btn btn-danger" href="ControladorArticulos?accion=eliminar&id=<%= art.getId()%>">Eliminar</a>
                             <a class="btn btn-primary" href="ControladorArticulos?accion=accesoArticulo&id=<%= art.getId()%>&rol=3">Asignar Supervisor</a>
+
 
                         </td>
                     </tr>   
@@ -158,7 +168,6 @@
 
             </table>
         </section>
-
 
         <!-- Modal Crear--> 
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -173,14 +182,15 @@
                             <label>Titulo articulo</label>
                             <input type="text" name="titulo"></input>
                             <input type="submit" name="accion" value="agregar">
+
                         </form>
                     </div>
-                    <input type="submit" class="btn btn-primary" name="accion" value="agregar">
-                    </form>
                 </div>
             </div>
         </div>
-    </div>
-    <script src="js/bootstrap.min.js"></script>
-</body>
+
+        <script src="js/bootstrap.min.js"></script>
+        <script src="Vistas/js/bootstrap.min.js"></script>
+
+    </body>
 </html>

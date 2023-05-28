@@ -102,8 +102,7 @@
                </div>
            </div>
        </div>
-   </div>
-
+   </div>${htmlContent}
 <script src="js/bootstrap.min.js"></script>
 <script src="Vistas/js/bootstrap.min.js"></script>
 </body>

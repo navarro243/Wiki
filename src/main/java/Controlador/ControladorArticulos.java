@@ -5,7 +5,6 @@
  */
 package Controlador;
 
-
 import Modelo.Articulo;
 import ModeloDAO.ArticulosDao;
 import java.io.IOException;
@@ -29,14 +28,15 @@ import javax.servlet.http.HttpServletResponse;
 @MultipartConfig
 
 public class ControladorArticulos extends HttpServlet {
+
     String vistaG = "Vistas/gestor_gestionArticulos.jsp";
     String editarArticulo = "/Vistas/Modificacion_Articulos.jsp";
     String contenido = "Vistas/contenidoArticulo.jsp";
+    String noDisponible = "Vistas/noDisponible.jsp";
     Articulo articu = new Articulo();
     ArticulosDao articuDao = new ArticulosDao();
     String valorRecibido = "";
     int valorEntero = 0;
-    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -56,7 +56,7 @@ public class ControladorArticulos extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ControladorArticulos</title>");            
+            out.println("<title>Servlet ControladorArticulos</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet ControladorArticulos at " + request.getContextPath() + "</h1>");
@@ -78,63 +78,85 @@ public class ControladorArticulos extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("accion");
-        
 
         int id;
-      
-       
-          
-          
-         if(action.equalsIgnoreCase("vista")){
-             valorRecibido = request.getParameter("valorEnviado");
-               valorEntero = Integer.parseInt(valorRecibido);
-                request.setAttribute("valorEntero", valorEntero);
-                
-              
-         }
-                 
-         
-     
-        else if(action.equalsIgnoreCase("agregar")){
-             
-           
-             String titulo = request.getParameter("titulo");
-            
-            
-            
+
+        if (action.equalsIgnoreCase("vista")) {
+            valorRecibido = request.getParameter("valorEnviado");
+            valorEntero = Integer.parseInt(valorRecibido);
+            request.setAttribute("valorEntero", valorEntero);
+
+        } else if (action.equalsIgnoreCase("agregar")) {
+
+            String titulo = request.getParameter("titulo");
+
             articu.setTitulo(titulo);
-           
+
             articu.setId_Wiki(valorEntero);
-            
-            
+
             articuDao.agregarArticulo(articu);
 
-            
-        }else if(action.equalsIgnoreCase("eliminar")){
-            id=Integer.parseInt(request.getParameter("id"));
+        } else if (action.equalsIgnoreCase("eliminar")) {
+            id = Integer.parseInt(request.getParameter("id"));
             articu.setId(id);
             articuDao.eliminar(id);
-            
-            
-        }else if (action.equalsIgnoreCase("editar")){
-            request.setAttribute("idArticulo",request.getParameter("id")); 
-        request.getRequestDispatcher(editarArticulo).forward(request, response);
-        }else if(action.equalsIgnoreCase("actualizar")){
-             id=Integer.parseInt(request.getParameter("txtid"));
+
+        } else if (action.equalsIgnoreCase("editar")) {
+            request.setAttribute("idArticulo", request.getParameter("id"));
+            request.getRequestDispatcher(editarArticulo).forward(request, response);
+        } else if (action.equalsIgnoreCase("actualizar")) {
+            id = Integer.parseInt(request.getParameter("txtid"));
 
             String cambioTitulo = request.getParameter("cambioTitulo");
-                
+
             articu.setId(id);
             articu.setTitulo(cambioTitulo);
             articuDao.editarArticulos(articu);
-            
-            
-        }else if(action.equalsIgnoreCase("contenido")){
-            request.setAttribute("idArticulo",request.getParameter("id")); 
-            request.getRequestDispatcher(contenido).forward(request, response);
+
+        } else if (action.equalsIgnoreCase("contenido")) {
+            String ruta = "";
+            String idArticulo = request.getParameter("id");
+            String nomRol = request.getParameter("nomrol");
+            System.out.println("******************************************");
+            System.out.println(nomRol);
+            System.out.println(idArticulo);
+
+            int valorArticulo = Integer.parseInt(idArticulo);
+            Articulo articulo = articuDao.list(valorArticulo);
+            System.out.println(articulo.getContenido());
+            if ("Sin cuenta".equals(nomRol)) {
+                if (articulo.getContenido() == null) {
+                    ruta = noDisponible;
+                    request.getRequestDispatcher(ruta).forward(request, response);
+                } else {
+                    ruta = articulo.getContenido();
+                    String htmlContent = articuDao.readHtmlFile(ruta);
+
+                    // Envía el contenido como respuesta al cliente
+                    response.setContentType("text/html");
+                    try (PrintWriter out = response.getWriter()) {
+                        out.println(htmlContent);
+                    }
+                }
+            } else {
+                if (articulo.getContenido()== null) {
+                    ruta = contenido;
+                    request.setAttribute("idArticulo", idArticulo);
+                    request.getRequestDispatcher(ruta).forward(request, response);
+                } else {
+                    ruta = articulo.getContenido();
+                    String htmlContent = articuDao.readHtmlFile(ruta);
+
+                    // Envía el contenido como respuesta al cliente
+                    response.setContentType("text/html");
+                    try (PrintWriter out = response.getWriter()) {
+                        out.println(htmlContent);
+                    }
+                }
+            }
 
         }
-         
+
         request.setAttribute("valorEntero", valorEntero);
         request.getRequestDispatcher(vistaG).forward(request, response);
     }
@@ -150,7 +172,7 @@ public class ControladorArticulos extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         processRequest(request, response);
     }
 
@@ -165,4 +187,3 @@ public class ControladorArticulos extends HttpServlet {
     }// </editor-fold>
 
 }
-

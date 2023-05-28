@@ -20,6 +20,10 @@
         <servlet-name>ControladorArticulos</servlet-name>
         <servlet-class>Controlador.ControladorArticulos</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ControladorDescargaArticulo</servlet-name>
+        <servlet-class>Controlador.ControladorDescargaArticulo</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>controlador</servlet-name>
         <url-pattern>/controlador</url-pattern>
@@ -39,6 +43,10 @@
     <servlet-mapping>
         <servlet-name>ControladorArticulos</servlet-name>
         <url-pattern>/ControladorArticulos</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ControladorDescargaArticulo</servlet-name>
+        <url-pattern>/ControladorDescargaArticulo</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -19,6 +19,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="css/estilosPropios.css">
+         <link rel="stylesheet" href="Vistas/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="Vistas/css/estilosPropios.css">
         <title>Gestor - Gestion Articulos</title>
     </head>
     <body>
@@ -67,7 +69,7 @@
             </div>
 
             <div  class="alinear-derecha">
-                <button><a href="../Controlador?accion=cerrarsesion">Cerrar Sesion</a></button>
+                <button><a href="ControlIU?accion=cerrarsesion">Cerrar Sesion</a></button>
             </div>
         </nav>
 
@@ -92,12 +94,6 @@
 
                     if (notificacion.getEstado() == 0) {
                         estado = "Pendiente";
-
-
-         <div  class="alinear-centro">
-               
-                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Nueva Articulo</a>
-
                     } else if (notificacion.getEstado() == 1) {
                         estado = "Aceptado";
 
@@ -153,12 +149,12 @@
                     %>
                     <tr>
                         <td><%= art.getId() %></td>
-                        <td><a href="ControladorArticulos?accion=contenido&id=<%= art.getId()%>"><%= art.getTitulo() %></a></td>
+                        <td><a href="ControladorArticulos?accion=contenido&id=<%= art.getId()%>&nomrol=<%=nombreRol%>"><%= art.getTitulo() %></a></td>
 
                         <td>
-                            <a class="btn btn-warning" href="../ControladorArticulos?accion=editar&id=<%= art.getId()%>">Editar</a>
-                            <a class="btn btn-danger" href="../ControladorArticulos?accion=eliminar&id=<%= art.getId()%>">eliminar</a>
-                            <a class="btn btn-primary" href="../ControladorArticulos?accion=accesoWiki&id=<%= art.getId()%>&rol=3">Asignar Supervisor</a>
+                            <a class="btn btn-warning" href="ControladorArticulos?accion=editar&id=<%= art.getId()%>">Editar</a>
+                            <a class="btn btn-danger" href="ControladorArticulos?accion=eliminar&id=<%= art.getId()%>">eliminar</a>
+                            <a class="btn btn-primary" href="ControladorArticulos?accion=accesoWiki&id=<%= art.getId()%>&rol=3">Asignar Supervisor</a>
                         </td>
                     </tr>
                     <%}%>

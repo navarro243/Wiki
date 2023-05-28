@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Set;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,14 +26,16 @@ import javax.servlet.http.HttpServletResponse;
  * @author user
  */
 @WebServlet(name = "ControladorArticulos", urlPatterns = {"/ControladorArticulos"})
+@MultipartConfig
 
 public class ControladorArticulos extends HttpServlet {
-    String vistaG ="Vistas/gestor_gestionArticulos.jsp";
-            String editarArticulo = "/Vistas/Modificacion_Articulos.jsp";
-       Articulo articu = new Articulo();
+    String vistaG = "Vistas/gestor_gestionArticulos.jsp";
+    String editarArticulo = "/Vistas/Modificacion_Articulos.jsp";
+    String contenido = "Vistas/contenidoArticulo.jsp";
+    Articulo articu = new Articulo();
     ArticulosDao articuDao = new ArticulosDao();
     String valorRecibido = "";
-        int valorEntero =0;
+    int valorEntero = 0;
     
 
     /**
@@ -47,6 +50,7 @@ public class ControladorArticulos extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
@@ -74,7 +78,7 @@ public class ControladorArticulos extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("accion");
-        String action2 = request.getParameter("volver");
+        
 
         int id;
       
@@ -125,7 +129,12 @@ public class ControladorArticulos extends HttpServlet {
             articuDao.editarArticulos(articu);
             
             
+        }else if(action.equalsIgnoreCase("contenido")){
+            request.setAttribute("idArticulo",request.getParameter("id")); 
+            request.getRequestDispatcher(contenido).forward(request, response);
+
         }
+         
         request.setAttribute("valorEntero", valorEntero);
         request.getRequestDispatcher(vistaG).forward(request, response);
     }
@@ -141,6 +150,7 @@ public class ControladorArticulos extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         processRequest(request, response);
     }
 

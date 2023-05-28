@@ -146,8 +146,9 @@
 
                     %>
                     <tr>
-                        <td><%= art.getId()%></td>
-                        <td><a href="#"><%= art.getTitulo()%></a></td>
+                        <td><%= art.getId() %></td>
+                        <td><a href="ControladorArticulos?accion=contenido&id=<%= art.getId()%>"><%= art.getTitulo() %></a></td>
+
                         <td>
                             <a class="btn btn-warning" href="../ControladorArticulos?accion=editar&id=<%= art.getId()%>">Editar</a>
                             <a class="btn btn-danger" href="../ControladorArticulos?accion=eliminar&id=<%= art.getId()%>">eliminar</a>
@@ -159,12 +160,6 @@
 
             </table>
         </section>
-
-
-
-
-        <!-- Modal -->
-        <!-- Modal Crear--> 
 
         <!-- Modal Crear--> 
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -182,8 +177,6 @@
 
                         </form>
                     </div>
-                    <<<<<<< HEAD
-
                 </div>
             </div>
         </div>

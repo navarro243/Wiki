@@ -4,12 +4,9 @@
     Author     : vamil
 --%>
 
-<<<<<<< HEAD
-=======
 <%@page import="Modelo.Notificacion"%>
 <%@page import="ModeloDAO.NotificacionesDao"%>
 <%@page import="ModeloDAO.UsuariosDao"%>
->>>>>>> miguel
 <%@page import="java.util.*"%>
 <%@page import="Modelo.Articulo"%>
 <%@page import="ModeloDAO.ArticulosDao"%>
@@ -148,11 +145,10 @@
                 <td>Acciones</td>
                 </thead>    
 
-
                 <%
                     String idArticuloStr = request.getAttribute("idArticulo").toString();
                     int idArticulo = Integer.parseInt(idArticuloStr);
-
+                    
                     ArticulosDao ArtiDao = new ArticulosDao();
                     Articulo articu = ArtiDao.list(idArticulo);
 

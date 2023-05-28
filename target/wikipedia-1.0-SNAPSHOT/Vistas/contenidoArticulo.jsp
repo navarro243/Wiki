@@ -41,7 +41,7 @@
             <div class= "alinear-centro">
                 <div class="d-flex">
                     <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#uploadModal">Subir</button>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#downloadModal">Descargar</button>
+                    
                 </div>
 
             </div>

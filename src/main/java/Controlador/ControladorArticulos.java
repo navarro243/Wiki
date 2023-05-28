@@ -33,10 +33,13 @@ public class ControladorArticulos extends HttpServlet {
     String editarArticulo = "/Vistas/Modificacion_Articulos.jsp";
     String contenido = "Vistas/contenidoArticulo.jsp";
     String noDisponible = "Vistas/noDisponible.jsp";
+    String VistaSC= "Vistas/ContenidoSincuenta.jsp";
+    String registrar ="Vistas/inicioSesion.jsp";
     Articulo articu = new Articulo();
     ArticulosDao articuDao = new ArticulosDao();
     String valorRecibido = "";
     int valorEntero = 0;
+    String nomRol;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -85,8 +88,19 @@ public class ControladorArticulos extends HttpServlet {
             valorRecibido = request.getParameter("valorEnviado");
             valorEntero = Integer.parseInt(valorRecibido);
             request.setAttribute("valorEntero", valorEntero);
-
-        } else if (action.equalsIgnoreCase("agregar")) {
+             request.getRequestDispatcher(vistaG).forward(request, response);
+            
+        }else if(action.equalsIgnoreCase("vistaSC")) {
+            valorRecibido = request.getParameter("valorEnviado");
+            valorEntero = Integer.parseInt(valorRecibido);
+            request.setAttribute("valorEntero", valorEntero);
+             request.getRequestDispatcher(VistaSC).forward(request, response);
+        }else if(action.equalsIgnoreCase("verificarUsu") ){
+            if("Sin cuenta".equals(nomRol)){
+                response.sendRedirect(registrar);
+            }
+        }
+        else if (action.equalsIgnoreCase("agregar")) {
 
             String titulo = request.getParameter("titulo");
 
@@ -116,7 +130,7 @@ public class ControladorArticulos extends HttpServlet {
         } else if (action.equalsIgnoreCase("contenido")) {
             String ruta = "";
             String idArticulo = request.getParameter("id");
-            String nomRol = request.getParameter("nomrol");
+            nomRol = request.getParameter("nomrol");
             System.out.println("******************************************");
             System.out.println(nomRol);
             System.out.println(idArticulo);
@@ -157,8 +171,8 @@ public class ControladorArticulos extends HttpServlet {
 
         }
 
-        request.setAttribute("valorEntero", valorEntero);
-        request.getRequestDispatcher(vistaG).forward(request, response);
+    
+       
     }
 
     /**

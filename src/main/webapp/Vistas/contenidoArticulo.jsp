@@ -3,6 +3,7 @@
     Created on : 9 may. 2023, 22:51:13
     Author     : vamil
 --%>
+<%@page import="java.io.PrintWriter"%>
 <%@page import="Modelo.Articulo"%>
 <%@page import="ModeloDAO.ArticulosDao"%>
 <%@page import="java.util.*"%>
@@ -63,9 +64,15 @@
             int idArticulo = Integer.parseInt(idArticuloStr);
             ArticulosDao ArtiDao = new ArticulosDao();
             Articulo articu = ArtiDao.list(idArticulo);
-            if( articu.getContenido()==null ){
+            if( false ){
    %>
-       
+   <%String htmlContent = ArtiDao.readHtmlFile(articu.getContenido());
+
+    // Envía el contenido como respuesta al cliente
+    response.setContentType("text/html");
+    
+        out.println(htmlContent);
+     %>
     </section>
        <%}%>
   
@@ -79,7 +86,7 @@
                </div>
                <div class="modal-body">
                    <!-- Aquí puedes colocar el formulario o el código necesario para subir el archivo -->
-                   <form action="ControladorContenidoA" method="post" enctype="multipart/form-data">
+                   <form action="ControladorContenidoA?id=<%=articu.getId()%>" method="post" enctype="multipart/form-data">
                        <input type="file" name="file">
                        <input type="submit" value="Subir">
                    </form>

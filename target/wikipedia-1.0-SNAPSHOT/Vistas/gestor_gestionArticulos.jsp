@@ -30,7 +30,7 @@
 
          <div  class="alinear-centro">
                
-                <a href="#" class="btn btn-primary"data-bs-toggle="modal" data-bs-target="#exampleModal">Nueva Articulo</a>
+                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Nueva Articulo</a>
 
 
 
@@ -113,9 +113,9 @@
                     <div class="modal-body">
                         <form action="ControladorArticulos" method="get">
                             <label>Titulo articulo</label>
-                            <input type="text" name="titulo"></input>
+                            <input type="text" name="titulo">
                             
-                            <input type="submit" name="accion" value="agregar"></input>
+                            <input type="submit" name="accion" value="agregar">
 
                         </form>
                     </div>

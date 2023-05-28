@@ -8,6 +8,9 @@ import config.conexion;
 import java.util.*;
 
 import Modelo.Articulo;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 /**
  *
  * @author user
@@ -114,4 +117,29 @@ public class ArticulosDao {
             
         }
          } 
+         public boolean AgregarRuta(String ruta, int id){
+             String sql = "insert into articulos (contenido) values (' "+ruta+ "') WHERE id = "+id+" ";
+             try{
+            con = cn.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.executeUpdate();
+            
+        }catch(SQLException e){
+           System.out.println("*****************************************************************");
+            System.out.println(e);     
+            
+        }
+             return false;
+         }
+         public String readHtmlFile(String filePath) throws IOException {
+        StringBuilder content = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                content.append(line);
+            }
+        }
+        return content.toString();
+    }
+
 }

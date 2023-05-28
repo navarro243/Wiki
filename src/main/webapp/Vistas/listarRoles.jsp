@@ -4,12 +4,14 @@
     Author     : vamil
 --%>
 
+<%@page import="ModeloDAO.UsuariosDao"%>
+<%@page import="Modelo.Wiki"%>
+<%@page import="ModeloDAO.WikisDao"%>
 <%@page import="Modelo.Notificacion"%>
 <%@page import="ModeloDAO.NotificacionesDao"%>
-<%@page import="ModeloDAO.UsuariosDao"%>
 <%@page import="java.util.*"%>
-<%@page import="Modelo.Articulo"%>
-<%@page import="ModeloDAO.ArticulosDao"%>
+<%@page import="Modelo.Usuario"%>
+<%@page import="java.util.Collections"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
@@ -19,15 +21,16 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="css/estilosPropios.css">
         <link rel="stylesheet" href="Vistas/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/estilosPropios.css">
         <link rel="stylesheet" type="text/css" href="Vistas/css/estilosPropios.css">
-
-        <title>Supervisor - Articulos</title>
+        <title>Gestor - Gestion Wikis</title>
     </head>
     <body>
         <nav>
             <%
+                String rolDirigido = request.getParameter("rol");
+                
                 Cookie[] cookies = request.getCookies();
                 int cedula = 0;
                 String nombre = "";
@@ -45,7 +48,6 @@
                         }
                     }
                 }
-
                 switch (rol) {
                     case 1:
                         nombreRol = "Gestor";
@@ -67,6 +69,9 @@
                 <label name="accion" value="nombreYrol"><%= nombre + " - " + nombreRol%></label>
             </div>
 
+            <div  class="alinear-centro">
+                <a href="gestor_GestionWikis.jsp" class="btn btn-primary">Volver</a>
+            </div>
             <div  class="alinear-derecha">
                 <button><a href="../Controlador?accion=cerrarsesion">Cerrar Sesion</a></button>
 
@@ -124,43 +129,54 @@
                 <%}%> 
             </div>
             <%}%>
-            <a href="../ControladorNotificaciones?accion=ascenso" class="pedirAscenso">Pedir Ascenso</a>
+
         </div>
+
         <section class="wiki-contenedor">
             <table class="table border">
                 <thead class="table-light">
-                <td>Id Articulos</td>
-                <td>Nombre Articulo</td>
-
-                </thead>
+                <td>Cedula</td>
+                <td>Nombre</td>
+                <td>Rol</td>
+                <td>Acciones</td>
+                </thead>    
                 <tbody>
                     <%
-
-                        int valorEntero = (int) request.getAttribute("valorEntero");
-
-                        ArticulosDao dao = new ArticulosDao();
-                        List<Articulo> lista = dao.obtenerArticulos(valorEntero);
-                        Iterator<Articulo> iter = lista.iterator();
-
-                        Articulo art = null;
-
+                        int rolListar = Integer.parseInt(rolDirigido);
+                        String rolListado;
+                        String idWiki = request.getParameter("id");
+                        
+                        UsuariosDao dao = new UsuariosDao();
+                        
+                        List<Usuario> lista = dao.listarSupervisores(rolListar);
+                        
+                        Iterator<Usuario> iter = lista.iterator();
+                        
+                        
+                        Usuario usuario = null;
                         while (iter.hasNext()) {
-                            art = iter.next();
-
-
+                            
+                            usuario = iter.next();
+                            if(usuario.getId_rol() == 3){
+                                rolListado = "Supervisor";
+                            }else {
+                                rolListado = "Colaborador";
+                            }
                     %>
                     <tr>
-                        <td><%= art.getId()%></td>
-                        <td><a href="#"><%= art.getTitulo()%></a></td>
-
+                        <td><%= usuario.getCedula()%></td>
+                        <td><%= usuario.getNombre()%></td>
+                        <td><%= rolListado %></td>
+                        <td>
+                            <a class="btn btn-warning" href="../ControladorWikis?accion=asignar&cedula=<%= usuario.getCedula()%>&idWiki=<%=idWiki%>">Asignar</a>
+                            <a class="btn btn-danger" href="../ControladorWikis?accion=remover&cedula=<%= usuario.getCedula()%>">Remover</a>
+                        </td>
                     </tr>
                     <%}%>
                 </tbody>
-
             </table>
         </section>
-                
-        <script src="js/bootstrap.min.js"></script>
-        <script src="Vistas/js/bootstrap.min.js"></script>
 
+        <script src="js/bootstrap.min.js"></script>
+    </body>
 </html>

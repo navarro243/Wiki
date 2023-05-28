@@ -14,7 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet"type="text/css" href="Vistas/css/estilosPropios.css">
     <link rel="stylesheet"type="text/css" href="css/estilosPropios.css">
-    <title>Document</title>
+    <title>Iniciar Sesion</title>
 </head>
 <body>
     <form action="../ControlIU">

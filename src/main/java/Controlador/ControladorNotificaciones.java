@@ -1,9 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package Controlador;
 
+import Modelo.Usuario;
 import Modelo.Notificacion;
 import ModeloDAO.NotificacionesDao;
 import ModeloDAO.UsuariosDao;
@@ -19,9 +16,14 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "ControladorNotificaciones", urlPatterns = {"/ControladorNotificaciones"})
 public class ControladorNotificaciones extends HttpServlet {
 
-    String vistaSupervisor = "Vistas/supervisor_wikis.jsp";
     String vistaGestor = "Vistas/gestor_GestionWikis.jsp";
+    String vistaGeneral = "Vistas/vistaGeneral.jsp";
+    String base = "Vistas/vistaGeneral.jsp";    
+    String coordinador = "Vistas/coordinador_VisualizarWikis.jsp";
+    String supervisor = "Vistas/supervisor_wikis.jsp";
+    String colaborador = "Vistas/colaborador.jsp";
 
+    Usuario usuario =new Usuario();
     Notificacion notificacion = new Notificacion();
     NotificacionesDao notificacionDao = new NotificacionesDao();
     UsuariosDao usuarioDao = new UsuariosDao();
@@ -46,36 +48,66 @@ public class ControladorNotificaciones extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int cedula_usuario = 0;
         String acceso = "";
+        String mensaje = "";
         String action = request.getParameter("accion");
+        
+        Cookie[] cookies = request.getCookies();
+                int cedula = 0;
+                String nombre = "";
+                int rol = 0;
+                String rolAscender = "";
+                
+                if (cookies != null) {
+                    for (Cookie cookie : cookies) {
+                        if (cookie.getName().equals("usuario")) {
+                            String value = cookie.getValue();
+                            String[] values = value.split(":");
 
-        if (action.equalsIgnoreCase("ascenso")) {
-            acceso = vistaSupervisor;
-            Cookie[] cookies = request.getCookies();
-            String nombreCookie = "usuario"; 
-
-            Cookie cookieUsuario = null;
-
-            if (cookies != null) {
-                for (Cookie cookie : cookies) {
-                    if (cookie.getName().equals(nombreCookie)) {
-                        cookieUsuario = cookie;
-                        break;
+                            cedula = Integer.parseInt(values[0]);
+                            nombre = values[1];
+                            rol = Integer.parseInt(values[2]);
+                        }
                     }
                 }
+            
+            switch (rol) {
+                
+                case 1:
+                    acceso = vistaGestor;
+                    break;
+                case 2:
+                    acceso = coordinador;
+                    rolAscender = "Gestor";
+                    break;
+                case 3:
+                    acceso = supervisor;
+                    rolAscender = "Coordinador";
+                    break;
+                case 4:
+                    acceso = colaborador;
+                    rolAscender = "Supervisor";
+                    break;
+                case 5:
+                    acceso = base;
+                    rolAscender = "Colaborador";
+                    break;
+                default:
+                    acceso = base;
+                    break;
             }
 
-            if (cookieUsuario != null) {
-                String usuarioJson = cookieUsuario.getValue();
-                cedula_usuario = Integer.parseInt(usuarioJson);
-            }
-
+        if (action.equalsIgnoreCase("ascenso")) {
+            
+            
+            mensaje = cedula +  " - " + nombre +" Quiere ser " + rolAscender;
             
             notificacion.setEstado(0);
-            notificacion.setAsunto("Propuesta para ascenso");
+            notificacion.setAsunto("Ascenso");
+            notificacion.setMensaje(mensaje);
             notificacion.setId_modificacion(0);
-            notificacion.setCedula_usuario(cedula_usuario);
+            notificacion.setCedula_usuario(cedula);
             notificacion.setId_Rol(1);
-
+             
             notificacionDao.enviarNotificacionAscenso(notificacion);
         }
         
@@ -85,32 +117,57 @@ public class ControladorNotificaciones extends HttpServlet {
             
             
             int idNotificacion = Integer.parseInt(idNotificacionURL);
-            int cedula = Integer.parseInt(cedulaURL);            
+            cedula = Integer.parseInt(cedulaURL);            
             
-            usuarioDao.ascenderUsuario(cedula, idNotificacion);
-            acceso = vistaGestor;
-            
+            usuarioDao.ascenderUsuario(cedula, idNotificacion);    
         }
         
-        else if(action.equalsIgnoreCase("ascensoRechazar") || action.equalsIgnoreCase("resueltoRechazar")){
+        else if(action.equalsIgnoreCase("ascensoRechazar")){
             String idNotificacionURL = request.getParameter("id");
             int idNotificacion = Integer.parseInt(idNotificacionURL);
             
             notificacionDao.cambiarEstadoNotificacion(idNotificacion, 2);
-            
-            acceso = vistaGestor;
-        }else if(action.equalsIgnoreCase("ascensoAceptar") || action.equalsIgnoreCase("ascensoRechazar")){
-            acceso = vistaGestor;
-        }else{
-            acceso = vistaGestor;
-        }
+        }    
         response.sendRedirect(acceso);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String acceso = "";
+        int cedula_usuario = 0;
+        String action = request.getParameter("accion");
+        
+        if(action.equalsIgnoreCase("solicitarRegistro")){
+            acceso = vistaGeneral;
+            
+            int cedula;
+            String nombre ;
+            String apellido;
+            
+            String cedulaURL = request.getParameter("cedula");
+            nombre = request.getParameter("nombre");
+            apellido = request.getParameter("apellido");
+            
+            cedula = Integer.parseInt(cedulaURL);
+            
+            usuario.setCedula(cedula);
+            usuario.setNombre(nombre);
+            usuario.setApellido(apellido);
+            usuario.setId_rol(5);
+            
+            String mensaje = cedula + " - "+nombre+ apellido +" Quiere ser Colaborador";
+            
+            notificacion.setEstado(0);
+            notificacion.setAsunto("Nuevo Usuario");
+            notificacion.setMensaje(mensaje);
+            notificacion.setId_modificacion(0);
+            notificacion.setCedula_usuario(cedula);
+            notificacion.setId_Rol(3);
+
+            usuarioDao.registrarUsuario(usuario);
+            notificacionDao.enviarNotificacionAscenso(notificacion);
+        }
+        response.sendRedirect(acceso);
     }
 
     @Override

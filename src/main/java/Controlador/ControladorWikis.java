@@ -21,13 +21,7 @@ public class ControladorWikis extends HttpServlet {
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        
         String action = request.getParameter("accion");
-
-       
-
-        String acceso ="";
-
         
         if(action.equalsIgnoreCase("agregar")){
             String nombre = request.getParameter("nombre");
@@ -63,8 +57,23 @@ public class ControladorWikis extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/Vistas/gestor_GestionWikis.jsp");
         }
         
-        if(action.equalsIgnoreCase("inicioSesion")){
+        else if (action.equalsIgnoreCase("accesoWiki")){
+            String id = request.getParameter("id"); 
+            String id_RolDirigido = request.getParameter("rol");
+            response.sendRedirect(request.getContextPath() + "/Vistas/listarRoles.jsp?id="+ id+"&rol="+id_RolDirigido);
+        }
+        
+        else if(action.equalsIgnoreCase("asignar")){
+            String cedulaUsuario = request.getParameter("cedula");
+            String id = request.getParameter("idWiki");
             
+            int idWiki = Integer.parseInt(id);
+            int cedula_usuario = Integer.parseInt(cedulaUsuario);
+            
+            wikiDao.accesoWiki(idWiki, cedula_usuario);
+            wikiDao.cambiarEstadoRespuesta("asignado");
+            
+            response.sendRedirect(request.getContextPath() + "/Vistas/gestor_GestionWikis.jsp");
         }
     }
     @Override
@@ -73,11 +82,8 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
     
 }
-
-
     @Override
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }

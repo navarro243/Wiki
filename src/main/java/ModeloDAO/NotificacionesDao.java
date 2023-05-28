@@ -14,7 +14,7 @@ public class NotificacionesDao {
     
     
     public void enviarNotificacionAscenso(Notificacion notificacion){
-        String sql = "INSERT INTO notificaciones (estado, cedula_Usuario, id_Rol, asunto) VALUES ('"+notificacion.getEstado()+"','"+notificacion.getCedula_usuario()+"','"+notificacion.getId_Rol()+"', '"+notificacion.getAsunto()+"')";
+        String sql = "INSERT INTO notificaciones (estado, cedula_Usuario, id_Rol, asunto, mensaje) VALUES ('"+notificacion.getEstado()+"','"+notificacion.getCedula_usuario()+"','"+notificacion.getId_Rol()+"', '"+notificacion.getAsunto()+"','"+notificacion.getMensaje()+"')";
 
         try{
             con = cn.getConnection();
@@ -25,9 +25,9 @@ public class NotificacionesDao {
         }
     }
     
-    public List listarNotificaciones(int id_Rol){
+    public List listarNotificaciones(int id_Rol, int cedula){
         ArrayList <Notificacion> listaNotificaciones = new ArrayList<>();
-        String sql = "SELECT * FROM notificaciones WHERE id_Rol="+ id_Rol;
+        String sql = "SELECT * FROM notificaciones WHERE id_Rol="+ id_Rol + "OR cedula_Usuario="+cedula;
         
         try{
             con = cn.getConnection();
@@ -42,6 +42,7 @@ public class NotificacionesDao {
                 notificacion.setCedula_usuario(rs.getInt("cedula_Usuario"));
                 notificacion.setId_Rol(rs.getInt("id_Rol"));
                 notificacion.setAsunto(rs.getString("asunto"));
+                notificacion.setMensaje(rs.getString("mensaje"));
                 
                 listaNotificaciones.add(notificacion);
             }
@@ -64,6 +65,33 @@ public class NotificacionesDao {
         }catch(SQLException e){
             System.out.println(e);
         }
+    }
+    
+    public List RecibirNotificaciones(int cedula){
+        ArrayList <Notificacion> listaNotificaciones = new ArrayList<>();
+        String sql = "SELECT * FROM notificaciones WHERE cedula_Usuario="+ cedula;
+        
+        try{
+            con = cn.getConnection();
+            ps= con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while(rs.next()){
+                Notificacion notificacion = new Notificacion();
+                
+                notificacion.setId(rs.getInt("id"));
+                notificacion.setEstado(rs.getInt("estado"));
+                notificacion.setId_modificacion(rs.getInt("id_modificacion"));
+                notificacion.setCedula_usuario(rs.getInt("cedula_Usuario"));
+                notificacion.setId_Rol(rs.getInt("id_Rol"));
+                notificacion.setAsunto(rs.getString("asunto"));
+                notificacion.setMensaje(rs.getString("mensaje"));
+                
+                listaNotificaciones.add(notificacion);
+            }
+        }catch(SQLException e){
+            System.out.println(e);
+        }
+        return listaNotificaciones;
     }
     
     

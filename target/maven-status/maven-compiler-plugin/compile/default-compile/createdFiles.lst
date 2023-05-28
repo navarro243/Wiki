@@ -1,1 +1,8 @@
+Controlador\ControladorWikis.class
 config\conexion.class
+Modelo\Notificacion.class
+ModeloDAO\UsuariosDao.class
+Controlador\ControladorUsuarios.class
+ModeloDAO\ArticulosDao.class
+ModeloDAO\NotificacionesDao.class
+Controlador\ControladorNotificaciones.class

@@ -24,8 +24,7 @@
     <body>
         <nav>
             <div>
-
-                <label></label>
+                <label>SIN CUENTA</label>
             </div>
 
             <div class= "alinear-centro">
@@ -33,6 +32,7 @@
             </div>
 
             <div  class="alinear-derecha">
+                <button><a href="crearUsuario.jsp">Registrarse</a></button>
                 <button><a href="inicioSesion.jsp">Iniciar Sesion</a></button>
             </div>
         </nav>

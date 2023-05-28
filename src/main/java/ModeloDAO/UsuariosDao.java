@@ -8,6 +8,8 @@ import java.sql.*;
 import config.conexion;
 
 import Modelo.Usuario;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UsuariosDao {
 
@@ -15,8 +17,11 @@ public class UsuariosDao {
     PreparedStatement ps;
     ResultSet rs;
     Connection con;
+    
 
     Usuario usua = new Usuario();
+    Usuario usuario = new Usuario();
+    
     NotificacionesDao notificacionDao = new NotificacionesDao();
 
     public int Obtenerusuario(int CEDULA) {
@@ -104,9 +109,9 @@ public class UsuariosDao {
         int consultarRol = consultarRol(cedula);
         int rolAscender = --consultarRol;
         notificacionDao.cambiarEstadoNotificacion(idNotificacion, 1);
-        
+
         String sqlUsuarios = "UPDATE usuarios SET id_Rol = ? WHERE cedula = ?";
-        
+
         try {
             con = cn.getConnection();
             ps = con.prepareStatement(sqlUsuarios);
@@ -119,7 +124,42 @@ public class UsuariosDao {
         }
 
     }
-    
-    
 
+    public void registrarUsuario(Usuario usuario) {
+        String sql = "INSERT INTO usuarios(cedula, nombre, apellido, id_Rol) VALUES ('" + usuario.getCedula() + "','" + usuario.getNombre() + "','" + usuario.getApellido() + "','" + usuario.getId_rol() + "')";
+
+        try{
+            con = cn.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.executeUpdate();
+        }catch(SQLException e){
+            System.out.println("Excepcion en insertar usuario" + e);
+        }
+
+    }
+
+    
+     public List listarSupervisores(int rol) {
+        ArrayList<Usuario> listaSupervisores = new ArrayList<>();
+        String sql = "SELECT * FROM usuarios where id_Rol = "+ rol;
+        try {
+            con = cn.getConnection();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Usuario usuario = new Usuario();
+                usuario.setCedula(rs.getInt("cedula"));
+                usuario.setNombre(rs.getString("nombre"));
+                usuario.setId_rol(rs.getInt("id_Rol"));
+                
+                listaSupervisores.add(usuario);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+         
+        return listaSupervisores;
+    }
+    
+    
 }

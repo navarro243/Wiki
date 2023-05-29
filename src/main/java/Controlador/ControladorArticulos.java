@@ -32,6 +32,7 @@ public class ControladorArticulos extends HttpServlet {
     String vistaG = "Vistas/gestor_gestionArticulos.jsp";
     String editarArticulo = "/Vistas/Modificacion_Articulos.jsp";
     String contenido = "Vistas/contenidoArticulo.jsp";
+    String actualizarContenido = "Vistas/Actualizar_Articulo.jsp";
     String noDisponible = "Vistas/noDisponible.jsp";
     String VistaSC = "Vistas/ContenidoSincuenta.jsp";
     String registrar = "Vistas/inicioSesion.jsp";
@@ -113,6 +114,8 @@ public class ControladorArticulos extends HttpServlet {
             id = Integer.parseInt(request.getParameter("id"));
             articu.setId(id);
             articuDao.eliminar(id);
+            request.setAttribute("valorEntero", valorEntero);
+            request.getRequestDispatcher(vistaG).forward(request, response);
 
             request.setAttribute("valorEntero", valorEntero);
             request.getRequestDispatcher(vistaG).forward(request, response);
@@ -162,14 +165,10 @@ public class ControladorArticulos extends HttpServlet {
                     request.setAttribute("idArticulo", idArticulo);
                     request.getRequestDispatcher(ruta).forward(request, response);
                 } else {
-                    ruta = articulo.getContenido();
-                    String htmlContent = articuDao.readHtmlFile(ruta);
+                    ruta = actualizarContenido;
+                    request.setAttribute("idArticulo", idArticulo);
+                    request.getRequestDispatcher(ruta).forward(request, response);
 
-                    // Envía el contenido como respuesta al cliente
-                    response.setContentType("text/html");
-                    try (PrintWriter out = response.getWriter()) {
-                        out.println(htmlContent);
-                    }
                 }
             }
 
@@ -231,6 +230,19 @@ public class ControladorArticulos extends HttpServlet {
             }
         }
     }    
+
+
+    
+
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

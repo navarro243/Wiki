@@ -20,21 +20,6 @@
             <label></label>
         </div>
 
-        <div class="alinear-centro">
-            <div class="d-flex">
-                <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
-                    data-bs-target="#uploadModal">Subir</button>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#downloadModal">Descargar</button>
-            </div>
-
-        </div>
-
-        <div class="alinear-derecha">
-            <button><a href="ControlIU?accion=cerrarsesion">Cerrar Sesion</a></button>
-
-        </div>
-
     </nav>
 
     <div class="notificaciones-contenedor">
@@ -61,41 +46,7 @@
 
 
 
-    <!-- Modal para subir archivo -->
-    <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="uploadModalLabel">Actualizar archivo HTML</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Aquí puedes colocar el formulario o el código necesario para subir el archivo -->
-                    <form action="ControladorArticulos?accion=verificarUsu" method="get" enctype="multipart/form-data">
-                        <input type="file" name="file">
-                        <input type="submit" value="Subir">
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal para descargar archivo -->
-    <div class="modal fade" id="downloadModal" tabindex="-1" aria-labelledby="downloadModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="downloadModalLabel">Descargar archivo HTML</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Aquí puedes colocar el enlace o el código necesario para descargar el archivo -->
-                    <a id="downloadLink" href="ControladorDescargaA?archivo=ACN.html" download class="btn btn-primary">Descargar</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    
+   
     <script src="js/bootstrap.min.js"></script>
     <script src="Vistas/js/bootstrap.min.js"></script>
 </body>

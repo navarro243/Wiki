@@ -4,6 +4,7 @@
  */
 package Controlador;
 
+import Modelo.Articulo;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import javax.servlet.annotation.MultipartConfig;
@@ -32,6 +33,10 @@ public class ControladorContenidoA extends HttpServlet {
     String idTxt = "";
     int id = 0;
     ArticulosDao cargar = new ArticulosDao();
+
+
+    Articulo listar = new Articulo();
+
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -107,31 +112,67 @@ public class ControladorContenidoA extends HttpServlet {
         //obtener id del articulo
         idTxt = request.getParameter("id");
         id = Integer.parseInt(idTxt);
-        // Obtiene el archivo enviado en la solicitud
-        Part filePart = request.getPart("file");
 
-        // Obtiene el nombre del archivo
-        String fileName = filePart.getSubmittedFileName();
+        listar = cargar.list(id);
+        if (listar.getContenido() == null) {
+            // Obtiene el archivo enviado en la solicitud
+            Part filePart = request.getPart("file");
 
-        // Ruta de la carpeta de destino donde se guardará el archivo
-        String uploadPath = request.getServletContext().getRealPath("Vistas");
+            // Obtiene el nombre del archivo
+            String fileName = filePart.getSubmittedFileName();
 
-        // Guarda el archivo en la carpeta de destino
-        File uploadDir = new File(uploadPath);
-        if (!uploadDir.exists()) {
-            uploadDir.mkdirs();
-        }
+            // Ruta de la carpeta de destino donde se guardará el archivo
+            String uploadPath = request.getServletContext().getRealPath("Vistas");
 
-        String filePath = uploadPath + File.separator + fileName;
-        System.out.println("filePath: " + filePath);
-        try (InputStream inputStream = filePart.getInputStream(); OutputStream outputStream = new FileOutputStream(filePath)) {
-            byte[] buffer = new byte[4096];
-            int bytesRead;
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, bytesRead);
+            // Guarda el archivo en la carpeta de destino
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
             }
+
+            String filePath = uploadPath + File.separator + fileName;
+            System.out.println("filePath: " + filePath);
+            try (InputStream inputStream = filePart.getInputStream(); OutputStream outputStream = new FileOutputStream(filePath)) {
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+            }
+            cargar.agregarRuta(filePath, id);
+
+        } else {
+            String descripcion = request.getParameter("descripcion");
+            String cedula =request.getParameter("cedula");
+            int cedulaint = Integer.parseInt(cedula);
+            // Obtiene el archivo enviado en la solicitud
+            Part filePart = request.getPart("file");
+
+            // Obtiene el nombre del archivo
+            String fileName = filePart.getSubmittedFileName();
+
+            // Ruta de la carpeta de destino donde se guardará el archivo
+            String uploadPath = request.getServletContext().getRealPath("vistashtml");
+
+            // Guarda el archivo en la carpeta de destino
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
+
+            String filePath = uploadPath + File.separator + fileName;
+            System.out.println("filePath: " + filePath);
+            try (InputStream inputStream = filePart.getInputStream(); OutputStream outputStream = new FileOutputStream(filePath)) {
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+            }
+            cargar.agregarModificacion(filePath, descripcion,cedulaint,id);
+
         }
-        cargar.agregarRuta(filePath, id);
+
 
     }
 

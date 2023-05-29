@@ -134,6 +134,23 @@ public class ArticulosDao {
         }
     }
 
+    public boolean agregarModificacion(String ruta, String descripcion, int cedula, int idArticulo) {
+        String sql = "insert into modificaciones (descripcionCambio, contenidoNuevo, cedula_Usuario,id_Articulo) values ('"+descripcion+"','"+ruta+"','"+cedula+"','"+idArticulo+"') ";
+
+        try {
+            con = cn.getConnection();
+            ps = con.prepareStatement(sql);
+
+            ps.executeUpdate();
+
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+            return false;
+        }
+       
+    }
+
     public String readHtmlFile(String filePath) throws IOException {
         StringBuilder content = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {

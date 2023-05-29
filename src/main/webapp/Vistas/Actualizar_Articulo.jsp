@@ -77,7 +77,20 @@
                 int idArticulo = Integer.parseInt(idArticuloStr);
                 ArticulosDao ArtiDao = new ArticulosDao();
                 Articulo articu = ArtiDao.list(idArticulo);
-                System.out.println("archivo_ruta==" +articu.getContenido());
+                System.out.println("archivo_ruta==" + articu.getContenido());
+
+                String texto =articu.getContenido() ;
+                StringBuilder stringBuilder = new StringBuilder(texto);
+
+                for (int i = 0; i < stringBuilder.length(); i++) {
+                    char letra = stringBuilder.charAt(i);
+                    if (letra == '\\') {  // Condición para cambiar el carácter
+                        stringBuilder.setCharAt(i, '/');  // Cambiar el carácter a 'x'
+                    }
+                }
+
+                String textoModificado = stringBuilder.toString();
+                System.out.println(textoModificado);
             %>
 
 
@@ -117,7 +130,7 @@
                     </div>
                     <div class="modal-body">
                         <!-- Aquí puedes colocar el enlace o el código necesario para descargar el archivo -->
-                        <a id="downloadLink" href="ControladorDescargaArticulo?archivo=<%=articu.getContenido() %>" download class="btn btn-primary">Descargar</a>
+                        <a id="downloadLink" href="ControladorDescargaArticulo?archivo=<%=textoModificado%>" download class="btn btn-primary">Descargar</a>
                     </div>
                 </div>
             </div>

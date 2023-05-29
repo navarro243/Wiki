@@ -32,9 +32,10 @@ public class ControladorArticulos extends HttpServlet {
     String vistaG = "Vistas/gestor_gestionArticulos.jsp";
     String editarArticulo = "/Vistas/Modificacion_Articulos.jsp";
     String contenido = "Vistas/contenidoArticulo.jsp";
+    String actualizarContenido = "Vistas/Actualizar_Articulo.jsp";
     String noDisponible = "Vistas/noDisponible.jsp";
-    String VistaSC= "Vistas/ContenidoSincuenta.jsp";
-    String registrar ="Vistas/inicioSesion.jsp";
+    String VistaSC = "Vistas/ContenidoSincuenta.jsp";
+    String registrar = "Vistas/inicioSesion.jsp";
     Articulo articu = new Articulo();
     ArticulosDao articuDao = new ArticulosDao();
     String valorRecibido = "";
@@ -88,19 +89,18 @@ public class ControladorArticulos extends HttpServlet {
             valorRecibido = request.getParameter("valorEnviado");
             valorEntero = Integer.parseInt(valorRecibido);
             request.setAttribute("valorEntero", valorEntero);
-             request.getRequestDispatcher(vistaG).forward(request, response);
-            
-        }else if(action.equalsIgnoreCase("vistaSC")) {
+            request.getRequestDispatcher(vistaG).forward(request, response);
+
+        } else if (action.equalsIgnoreCase("vistaSC")) {
             valorRecibido = request.getParameter("valorEnviado");
             valorEntero = Integer.parseInt(valorRecibido);
             request.setAttribute("valorEntero", valorEntero);
-             request.getRequestDispatcher(VistaSC).forward(request, response);
-        }else if(action.equalsIgnoreCase("verificarUsu") ){
-            if("Sin cuenta".equals(nomRol)){
+            request.getRequestDispatcher(VistaSC).forward(request, response);
+        } else if (action.equalsIgnoreCase("verificarUsu")) {
+            if ("Sin cuenta".equals(nomRol)) {
                 response.sendRedirect(registrar);
             }
-        }
-        else if (action.equalsIgnoreCase("agregar")) {
+        } else if (action.equalsIgnoreCase("agregar")) {
 
             String titulo = request.getParameter("titulo");
 
@@ -114,6 +114,8 @@ public class ControladorArticulos extends HttpServlet {
             id = Integer.parseInt(request.getParameter("id"));
             articu.setId(id);
             articuDao.eliminar(id);
+            request.setAttribute("valorEntero", valorEntero);
+            request.getRequestDispatcher(vistaG).forward(request, response);
 
         } else if (action.equalsIgnoreCase("editar")) {
             request.setAttribute("idArticulo", request.getParameter("id"));
@@ -126,6 +128,8 @@ public class ControladorArticulos extends HttpServlet {
             articu.setId(id);
             articu.setTitulo(cambioTitulo);
             articuDao.editarArticulos(articu);
+            request.setAttribute("valorEntero", valorEntero);
+            request.getRequestDispatcher(vistaG).forward(request, response);
 
         } else if (action.equalsIgnoreCase("contenido")) {
             String ruta = "";
@@ -153,26 +157,20 @@ public class ControladorArticulos extends HttpServlet {
                     }
                 }
             } else {
-                if (articulo.getContenido()== null) {
+                if (articulo.getContenido() == null) {
                     ruta = contenido;
                     request.setAttribute("idArticulo", idArticulo);
                     request.getRequestDispatcher(ruta).forward(request, response);
                 } else {
-                    ruta = articulo.getContenido();
-                    String htmlContent = articuDao.readHtmlFile(ruta);
+                    ruta = actualizarContenido;
+                    request.setAttribute("idArticulo", idArticulo);
+                    request.getRequestDispatcher(ruta).forward(request, response);
 
-                    // Envía el contenido como respuesta al cliente
-                    response.setContentType("text/html");
-                    try (PrintWriter out = response.getWriter()) {
-                        out.println(htmlContent);
-                    }
                 }
             }
 
         }
 
-    
-       
     }
 
     /**

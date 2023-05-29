@@ -4,6 +4,7 @@
  */
 package Controlador;
 
+import Modelo.Articulo;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import javax.servlet.annotation.MultipartConfig;
@@ -21,7 +22,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import ModeloDAO.ArticulosDao;
 
-
 /**
  *
  * @author user
@@ -29,9 +29,12 @@ import ModeloDAO.ArticulosDao;
 @WebServlet(name = "ControladorContenidoA", urlPatterns = {"/ControladorContenidoA"})
 @MultipartConfig
 public class ControladorContenidoA extends HttpServlet {
-    String idTxt =""; 
-    int id=0;
+
+    String idTxt = "";
+    int id = 0;
     ArticulosDao cargar = new ArticulosDao();
+    Articulo listar = new Articulo();
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -49,7 +52,7 @@ public class ControladorContenidoA extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ControladorContenidoA</title>");            
+            out.println("<title>Servlet ControladorContenidoA</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet ControladorContenidoA at " + request.getContextPath() + "</h1>");
@@ -70,27 +73,26 @@ public class ControladorContenidoA extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         // Ruta del archivo que se va a descargar
+        // Ruta del archivo que se va a descargar
         String filePath = "ruta_del_archivo_a_descargar"; // Actualiza con la ruta correcta
-        
+
         // Obtiene el nombre del archivo a partir de la ruta
         String fileName = filePath.substring(filePath.lastIndexOf(File.separator) + 1);
-        
+
         // Configura las cabeceras de la respuesta
         response.setContentType("text/html");
         response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-        
+
         // Descarga el archivo
         File file = new File(filePath);
-        try (InputStream inputStream = file.toURI().toURL().openStream();
-                OutputStream outputStream = response.getOutputStream()) {
+        try (InputStream inputStream = file.toURI().toURL().openStream(); OutputStream outputStream = response.getOutputStream()) {
             byte[] buffer = new byte[4096];
             int bytesRead;
             while ((bytesRead = inputStream.read(buffer)) != -1) {
                 outputStream.write(buffer, 0, bytesRead);
             }
         }
-    
+
     }
 
     /**
@@ -102,43 +104,74 @@ public class ControladorContenidoA extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-   protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-       //obtener id del articulo
-      idTxt =  request.getParameter("id");
-      id = Integer.parseInt(idTxt);
-    // Obtiene el archivo enviado en la solicitud
-    Part filePart = request.getPart("file");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        //obtener id del articulo
+        idTxt = request.getParameter("id");
+        id = Integer.parseInt(idTxt);
+        listar = cargar.list(id);
+        if (listar.getContenido() == null) {
+            // Obtiene el archivo enviado en la solicitud
+            Part filePart = request.getPart("file");
 
-    // Obtiene el nombre del archivo
-    String fileName = filePart.getSubmittedFileName();
+            // Obtiene el nombre del archivo
+            String fileName = filePart.getSubmittedFileName();
 
-    // Ruta de la carpeta de destino donde se guardará el archivo
-    String uploadPath =request.getServletContext().getRealPath("Vistas");
- 
+            // Ruta de la carpeta de destino donde se guardará el archivo
+            String uploadPath = request.getServletContext().getRealPath("Vistas");
 
-    // Guarda el archivo en la carpeta de destino
-    File uploadDir = new File(uploadPath);
-    if (!uploadDir.exists()) {
-        uploadDir.mkdirs();
-    }
+            // Guarda el archivo en la carpeta de destino
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
 
-    String filePath = uploadPath + File.separator + fileName;
-       System.out.println("filePath: " + filePath);
-    try (InputStream inputStream = filePart.getInputStream();
-            OutputStream outputStream = new FileOutputStream(filePath)) {
-        byte[] buffer = new byte[4096];
-        int bytesRead;
-        while ((bytesRead = inputStream.read(buffer)) != -1) {
-            outputStream.write(buffer, 0, bytesRead);
+            String filePath = uploadPath + File.separator + fileName;
+            System.out.println("filePath: " + filePath);
+            try (InputStream inputStream = filePart.getInputStream(); OutputStream outputStream = new FileOutputStream(filePath)) {
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+            }
+            cargar.agregarRuta(filePath, id);
+
+        } else {
+            String descripcion = request.getParameter("descripcion");
+            String cedula =request.getParameter("cedula");
+            int cedulaint = Integer.parseInt(cedula);
+            // Obtiene el archivo enviado en la solicitud
+            Part filePart = request.getPart("file");
+
+            // Obtiene el nombre del archivo
+            String fileName = filePart.getSubmittedFileName();
+
+            // Ruta de la carpeta de destino donde se guardará el archivo
+            String uploadPath = request.getServletContext().getRealPath("vistashtml");
+
+            // Guarda el archivo en la carpeta de destino
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
+
+            String filePath = uploadPath + File.separator + fileName;
+            System.out.println("filePath: " + filePath);
+            try (InputStream inputStream = filePart.getInputStream(); OutputStream outputStream = new FileOutputStream(filePath)) {
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+            }
+            cargar.agregarModificacion(filePath, descripcion,cedulaint,id);
+
         }
+
     }
-    cargar.agregarRuta(filePath, id);
-  
-}
 
 // Método para leer el contenido de un archivo HTML
-
     /**
      * Returns a short description of the servlet.
      *

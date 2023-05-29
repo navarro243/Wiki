@@ -2,23 +2,16 @@
     Document   : inicioSesion
     Created on : 9 may. 2023, 22:51:13
     Author     : vamil
-
-%>
 --%>
 
-<%@page import="java.io.PrintWriter"%>
-
-
-
-<%@page import="Modelo.Notificacion"%>
-<%@page import="ModeloDAO.NotificacionesDao"%>
 <%@page import="ModeloDAO.UsuariosDao"%>
-
-<%@page import="Modelo.Articulo"%>
-<%@page import="ModeloDAO.ArticulosDao"%>
-<%@page import="java.util.*"%>
 <%@page import="Modelo.Wiki"%>
 <%@page import="ModeloDAO.WikisDao"%>
+<%@page import="Modelo.Notificacion"%>
+<%@page import="ModeloDAO.NotificacionesDao"%>
+<%@page import="java.util.*"%>
+<%@page import="Modelo.Usuario"%>
+<%@page import="java.util.Collections"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
@@ -27,15 +20,17 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+        <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="Vistas/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/estilosPropios.css">
         <link rel="stylesheet" type="text/css" href="Vistas/css/estilosPropios.css">
-
-        <title>Portal</title>
+        <title>Gestor - Gestion Wikis</title>
     </head>
     <body>
         <nav>
             <%
+                String rolDirigido = request.getParameter("rol");
+
                 Cookie[] cookies = request.getCookies();
                 int cedula = 0;
                 String nombre = "";
@@ -74,26 +69,26 @@
                 <label name="accion" value="nombreYrol"><%= nombre + " - " + nombreRol%></label>
             </div>
 
-            <div class= "alinear-centro">
-                <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#uploadModal">Subir</button>
-            </div>    
-                
+            <div  class="alinear-centro">
+                <a href="../ControladorArticulos?accion=redireccionar&rolRedireccion=<%=rol%>" class="btn btn-primary">Volver</a>
+            </div>
 
-             <div  class="alinear-derecha">
-                <button><a href="../ControlIU?accion=cerrarsesion">Cerrar Sesion</a></button>
+            <div  class="alinear-derecha">
+                <button><a href="../Controlador?accion=cerrarsesion">Cerrar Sesion</a></button>
 
             </div>
+
         </nav>
 
         <div class="notificaciones-contenedor">
             <h4 class="text-center text-light">Notificaciones</h4>
-
             <%
                 UsuariosDao usuarioDao = new UsuariosDao();
                 NotificacionesDao notificacionDao = new NotificacionesDao();
                 List<Notificacion> listaNotificaciones = notificacionDao.listarNotificaciones(rol, cedula);
                 Iterator<Notificacion> iteradorNotificacion = listaNotificaciones.iterator();
                 Collections.reverse(listaNotificaciones);
+
                 Notificacion notificacion = null;
 
                 String estado = "";
@@ -126,50 +121,63 @@
                 <label class="notificacion-estado-<%=estado%>"><%=estado%></label><br>
                 <label class="color-asunto">Asunto - <%= notificacion.getAsunto()%></label>
                 <p class="text-light"><%= notificacion.getMensaje()%> </p> 
+
+                <%
+                    if (estado.equals("Pendiente")) {
+                %>
+                <a href="../ControladorNotificaciones?accion=<%=asunto + "Aceptar"%>&id=<%= notificacion.getId()%>&cedula=<%=notificacion.getCedula_usuario()%>" class="btn btn-success">Aceptar</a>
+                <a href="../ControladorNotificaciones?accion=<%=asunto + "Rechazar"%>&id=<%= notificacion.getId()%>" class="btn btn-danger">Rechazar</a>
+                <%}%> 
             </div>
             <%}%>
-
-        </div>>
-        <section class="wiki-contenedor">
-            <%
-                String idArticuloStr = request.getAttribute("idArticulo").toString();
-                int idArticulo = Integer.parseInt(idArticuloStr);
-                ArticulosDao ArtiDao = new ArticulosDao();
-                Articulo articu = ArtiDao.list(idArticulo);
-                if (false) {
-            %>
-            <%String htmlContent = ArtiDao.readHtmlFile(articu.getContenido());
-
-                // Env�a el contenido como respuesta al cliente
-                response.setContentType("text/html");
-
-                out.println(htmlContent);
-            %>
-        </section>
-            <%}%>
-
-        <!-- Modal para subir archivo -->
-        <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="uploadModalLabel">Subir archivo HTML</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- Aqu� puedes colocar el formulario o el c�digo necesario para subir el archivo -->
-                        <form action="ControladorContenidoA?id=<%=articu.getId()%>" method="post" enctype="multipart/form-data">
-                            <input type="file" name="file">
-                            <input type="submit" value="Subir">
-                        </form>
-                    </div>
-                </div>
-
-            </div>
 
         </div>
 
-            <script src="js/bootstrap.min.js"></script>
-            <script src="Vistas/js/bootstrap.min.js"></script>
+        <section class="wiki-contenedor">
+            <table class="table border">
+                <thead class="table-light">
+                <td>Cedula</td>
+                <td>Nombre</td>
+                <td>Rol</td>
+                <td>Acciones</td>
+                </thead>    
+                <tbody>
+                    <%
+                        int rolListar = Integer.parseInt(rolDirigido);
+                        String rolListado;
+                        String idArticulo = request.getParameter("idArticulo");
+
+                        UsuariosDao dao = new UsuariosDao();
+
+                        List<Usuario> lista = dao.listarSupervisores(rolListar);
+
+                        Iterator<Usuario> iter = lista.iterator();
+
+                        Usuario usuario = null;
+                        while (iter.hasNext()) {
+
+                            usuario = iter.next();
+                            if (usuario.getId_rol() == 3) {
+                                rolListado = "Supervisor";
+                            } else {
+                                rolListado = "Colaborador";
+                            }
+                    %>
+                    <tr>
+                        <td><%= usuario.getCedula()%></td>
+                        <td><%= usuario.getNombre()%></td>
+                        <td><%= rolListado%></td>
+                        <td>
+                            <a class="btn btn-info" href="../ControladorArticulos?accion=acceso&cedula=<%= usuario.getCedula()%>&idArticulo=<%=idArticulo%>&rolRedireccion=<%=rol%>">Dar acceso</a>
+                            <a class="btn btn-warning" href="../ControladorArticulos?accion=asignar&cedula=<%= usuario.getCedula()%>&idArticulo=<%=idArticulo%>&rolRedireccion=<%=rol%>">Asignar</a>
+                            <a class="btn btn-danger" href="../ControladorArticulos?accion=remover&cedula=<%= usuario.getCedula()%>&idArticulo=<%=idArticulo%>&rolRedireccion=<%=rol%>">Remover</a>
+                        </td>
+                    </tr>
+                    <%}%>
+                </tbody>
+            </table>
+        </section>
+
+        <script src="js/bootstrap.min.js"></script>
     </body>
 </html>

@@ -168,8 +168,11 @@
                         <td><%= usuario.getNombre()%></td>
                         <td><%= rolListado %></td>
                         <td>
-                            <a class="btn btn-warning" href="../ControladorWikis?accion=asignar&cedula=<%= usuario.getCedula()%>&idWiki=<%=idWiki%>">Asignar</a>
-                            <a class="btn btn-danger" href="../ControladorWikis?accion=remover&cedula=<%= usuario.getCedula()%>">Remover</a>
+                            <td>
+                            <a class="btn btn-info" href="../ControladorWikis?accion=acceso&cedula=<%= usuario.getCedula()%>&idWiki=<%=idWiki%>&rolRedireccion=<%=rol%>">Dar acceso</a>
+                            <a class="btn btn-warning" href="../ControladorWikis?accion=asignar&cedula=<%= usuario.getCedula()%>&idWiki=<%=idWiki%>&rolRedireccion=<%=rol%>">Asignar</a>
+                            <a class="btn btn-danger" href="../ControladorWikis?accion=remover&cedula=<%= usuario.getCedula()%>&idWiki=<%=idWiki%>&rolRedireccion=<%=rol%>">Remover</a>
+                        </td>
                         </td>
                     </tr>
                     <%}%>

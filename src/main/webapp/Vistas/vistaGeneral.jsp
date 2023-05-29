@@ -40,7 +40,7 @@
         <div class="notificaciones-contenedor">
             <h4 class="text-center text-light">Notificaciones</h4>
             <div class="notificaciones">
-                <label class="notificacion-estado">pendiente</label><br>
+                <label class="notificacion-estado"></label><br>
                 <label class="color-asunto"></label>
                 <p class="text-light"></p>
 

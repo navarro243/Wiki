@@ -33,8 +33,8 @@ public class ControladorArticulos extends HttpServlet {
     String editarArticulo = "/Vistas/Modificacion_Articulos.jsp";
     String contenido = "Vistas/contenidoArticulo.jsp";
     String noDisponible = "Vistas/noDisponible.jsp";
-    String VistaSC= "Vistas/ContenidoSincuenta.jsp";
-    String registrar ="Vistas/inicioSesion.jsp";
+    String VistaSC = "Vistas/ContenidoSincuenta.jsp";
+    String registrar = "Vistas/inicioSesion.jsp";
     Articulo articu = new Articulo();
     ArticulosDao articuDao = new ArticulosDao();
     String valorRecibido = "";
@@ -88,19 +88,18 @@ public class ControladorArticulos extends HttpServlet {
             valorRecibido = request.getParameter("valorEnviado");
             valorEntero = Integer.parseInt(valorRecibido);
             request.setAttribute("valorEntero", valorEntero);
-             request.getRequestDispatcher(vistaG).forward(request, response);
-            
-        }else if(action.equalsIgnoreCase("vistaSC")) {
+            request.getRequestDispatcher(vistaG).forward(request, response);
+
+        } else if (action.equalsIgnoreCase("vistaSC")) {
             valorRecibido = request.getParameter("valorEnviado");
             valorEntero = Integer.parseInt(valorRecibido);
             request.setAttribute("valorEntero", valorEntero);
-             request.getRequestDispatcher(VistaSC).forward(request, response);
-        }else if(action.equalsIgnoreCase("verificarUsu") ){
-            if("Sin cuenta".equals(nomRol)){
+            request.getRequestDispatcher(VistaSC).forward(request, response);
+        } else if (action.equalsIgnoreCase("verificarUsu")) {
+            if ("Sin cuenta".equals(nomRol)) {
                 response.sendRedirect(registrar);
             }
-        }
-        else if (action.equalsIgnoreCase("agregar")) {
+        } else if (action.equalsIgnoreCase("agregar")) {
 
             String titulo = request.getParameter("titulo");
 
@@ -115,9 +114,12 @@ public class ControladorArticulos extends HttpServlet {
             articu.setId(id);
             articuDao.eliminar(id);
 
+            request.setAttribute("valorEntero", valorEntero);
+            request.getRequestDispatcher(vistaG).forward(request, response);
         } else if (action.equalsIgnoreCase("editar")) {
             request.setAttribute("idArticulo", request.getParameter("id"));
             request.getRequestDispatcher(editarArticulo).forward(request, response);
+            
         } else if (action.equalsIgnoreCase("actualizar")) {
             id = Integer.parseInt(request.getParameter("txtid"));
 
@@ -126,6 +128,8 @@ public class ControladorArticulos extends HttpServlet {
             articu.setId(id);
             articu.setTitulo(cambioTitulo);
             articuDao.editarArticulos(articu);
+            request.setAttribute("valorEntero", valorEntero);
+            request.getRequestDispatcher(vistaG).forward(request, response);
 
         } else if (action.equalsIgnoreCase("contenido")) {
             String ruta = "";
@@ -153,7 +157,7 @@ public class ControladorArticulos extends HttpServlet {
                     }
                 }
             } else {
-                if (articulo.getContenido()== null) {
+                if (articulo.getContenido() == null) {
                     ruta = contenido;
                     request.setAttribute("idArticulo", idArticulo);
                     request.getRequestDispatcher(ruta).forward(request, response);
@@ -169,32 +173,70 @@ public class ControladorArticulos extends HttpServlet {
                 }
             }
 
+        } else if (action.equalsIgnoreCase("accesoArticulo")) {
+            String idArticuloURL = request.getParameter("idArticulo");
+            String id_RolDirigido = request.getParameter("rol");
+
+            response.sendRedirect(request.getContextPath() + "/Vistas/listarRolesArticulos.jsp?idArticulo=" + idArticuloURL + "&rol=" + id_RolDirigido);
         }
-
-    
-       
-    }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+        
+        else if(action.equalsIgnoreCase("acceso")){
+            String cedulaUsuario = request.getParameter("cedula");
+            String idArticuloURL = request.getParameter("idArticulo");
+            
+            int idArticulo = Integer.parseInt(idArticuloURL);
+            int cedula_usuario = Integer.parseInt(cedulaUsuario);
+            
+            articuDao.accesoArticulo(idArticulo, cedula_usuario);
+            articuDao.cambiarEstadoRespuestaArticulo("Pendiente", cedula_usuario, idArticulo);
+            
+            
+            action = "redireccionar";
+        }
+        
+        else if(action.equalsIgnoreCase("remover")){
+            String cedulaUsuario = request.getParameter("cedula");
+            String idArticuloURL = request.getParameter("idArticulo");
+            
+            
+            int idArticulo = Integer.parseInt(idArticuloURL);
+            int cedula_usuario = Integer.parseInt(cedulaUsuario);
+            String respuesta = "removido";
+            
+            articuDao.cambiarEstadoRespuestaArticulo(respuesta, cedula_usuario, idArticulo );
+            action = "redireccionar";
+        }
+        
+        else if(action.equalsIgnoreCase("asignar")){
+            String cedulaUsuario = request.getParameter("cedula");
+            String idArticuloURL = request.getParameter("idArticulo");
+            
+            int idArticulo = Integer.parseInt(idArticuloURL);
+            int cedula_usuario = Integer.parseInt(cedulaUsuario);
+            String respuesta = "asignado";
+            
+            articuDao.cambiarEstadoRespuestaArticulo(respuesta, cedula_usuario, idArticulo );
+            action = "redireccionar";
+        }
+        
+        if(action.equalsIgnoreCase("redireccionar")){
+            String rolDireccionar = request.getParameter("rolRedireccion");
+            int rolDireccion = Integer.parseInt(rolDireccionar);
+            
+            System.out.println(rolDireccion);
+            if(rolDireccion == 3){
+                response.sendRedirect(request.getContextPath() + "/Vistas/supervisor_wikis.jsp");
+            }else{
+                response.sendRedirect(request.getContextPath() + "/Vistas/gestor_GestionWikis.jsp");
+            }
+        }
+    }    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         processRequest(request, response);
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";

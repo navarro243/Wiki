@@ -1,5 +1,6 @@
 package ModeloDAO;
 
+import Modelo.Articulo;
 import Modelo.Notificacion;
 import config.conexion;
 import java.sql.*;
@@ -94,5 +95,24 @@ public class NotificacionesDao {
         return listaNotificaciones;
     }
     
-    
+    public List listarWikisAcceso(int cedula) {
+        ArrayList<Articulo> listaArticulosAcceso = new ArrayList<>();
+        String sql = "SELECT * FROM wikis_usuarios WHERE cedula_usuario = " + cedula + "AND estado = 'activo'";
+        try {
+            con = cn.getConnection();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Articulo articulo = new Articulo();
+                articulo.setId(rs.getInt("id_wiki"));
+                articulo.setTitulo("estado");
+                
+                listaArticulosAcceso.add(articulo);
+            }
+
+        } catch (SQLException e) {
+            System.out.println( e);
+        }
+        return listaArticulosAcceso;
+    }
 }

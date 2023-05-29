@@ -67,6 +67,9 @@
                 <label name="accion" value="nombreYrol"><%= nombre + " - " + nombreRol%></label>
             </div>
 
+            <div  class="alinear-centro">
+                <a class="btn btn-primary" href="supervisor_Wikis.jsp"">Lista Wikis</a>
+            </div>
             <div  class="alinear-derecha">
                 <button><a href="../Controlador?accion=cerrarsesion">Cerrar Sesion</a></button>
 
@@ -75,6 +78,7 @@
         </nav>
 
         <div class="notificaciones-contenedor">
+            <a href="../ControladorNotificaciones?accion=ascenso" class="pedirAscenso">Pedir Ascenso</a>
             <h4 class="text-center text-light">Notificaciones</h4>
             <%
                 UsuariosDao usuarioDao = new UsuariosDao();
@@ -124,43 +128,37 @@
                 <%}%> 
             </div>
             <%}%>
-            <a href="../ControladorNotificaciones?accion=ascenso" class="pedirAscenso">Pedir Ascenso</a>
         </div>
         <section class="wiki-contenedor">
             <table class="table border">
                 <thead class="table-light">
                 <td>Id Articulos</td>
                 <td>Nombre Articulo</td>
-
+                <td>Accion</td>
                 </thead>
                 <tbody>
                     <%
-
-                        int valorEntero = (int) request.getAttribute("valorEntero");
-
                         ArticulosDao dao = new ArticulosDao();
-                        List<Articulo> lista = dao.obtenerArticulos(valorEntero);
-                        Iterator<Articulo> iter = lista.iterator();
+                        List<Articulo> listaArticulosAcceso = dao.listarArticulosAcceso(cedula);
 
+                        Iterator<Articulo> iter = listaArticulosAcceso.iterator();
                         Articulo art = null;
 
                         while (iter.hasNext()) {
                             art = iter.next();
-
-
                     %>
                     <tr>
                         <td><%= art.getId()%></td>
                         <td><a href="#"><%= art.getTitulo()%></a></td>
-
+                        <td><a class="btn btn-success" href="../ControladorArticulos?accion=accesoArticulo&idArticulo=<%= art.getId() %>&rol=4">Usuarios</a></td>
                     </tr>
                     <%}%>
                 </tbody>
 
             </table>
         </section>
-                
+
         <script src="js/bootstrap.min.js"></script>
         <script src="Vistas/js/bootstrap.min.js"></script>
-
+    </body>
 </html>

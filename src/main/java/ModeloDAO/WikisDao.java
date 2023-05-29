@@ -98,7 +98,7 @@ public class WikisDao {
     }
 
     public void accesoWiki(int idWiki, int cedula_usuario) {
-        String sql = "INSERT INTO wikis_usuarios (cedula_usuario, id_wiki, estado) VALUES ('" + cedula_usuario + "','" + idWiki + "','activo')";
+        String sql = "INSERT INTO wikis_usuarios (cedula_usuario, id_wiki, estado) VALUES ('" + cedula_usuario + "','" + idWiki + "','Pendiente')";
         try {
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
@@ -111,7 +111,8 @@ public class WikisDao {
 
     public List listarWikisAcceso(int cedula) {
         ArrayList<Wiki> listaWikisAcceso = new ArrayList<>();
-        String sql = "SELECT * FROM wikis_usuarios WHERE cedula_usuario = " + cedula + "AND estado = 'activo'";
+        String sql = "SELECT * FROM wikis_usuarios WHERE cedula_usuario = " + cedula + "AND estado = 'asignado'";
+        
         try {
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
@@ -119,8 +120,8 @@ public class WikisDao {
             while (rs.next()) {
                 Wiki wiki = new Wiki();
                 wiki.setId(rs.getInt("id_wiki"));
-                wiki.setNombre("respuesta");
                 
+                System.out.println("Hola");
                 listaWikisAcceso.add(wiki);
             }
 
@@ -149,8 +150,8 @@ public class WikisDao {
         return wiki;
     }
 
-    public void cambiarEstadoRespuesta(String respuesta) {
-        String sql = "UPDATE wikis_usuarios SET respuesta = '"+respuesta+"'";
+    public void cambiarEstadoRespuesta(String respuesta, int cedula_usuario, int idWiki) {
+        String sql = "UPDATE wikis_usuarios SET estado = '"+respuesta+"' WHERE cedula_Usuario="+ cedula_usuario + "AND id_wiki="+ idWiki;
         try {
             con = cn.getConnection();
             ps = con.prepareStatement(sql);

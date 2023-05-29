@@ -13,12 +13,14 @@
 <!DOCTYPE html>
 <html lang="en">    
     <head>
-        <meta charset="UTF-8">
+      <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="Vistas/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="Vistas/css/estilosPropios.css">
         <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" href="css/estilosPropios.css">
-        <title>Gestor</title>
+        <link rel="stylesheet" type="text/css" href="css/estilosPropios.css">
+        <title>Supervisor Wikis</title>
     </head>
     <body>
         <nav>
@@ -61,6 +63,10 @@
             <div>
                 <label name="accion" value="nombreYrol"><%= nombre + " - " + nombreRol%></label>
             </div>
+            
+            <div  class="alinear-centro">
+                <a class="btn btn-primary" href="supervisor_Articulos.jsp"">Lista Articulos</a>
+            </div>
 
             <div  class="alinear-derecha">
                 <button><a href="../Controlador?accion=cerrarsesion">Cerrar Sesion</a></button>
@@ -70,7 +76,9 @@
         </nav>
 
         <div class="notificaciones-contenedor">
+            <a href="../ControladorNotificaciones?accion=ascenso" class="pedirAscenso">Pedir Ascenso</a>
             <h4 class="text-center text-light">Notificaciones</h4>
+            <hr>
             <%
                 UsuariosDao usuarioDao = new UsuariosDao();
                 NotificacionesDao notificacionDao = new NotificacionesDao();
@@ -118,9 +126,8 @@
                 <a href="../ControladorNotificaciones?accion=<%=asunto + "Rechazar"%>&id=<%= notificacion.getId()%>" class="btn btn-danger">Rechazar</a>
                 <%}%> 
             </div>
-
             <%}%>
-            <a href="../ControladorNotificaciones?accion=ascenso" class="pedirAscenso">Pedir Ascenso</a>
+            
         </div>
 
         <section class="wiki-contenedor">
@@ -134,19 +141,19 @@
                 <tbody>
                     <%
                         WikisDao dao = new WikisDao();
-                        List<Wiki> listaWikisAcceso = dao.listarWikisAcceso(cedula);
+                        List<Wiki> listaArticulosAcceso = dao.listarWikisAcceso(cedula);
                         
-                        Iterator<Wiki> iter = listaWikisAcceso.iterator();
-                        Wiki wiki = null;
+                        Iterator<Wiki> iter = listaArticulosAcceso.iterator();
+                        Wiki wikisAcceso  = null;
+
                         while (iter.hasNext()) {
-                            wiki = iter.next();
-                            int id = wiki.getId();
-                            Wiki wikisAccesos = dao.obtenerWikiAcceso(id);
+                            wikisAcceso = iter.next();
+                            Wiki wiki = dao.obtenerWikiAcceso(wikisAcceso.getId());
                             
                     %>
                     <tr>
-                        <td><%= id%></td>
-                        <td><a href="#"><%= wikisAccesos.getNombre() %></a></td>
+                        <td><%= wikisAcceso.getId() %></td>
+                        <td><a href="#"><%= wiki.getNombre() %></a></td>
                     </tr>
                     <%
                         }

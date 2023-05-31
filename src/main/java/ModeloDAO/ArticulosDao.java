@@ -9,6 +9,7 @@ import config.conexion;
 import java.util.*;
 
 import Modelo.Articulo;
+import Modelo.Usuario_articulo;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -168,18 +169,18 @@ public class ArticulosDao {
     }
 
     public List listarArticulosAcceso(int cedula) {
-        ArrayList<Articulo> listaArticulosAcceso = new ArrayList<>();
+        ArrayList<Usuario_articulo> listaArticulosAcceso = new ArrayList<>();
         String sql = "SELECT * FROM usuarios_articulos WHERE cedula_usuario = " + cedula + "AND estado = 'asignado'";
         try {
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
-                Articulo articulo = new Articulo();
-                articulo.setId(rs.getInt("id_Articulo"));
-                articulo.setTitulo("estado");
+                Usuario_articulo usuarioArticulo = new Usuario_articulo();
+                usuarioArticulo.setId_Articulo(rs.getInt("id_Articulo"));
+                usuarioArticulo.setEstado("estado");
 
-                listaArticulosAcceso.add(articulo);
+                listaArticulosAcceso.add(usuarioArticulo);
             }
 
         } catch (SQLException e) {
@@ -214,5 +215,7 @@ public class ArticulosDao {
         }
 
     }
+    
+    
 
 }

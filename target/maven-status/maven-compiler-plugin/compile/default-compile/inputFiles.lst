@@ -1,5 +1,8 @@
 C:\Users\vamil\OneDrive\Escritorio\Progrmacion\NetBeansProjects\wikipedia\Wiki\src\main\java\Modelo\Usuario.java
 C:\Users\vamil\OneDrive\Escritorio\Progrmacion\NetBeansProjects\wikipedia\Wiki\src\main\java\Controlador\ControladorArticulos.java
+C:\Users\vamil\OneDrive\Escritorio\Progrmacion\NetBeansProjects\wikipedia\Wiki\src\main\java\Controlador\ControladorDescargaArticulo.java
+C:\Users\vamil\OneDrive\Escritorio\Progrmacion\NetBeansProjects\wikipedia\Wiki\src\main\java\Modelo\Modificacion.java
+C:\Users\vamil\OneDrive\Escritorio\Progrmacion\NetBeansProjects\wikipedia\Wiki\src\main\java\ModeloDAO\usuarios_articulosDao.java
 C:\Users\vamil\OneDrive\Escritorio\Progrmacion\NetBeansProjects\wikipedia\Wiki\src\main\java\Controlador\Controlador.java
 C:\Users\vamil\OneDrive\Escritorio\Progrmacion\NetBeansProjects\wikipedia\Wiki\src\main\java\Controlador\ControladorNotificaciones.java
 C:\Users\vamil\OneDrive\Escritorio\Progrmacion\NetBeansProjects\wikipedia\Wiki\src\main\java\Controlador\ControlIngresoUsuario.java
@@ -13,4 +16,6 @@ C:\Users\vamil\OneDrive\Escritorio\Progrmacion\NetBeansProjects\wikipedia\Wiki\s
 C:\Users\vamil\OneDrive\Escritorio\Progrmacion\NetBeansProjects\wikipedia\Wiki\src\main\java\Controlador\ControladorContenidoA.java
 C:\Users\vamil\OneDrive\Escritorio\Progrmacion\NetBeansProjects\wikipedia\Wiki\src\main\java\Controlador\ControladorWikis.java
 C:\Users\vamil\OneDrive\Escritorio\Progrmacion\NetBeansProjects\wikipedia\Wiki\src\main\java\Controlador\ControladorUsuarios.java
+C:\Users\vamil\OneDrive\Escritorio\Progrmacion\NetBeansProjects\wikipedia\Wiki\src\main\java\Modelo\Usuario_articulo.java
 C:\Users\vamil\OneDrive\Escritorio\Progrmacion\NetBeansProjects\wikipedia\Wiki\src\main\java\Modelo\Wiki.java
+C:\Users\vamil\OneDrive\Escritorio\Progrmacion\NetBeansProjects\wikipedia\Wiki\src\main\java\ModeloDAO\ModificacionesDao.java

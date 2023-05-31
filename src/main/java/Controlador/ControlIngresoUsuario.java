@@ -20,7 +20,7 @@ public class ControlIngresoUsuario extends HttpServlet {
     String gestor = "Vistas/gestor_GestionWikis.jsp";
     String coordinador = "Vistas/coordinador_VisualizarWikis.jsp";
     String supervisor = "Vistas/supervisor_wikis.jsp";
-    String colaborador = "Vistas/colaborador.jsp";
+    String colaborador = "Vistas/colaboradorWikis.jsp";
     String vistaSinSesion = "Vistas/vistaGeneral.jsp";
 
     UsuariosDao dao = new UsuariosDao();

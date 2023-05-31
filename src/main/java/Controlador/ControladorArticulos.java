@@ -36,6 +36,7 @@ public class ControladorArticulos extends HttpServlet {
     String noDisponible = "Vistas/noDisponible.jsp";
     String VistaSC = "Vistas/ContenidoSincuenta.jsp";
     String registrar = "Vistas/inicioSesion.jsp";
+    String colaborador = "Vistas/colaborador.jsp";
     Articulo articu = new Articulo();
     ArticulosDao articuDao = new ArticulosDao();
     String valorRecibido = "";
@@ -88,8 +89,17 @@ public class ControladorArticulos extends HttpServlet {
         if (action.equalsIgnoreCase("vista")) {
             valorRecibido = request.getParameter("valorEnviado");
             valorEntero = Integer.parseInt(valorRecibido);
-            request.setAttribute("valorEntero", valorEntero);
-            request.getRequestDispatcher(vistaG).forward(request, response);
+            String rol = request.getParameter("rol");
+
+            if (rol != null) {
+                
+                
+                request.setAttribute("valorEntero", valorEntero);
+                request.getRequestDispatcher(colaborador).forward(request, response);
+            } else {
+                request.setAttribute("valorEntero", valorEntero);
+                request.getRequestDispatcher(vistaG).forward(request, response);
+            }
 
         } else if (action.equalsIgnoreCase("vistaSC")) {
             valorRecibido = request.getParameter("valorEnviado");
@@ -122,7 +132,7 @@ public class ControladorArticulos extends HttpServlet {
         } else if (action.equalsIgnoreCase("editar")) {
             request.setAttribute("idArticulo", request.getParameter("id"));
             request.getRequestDispatcher(editarArticulo).forward(request, response);
-            
+
         } else if (action.equalsIgnoreCase("actualizar")) {
             id = Integer.parseInt(request.getParameter("txtid"));
 
@@ -138,7 +148,7 @@ public class ControladorArticulos extends HttpServlet {
             String ruta = "";
             String idArticulo = request.getParameter("id");
             nomRol = request.getParameter("nomrol");
-            System.out.println("******************************************");
+            
             System.out.println(nomRol);
             System.out.println(idArticulo);
 
@@ -177,62 +187,51 @@ public class ControladorArticulos extends HttpServlet {
             String id_RolDirigido = request.getParameter("rol");
 
             response.sendRedirect(request.getContextPath() + "/Vistas/listarRolesArticulos.jsp?idArticulo=" + idArticuloURL + "&rol=" + id_RolDirigido);
-        }
-        
-        else if(action.equalsIgnoreCase("acceso")){
+        } else if (action.equalsIgnoreCase("acceso")) {
             String cedulaUsuario = request.getParameter("cedula");
             String idArticuloURL = request.getParameter("idArticulo");
-            
+
             int idArticulo = Integer.parseInt(idArticuloURL);
             int cedula_usuario = Integer.parseInt(cedulaUsuario);
-            
+
             articuDao.accesoArticulo(idArticulo, cedula_usuario);
             articuDao.cambiarEstadoRespuestaArticulo("Pendiente", cedula_usuario, idArticulo);
-            
-            
+
             action = "redireccionar";
-        }
-        
-        else if(action.equalsIgnoreCase("remover")){
+        } else if (action.equalsIgnoreCase("remover")) {
             String cedulaUsuario = request.getParameter("cedula");
             String idArticuloURL = request.getParameter("idArticulo");
-            
-            
+
             int idArticulo = Integer.parseInt(idArticuloURL);
             int cedula_usuario = Integer.parseInt(cedulaUsuario);
             String respuesta = "removido";
-            
-            articuDao.cambiarEstadoRespuestaArticulo(respuesta, cedula_usuario, idArticulo );
+
+            articuDao.cambiarEstadoRespuestaArticulo(respuesta, cedula_usuario, idArticulo);
             action = "redireccionar";
-        }
-        
-        else if(action.equalsIgnoreCase("asignar")){
+        } else if (action.equalsIgnoreCase("asignar")) {
             String cedulaUsuario = request.getParameter("cedula");
             String idArticuloURL = request.getParameter("idArticulo");
-            
+
             int idArticulo = Integer.parseInt(idArticuloURL);
             int cedula_usuario = Integer.parseInt(cedulaUsuario);
             String respuesta = "asignado";
-            
-            articuDao.cambiarEstadoRespuestaArticulo(respuesta, cedula_usuario, idArticulo );
+
+            articuDao.cambiarEstadoRespuestaArticulo(respuesta, cedula_usuario, idArticulo);
             action = "redireccionar";
         }
-        
-        if(action.equalsIgnoreCase("redireccionar")){
+
+        if (action.equalsIgnoreCase("redireccionar")) {
             String rolDireccionar = request.getParameter("rolRedireccion");
             int rolDireccion = Integer.parseInt(rolDireccionar);
-            
+
             System.out.println(rolDireccion);
-            if(rolDireccion == 3){
+            if (rolDireccion == 3) {
                 response.sendRedirect(request.getContextPath() + "/Vistas/supervisor_wikis.jsp");
-            }else{
+            } else {
                 response.sendRedirect(request.getContextPath() + "/Vistas/gestor_GestionWikis.jsp");
             }
         }
-    }    
-
-
-    
+    }
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -242,13 +241,13 @@ public class ControladorArticulos extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         processRequest(request, response);
     }
+
     @Override
     public String getServletInfo() {
         return "Short description";

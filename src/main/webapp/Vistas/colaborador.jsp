@@ -24,6 +24,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="css/estilosPropios.css">
+        <link rel="stylesheet" href="Vistas/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="Vistas/css/estilosPropios.css">
         <title>Articulos</title>
     </head>
     <body> 
@@ -68,6 +70,11 @@
             <div>
                 <label name="accion" value="nombreYrol"><%= nombre + " - " + nombreRol%></label>
             </div>
+            
+            <div  class="alinear-centro">
+                <a href="colaboradorWikis.jsp" class="btn btn-primary">Volver</a>
+            </div>
+            
             <div  class="alinear-derecha">
                 <button><a href="../Controlador?accion=cerrarsesion">Cerrar Sesion</a></button>
             </div>
@@ -130,31 +137,29 @@
             <thead class="table-light">
             <td>Id Articulos</td>
             <td>Nombre Articulo</td>
-            <td>Acciones</td>
             </thead>
             <tbody>
-                <%
+                    <%
+                        int valorEntero = (int) request.getAttribute("valorEntero");
 
-                    int valorEntero = (int) request.getAttribute("valorEntero");
+                        ArticulosDao dao = new ArticulosDao();
+                        List<Articulo> lista = dao.obtenerArticulos(valorEntero);
+                        Iterator<Articulo> iter = lista.iterator();
+                        Articulo art = null;
 
-                    ArticulosDao dao = new ArticulosDao();
-                    List<Articulo> lista = dao.obtenerArticulos(valorEntero);
-                    Iterator<Articulo> iter = lista.iterator();
-
-                    Articulo art = null;
-
-                    while (iter.hasNext()) {
-                        art = iter.next();
+                        while (iter.hasNext()) {
+                            art = iter.next();
 
 
-                %>
-                <tr>
-                    <td><%= art.getId()%></td>
-                    <td><a href="#"><%= art.getTitulo()%></a></td>
+                    %>
+                    <tr>
 
-                </tr>
-                <%}%>
-            </tbody>
+                        <td><%= art.getId() %></td>
+                        <td><a href="ControladorArticulos?accion=contenido&id=<%= art.getId()%>"><%= art.getTitulo() %></a></td>
+                        
+                    </tr>   
+                    <%}%>
+                </tbody>
 
         </table>
     </section>

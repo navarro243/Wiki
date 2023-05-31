@@ -104,6 +104,7 @@ public class ControladorNotificaciones extends HttpServlet {
 
         if (action.equalsIgnoreCase("ascenso")) {
 
+            
             mensaje = cedula + " - " + nombre + " Quiere ser " + rolAscender;
 
             notificacion.setEstado(0);
@@ -114,6 +115,7 @@ public class ControladorNotificaciones extends HttpServlet {
             notificacion.setId_Rol(1);
 
             notificacionDao.enviarNotificacionAscenso(notificacion);
+            
         } else if (action.equalsIgnoreCase("ascensoAceptar")) {
             String idNotificacionURL = request.getParameter("id");
             String cedulaURL = request.getParameter("cedula");
@@ -143,11 +145,11 @@ public class ControladorNotificaciones extends HttpServlet {
             articuloDao.actualizarArticulo(idArticulo, contenidoNuevo);
             notificacionDao.cambiarEstadoNotificacion(idNotificacion, 1);
 
-        } else if (action.equalsIgnoreCase("modificacionAceptar")) {
+        } else if (action.equalsIgnoreCase("modificacionRechazar")) {
             String idNotificacionURL = request.getParameter("id");
             int idNotificacion = Integer.parseInt(idNotificacionURL);
 
-            notificacionDao.cambiarEstadoNotificacion(idNotificacion, 1);
+            notificacionDao.cambiarEstadoNotificacion(idNotificacion, 2);
             
         } else if (action.equalsIgnoreCase("ascensoRechazar")) {
             String idNotificacionURL = request.getParameter("id");
@@ -156,6 +158,7 @@ public class ControladorNotificaciones extends HttpServlet {
             notificacionDao.cambiarEstadoNotificacion(idNotificacion, 2);
             response.sendRedirect(acceso);
         }
+        response.sendRedirect(acceso);
     }
 
     @Override

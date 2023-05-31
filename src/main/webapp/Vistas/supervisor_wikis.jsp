@@ -1,7 +1,7 @@
-    <%-- 
-    Document   : supervisor_wikis
-    Created on : 12 may. 2023, 17:20:19
-    Author     : vamil
+<%-- 
+Document   : supervisor_wikis
+Created on : 12 may. 2023, 17:20:19
+Author     : vamil
 --%>
 <%@page import="Modelo.Articulo"%>
 <%@page import="ModeloDAO.ArticulosDao"%>
@@ -88,9 +88,8 @@
                 NotificacionesDao notificacionDao = new NotificacionesDao();
                 Modificacion modificacion = new Modificacion();
                 ArticulosDao articuloDao = new ArticulosDao();
-                
 
-                List<Notificacion> listaNotificaciones = notificacionDao.listarNotificaciones(rol, cedula);
+                List<Notificacion> listaNotificaciones = notificacionDao.NotificacionesSupervisor("Modificacion Articulo", cedula);
                 Iterator<Notificacion> iteradorNotificacion = listaNotificaciones.iterator();
                 Collections.reverse(listaNotificaciones);
 
@@ -98,6 +97,7 @@
 
                 String estado = "";
                 String asunto = "";
+                
 
                 Usuario_articulo usuarioArticulo = new Usuario_articulo();
                 usuarios_articulosDao usuariosArticulosDao = new usuarios_articulosDao();
@@ -111,27 +111,30 @@
 
                 while (iteradorNotificacion.hasNext()) {
                     notificacion = iteradorNotificacion.next();
-                    
+
                     if (notificacion.getAsunto().equals("Ascenso") || notificacion.getAsunto().equals("Nuevo Usuario")) {
                         asunto = "ascenso";
+                        
+                        
                     } else if (notificacion.getAsunto().equals("Modificacion Articulo")) {
                         asunto = "modificacion";
-                        
+
                         for (Usuario_articulo articuloAcceso : listArticulos) {
-                        
+                            boolean notificacionAgregada = false; 
+
                             for (Modificacion recorrerModificacion : listaModificaciones) {
                                 int idModificacion = recorrerModificacion.getId();
                                 int idArticuloModificacion = recorrerModificacion.getId_Articulo();
                                 int idArticuloPermiso = articuloAcceso.getId_Articulo();
                                 int cedulaArticulos = articuloAcceso.getCedula_usuario();
-                                String articuloEstado = articuloAcceso.getEstado();
-                                Articulo idWiki = articuloDao.list(idArticuloPermiso);
 
-                                if (cedula == cedulaArticulos && idArticuloPermiso == idArticuloModificacion && articuloEstado.equals("asignado")) {
+                                if (cedula == cedulaArticulos && idArticuloPermiso == idArticuloModificacion && !notificacionAgregada) {
                                     notificacionesMostradas.add(notificacion);
+                                    notificacionAgregada = true;  
                                 }
                             }
                         }
+
                     }
                 } %>
 
@@ -150,7 +153,7 @@
                 <label class="color-asunto">Asunto - <%= notificacionMostrada.getAsunto()%></label>
                 <p class="text-light"><%= notificacionMostrada.getMensaje()%></p>
 
-                <% if (estado.equals("Pendiente")) {%>
+                <% if (estado.equals("Pendiente" )) {%>
                 <a href="../ControladorNotificaciones?accion=<%=asunto + "Aceptar"%>&id=<%= notificacionMostrada.getId()%>&cedula=<%=notificacionMostrada.getCedula_usuario()%>&modificacion=<%= notificacionMostrada.getId_modificacion()%>" class="btn btn-success">Aceptar</a>
                 <a href="../ControladorNotificaciones?accion=<%=asunto + "Rechazar"%>&id=<%= notificacionMostrada.getId()%>" class="btn btn-danger">Rechazar</a>
                 <a href="../ControladorNotificaciones?accion=<%=asunto + "Descargar"%>&id=<%= notificacionMostrada.getId()%>" class="btn btn-primary">Descargar</a>
@@ -188,7 +191,7 @@
                     %>
                     <tr>
                         <td><%= wikisAcceso.getId()%></td>
-                        <td><a href="../ControladorArticulos?valorEnviado=<%=  String.valueOf(wiki.getId())%>&accion=vista&rol=<%=rol%>"><%= wiki.getNombre()%></a></td>
+                        <td><a href="../ControladorArticulos?valorEnviado=<%=  String.valueOf(wiki.getId())%>&accion=vistaArtSuper&rol=<%=rol%>"><%= wiki.getNombre()%></a></td>
                     </tr>
                     <%
                             }

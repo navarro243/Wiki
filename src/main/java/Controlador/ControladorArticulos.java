@@ -92,8 +92,7 @@ public class ControladorArticulos extends HttpServlet {
             String rol = request.getParameter("rol");
 
             if (rol != null) {
-                
-                
+
                 request.setAttribute("valorEntero", valorEntero);
                 request.getRequestDispatcher(colaborador).forward(request, response);
             } else {
@@ -148,7 +147,7 @@ public class ControladorArticulos extends HttpServlet {
             String ruta = "";
             String idArticulo = request.getParameter("id");
             nomRol = request.getParameter("nomrol");
-            
+
             System.out.println(nomRol);
             System.out.println(idArticulo);
 
@@ -218,29 +217,27 @@ public class ControladorArticulos extends HttpServlet {
 
             articuDao.cambiarEstadoRespuestaArticulo(respuesta, cedula_usuario, idArticulo);
             action = "redireccionar";
-        }
-        
-        else if (action.equalsIgnoreCase("accesoArticuloSupervisor")) {
+        } else if (action.equalsIgnoreCase("accesoArticuloSupervisor")) {
             String idArticuloURL = request.getParameter("idArticulo");
             String id_RolDirigido = request.getParameter("rol");
 
             response.sendRedirect(request.getContextPath() + "/Vistas/listarColaboradores.jsp?idArticulo=" + idArticuloURL + "&rol=" + id_RolDirigido);
-        }
-
-        else if (action.equalsIgnoreCase("removerColaborador")) {
+        } else if (action.equalsIgnoreCase("removerColaborador")) {
             String cedulaUsuario = request.getParameter("cedula");
             String idArticuloURL = request.getParameter("idArticulo");
 
             int idArticulo = Integer.parseInt(idArticuloURL);
             int cedula_usuario = Integer.parseInt(cedulaUsuario);
             String respuesta = "removido";
-            
+
             articuDao.accesoArticulo(idArticulo, cedula_usuario);
             articuDao.cambiarEstadoRespuestaArticulo(respuesta, cedula_usuario, idArticulo);
             action = "redireccionar";
+        } else if (action.equalsIgnoreCase("vistaArtSuper")) {
+            request.setAttribute("valorEntero", valorEntero);
+            request.getRequestDispatcher("Vistas/articulos_supervisor.jsp").forward(request, response);
         }
-        
-        
+
         if (action.equalsIgnoreCase("redireccionar")) {
             String rolDireccionar = request.getParameter("rolRedireccion");
             int rolDireccion = Integer.parseInt(rolDireccionar);

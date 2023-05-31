@@ -104,6 +104,7 @@ Author     : vamil
 
                 List<Usuario_articulo> listArticulos = usuariosArticulosDao.consultarUsuario(cedula);
                 List<Modificacion> listaModificaciones = modificacionDao.consultarModificacion();
+                
 
                 List< Notificacion> notificacionesMostradas = new ArrayList<>();
                 int rolNotificacion;
@@ -132,7 +133,7 @@ Author     : vamil
                                 int idArticuloPermiso = articuloAcceso.getId_Articulo();
                                 int cedulaArticulos = articuloAcceso.getCedula_usuario();
 
-                                if (cedula == cedulaArticulos && idArticuloPermiso == idArticuloModificacion) {
+                                if (cedula == cedulaArticulos && idArticuloPermiso == idArticuloModificacion ) {
                                     notificacionesMostradas.add(notificacion);
                                 }
                             }
@@ -193,7 +194,7 @@ Author     : vamil
                             
                         %>
                         <td><%= usuario_articulo.getId_Articulo()%></td>
-                        <td><a href="ControladorArticulos?accion=contenido&id=<%= usuario_articulo.getId_Articulo()%>"><%= nombreArticulo.getTitulo() %></a></td>
+                        <td><a href="../ControladorArticulos?accion=contenido&id=<%= usuario_articulo.getId_Articulo()%>"><%= nombreArticulo.getTitulo() %></a></td>
 
                         <td><a class="btn btn-success" href="../ControladorArticulos?accion=accesoArticuloSupervisor&idArticulo=<%= usuario_articulo.getId_Articulo()%>&rol=3">Usuarios</a></td>
                         

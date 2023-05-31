@@ -92,11 +92,12 @@
 
                 String estado = "";
                 String asunto = "";
-
+                int rolNotificacion;
                 while (iteradorNotificacion.hasNext()) {
                     notificacion = iteradorNotificacion.next();
                     nombre = usuarioDao.consultarNombre(notificacion.getCedula_usuario());
-                    rol = usuarioDao.consultarRol(notificacion.getCedula_usuario());
+                    rolNotificacion = usuarioDao.consultarRol(notificacion.getCedula_usuario());
+                    System.out.println("Esto es un rol"+rol);
 
                     if (notificacion.getEstado() == 0) {
                         estado = "Pendiente";

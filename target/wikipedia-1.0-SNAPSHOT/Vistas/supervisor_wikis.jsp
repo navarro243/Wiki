@@ -1,8 +1,10 @@
-<%-- 
+    <%-- 
     Document   : supervisor_wikis
     Created on : 12 may. 2023, 17:20:19
     Author     : vamil
 --%>
+<%@page import="Modelo.Articulo"%>
+<%@page import="ModeloDAO.ArticulosDao"%>
 <%@page import="ModeloDAO.ModificacionesDao"%>
 <%@page import="Modelo.Modificacion"%>
 <%@page import="ModeloDAO.usuarios_articulosDao"%>
@@ -85,6 +87,9 @@
                 UsuariosDao usuarioDao = new UsuariosDao();
                 NotificacionesDao notificacionDao = new NotificacionesDao();
                 Modificacion modificacion = new Modificacion();
+                ArticulosDao articuloDao = new ArticulosDao();
+                
+
                 List<Notificacion> listaNotificaciones = notificacionDao.listarNotificaciones(rol, cedula);
                 Iterator<Notificacion> iteradorNotificacion = listaNotificaciones.iterator();
                 Collections.reverse(listaNotificaciones);
@@ -100,35 +105,29 @@
 
                 List<Usuario_articulo> listArticulos = usuariosArticulosDao.consultarUsuario(cedula);
                 List<Modificacion> listaModificaciones = modificacionDao.consultarModificacion();
+                List<Usuario_articulo> listaWikis = usuariosArticulosDao.wikis_usuarios(cedula);
 
                 List< Notificacion> notificacionesMostradas = new ArrayList<>();
-                int rolNotificacion;
+
                 while (iteradorNotificacion.hasNext()) {
                     notificacion = iteradorNotificacion.next();
-                    nombre = usuarioDao.consultarNombre(notificacion.getCedula_usuario());
-                    rolNotificacion = usuarioDao.consultarRol(notificacion.getCedula_usuario());
-
-                    if (notificacion.getEstado() == 0) {
-                        estado = "Pendiente";
-                    } else if (notificacion.getEstado() == 1) {
-                        estado = "Aceptado";
-                    } else if (notificacion.getEstado() == 2) {
-                        estado = "Rechazado";
-                    }
-
+                    
                     if (notificacion.getAsunto().equals("Ascenso") || notificacion.getAsunto().equals("Nuevo Usuario")) {
                         asunto = "ascenso";
                     } else if (notificacion.getAsunto().equals("Modificacion Articulo")) {
                         asunto = "modificacion";
-
+                        
                         for (Usuario_articulo articuloAcceso : listArticulos) {
+                        
                             for (Modificacion recorrerModificacion : listaModificaciones) {
                                 int idModificacion = recorrerModificacion.getId();
                                 int idArticuloModificacion = recorrerModificacion.getId_Articulo();
                                 int idArticuloPermiso = articuloAcceso.getId_Articulo();
                                 int cedulaArticulos = articuloAcceso.getCedula_usuario();
+                                String articuloEstado = articuloAcceso.getEstado();
+                                Articulo idWiki = articuloDao.list(idArticuloPermiso);
 
-                                if (cedula == cedulaArticulos && idArticuloPermiso == idArticuloModificacion) {
+                                if (cedula == cedulaArticulos && idArticuloPermiso == idArticuloModificacion && articuloEstado.equals("asignado")) {
                                     notificacionesMostradas.add(notificacion);
                                 }
                             }
@@ -137,8 +136,13 @@
                 } %>
 
             <% for (Notificacion notificacionMostrada : notificacionesMostradas) {
-                    estado = (notificacionMostrada.getEstado() == 0) ? "Pendiente" : (notificacionMostrada.getEstado() == 1) ? "Aceptado" : "Rechazado";
-                    asunto = (notificacionMostrada.getAsunto().equals("Ascenso") || notificacionMostrada.getAsunto().equals("Nuevo Usuario")) ? "ascenso" : "modificacion";
+                    if (notificacion.getEstado() == 0) {
+                        estado = "Pendiente";
+                    } else if (notificacion.getEstado() == 1) {
+                        estado = "Aceptado";
+                    } else if (notificacion.getEstado() == 2) {
+                        estado = "Rechazado";
+                    }
             %>
 
             <div class="notificaciones">
@@ -184,7 +188,7 @@
                     %>
                     <tr>
                         <td><%= wikisAcceso.getId()%></td>
-                        <td><a href="../ControladorArticulos?valorEnviado=<%=  String.valueOf(wiki.getId())%>&accion=vista&rolUsuario=<%=rol%>"><%= wiki.getNombre()%></a></td>
+                        <td><a href="../ControladorArticulos?valorEnviado=<%=  String.valueOf(wiki.getId())%>&accion=vista&rol=<%=rol%>"><%= wiki.getNombre()%></a></td>
                     </tr>
                     <%
                             }

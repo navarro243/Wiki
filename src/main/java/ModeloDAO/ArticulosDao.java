@@ -164,6 +164,7 @@ public class ArticulosDao {
         } catch (SQLException e) {
             System.out.println(e);
         }
+        System.out.println("iNGRWSO SONC EXITO");
     }
 
     public List listarArticulosAcceso(int cedula) {

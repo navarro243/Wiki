@@ -185,8 +185,8 @@ Author     : vamil
                     %>
                     <tr>
                         <td><%= art.getId()%></td>
-                        <td><a href="#"><%= art.getTitulo()%></a></td>
-                        <td><a class="btn btn-success" href="../ControladorArticulos?accion=accesoArticulo&idArticulo=<%= art.getId()%>&rol=4">Usuarios</a></td>
+                        <td><a href="../ControladorArticulos?accion=contenido&id=<%= art.getId()%>"><%= art.getTitulo() %></a></td>
+                        <td><a class="btn btn-success" href="../ControladorArticulos?accion=accesoArticuloSupervisor&idArticulo=<%= art.getId()%>&rol=3">Usuarios</a></td>
                     </tr>
                     <%
                             }

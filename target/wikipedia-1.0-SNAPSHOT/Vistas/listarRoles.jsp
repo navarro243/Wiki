@@ -30,7 +30,7 @@
         <nav>
             <%
                 String rolDirigido = request.getParameter("rol");
-                
+
                 Cookie[] cookies = request.getCookies();
                 int cedula = 0;
                 String nombre = "";
@@ -145,35 +145,35 @@
                         int rolListar = Integer.parseInt(rolDirigido);
                         String rolListado;
                         String idWiki = request.getParameter("id");
-                        
+
                         UsuariosDao dao = new UsuariosDao();
-                        
+
                         List<Usuario> lista = dao.listarSupervisores(rolListar);
-                        
+
                         Iterator<Usuario> iter = lista.iterator();
-                        
-                        
+
                         Usuario usuario = null;
                         while (iter.hasNext()) {
-                            
+
                             usuario = iter.next();
-                            if(usuario.getId_rol() == 3){
+                            if (usuario.getId_rol() == 3) {
                                 rolListado = "Supervisor";
-                            }else {
+                            } else {
                                 rolListado = "Colaborador";
+                                
                             }
+                            System.out.println("RolActivo" + rolListado);
                     %>
                     <tr>
                         <td><%= usuario.getCedula()%></td>
                         <td><%= usuario.getNombre()%></td>
-                        <td><%= rolListado %></td>
+                        <td><%= rolListado%></td>
                         <td>
-                            <td>
                             <a class="btn btn-info" href="../ControladorWikis?accion=acceso&cedula=<%= usuario.getCedula()%>&idWiki=<%=idWiki%>&rolRedireccion=<%=rol%>">Dar acceso</a>
                             <a class="btn btn-warning" href="../ControladorWikis?accion=asignar&cedula=<%= usuario.getCedula()%>&idWiki=<%=idWiki%>&rolRedireccion=<%=rol%>">Asignar</a>
                             <a class="btn btn-danger" href="../ControladorWikis?accion=remover&cedula=<%= usuario.getCedula()%>&idWiki=<%=idWiki%>&rolRedireccion=<%=rol%>">Remover</a>
                         </td>
-                        </td>
+                        
                     </tr>
                     <%}%>
                 </tbody>

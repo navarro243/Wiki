@@ -219,7 +219,28 @@ public class ControladorArticulos extends HttpServlet {
             articuDao.cambiarEstadoRespuestaArticulo(respuesta, cedula_usuario, idArticulo);
             action = "redireccionar";
         }
+        
+        else if (action.equalsIgnoreCase("accesoArticuloSupervisor")) {
+            String idArticuloURL = request.getParameter("idArticulo");
+            String id_RolDirigido = request.getParameter("rol");
 
+            response.sendRedirect(request.getContextPath() + "/Vistas/listarColaboradores.jsp?idArticulo=" + idArticuloURL + "&rol=" + id_RolDirigido);
+        }
+
+        else if (action.equalsIgnoreCase("removerColaborador")) {
+            String cedulaUsuario = request.getParameter("cedula");
+            String idArticuloURL = request.getParameter("idArticulo");
+
+            int idArticulo = Integer.parseInt(idArticuloURL);
+            int cedula_usuario = Integer.parseInt(cedulaUsuario);
+            String respuesta = "removido";
+            
+            articuDao.accesoArticulo(idArticulo, cedula_usuario);
+            articuDao.cambiarEstadoRespuestaArticulo(respuesta, cedula_usuario, idArticulo);
+            action = "redireccionar";
+        }
+        
+        
         if (action.equalsIgnoreCase("redireccionar")) {
             String rolDireccionar = request.getParameter("rolRedireccion");
             int rolDireccion = Integer.parseInt(rolDireccionar);

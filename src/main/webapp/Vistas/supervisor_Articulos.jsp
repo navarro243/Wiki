@@ -106,11 +106,11 @@ Author     : vamil
                 List<Modificacion> listaModificaciones = modificacionDao.consultarModificacion();
 
                 List< Notificacion> notificacionesMostradas = new ArrayList<>();
-
+                int rolNotificacion;
                 while (iteradorNotificacion.hasNext()) {
                     notificacion = iteradorNotificacion.next();
                     nombre = usuarioDao.consultarNombre(notificacion.getCedula_usuario());
-                    rol = usuarioDao.consultarRol(notificacion.getCedula_usuario());
+                    rolNotificacion = usuarioDao.consultarRol(notificacion.getCedula_usuario());
 
                     if (notificacion.getEstado() == 0) {
                         estado = "Pendiente";
@@ -168,7 +168,7 @@ Author     : vamil
                 <tbody>
                     <%
                         ArticulosDao dao = new ArticulosDao();
-                        List<Articulo> listaArticulosAcceso = dao.listarArticulosAcceso(cedula);
+                        List<Usuario_articulo> listaArticulosAcceso = dao.listarArticulosAcceso(cedula);
 
                         if (listaArticulosAcceso.isEmpty()) {
                     %>
@@ -177,16 +177,18 @@ Author     : vamil
                     </tr>
                     <%
                     } else {
-                        Iterator<Articulo> iter = listaArticulosAcceso.iterator();
+                        Iterator<Usuario_articulo> iter = listaArticulosAcceso.iterator();
                         Articulo art = null;
+                        Usuario_articulo usuario_articulo = null;
 
                         while (iter.hasNext()) {
-                            art = iter.next();
+                            usuario_articulo = iter.next();
+                            
                     %>
                     <tr>
-                        <td><%= art.getId()%></td>
-                        <td><a href="../ControladorArticulos?accion=contenido&id=<%= art.getId()%>"><%= art.getTitulo() %></a></td>
-                        <td><a class="btn btn-success" href="../ControladorArticulos?accion=accesoArticuloSupervisor&idArticulo=<%= art.getId()%>&rol=3">Usuarios</a></td>
+                        <td><%= usuario_articulo.getId_Articulo() %></td>
+                        <td><a href="../ControladorArticulos?accion=contenido>"></a></td>
+                        <td><a class="btn btn-success" href="../ControladorArticulos?accion=accesoArticuloSupervisor&idArticulo=<%= usuario_articulo.getId_Articulo()%>&rol=3">Usuarios</a></td>
                     </tr>
                     <%
                             }

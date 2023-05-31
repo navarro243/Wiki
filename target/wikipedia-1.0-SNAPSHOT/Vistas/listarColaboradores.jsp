@@ -142,13 +142,13 @@
                 </thead>    
                 <tbody>
                     <%
-                        int rolListar = Integer.parseInt(rolDirigido);
+                      
                         String rolListado;
                         String idArticulo = request.getParameter("idArticulo");
 
                         UsuariosDao dao = new UsuariosDao();
 
-                        List<Usuario> lista = dao.listarSupervisores(rolListar);
+                        List<Usuario> lista = dao.listarSupervisores(4);
 
                         Iterator<Usuario> iter = lista.iterator();
 

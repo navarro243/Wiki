@@ -111,7 +111,8 @@ public class ControladorArticulos extends HttpServlet {
                 request.getRequestDispatcher(supervisor).forward(request, response);
 
             }else if(rolInt == 4){
-                
+                request.setAttribute("valorEntero", valorEntero);
+                request.getRequestDispatcher(colaborador ).forward(request, response);
             }
 
         } else if (action.equalsIgnoreCase("vistaSC")) {

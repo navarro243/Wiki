@@ -116,7 +116,7 @@ public class NotificacionesDao {
 
     public List NotificacionesSupervisor(String asunto, int cedula) {
         ArrayList<Notificacion> NotificacionesSupervisor = new ArrayList<>();
-        String sql = "SELECT * FROM notificaciones WHERE asunto= 'Modificacion Articulo' OR cedula_Usuario=" + cedula;
+        String sql = "SELECT * FROM notificaciones WHERE asunto='Modificacion Articulo' OR cedula_Usuario=" + cedula ;
 
         try {
             con = cn.getConnection();

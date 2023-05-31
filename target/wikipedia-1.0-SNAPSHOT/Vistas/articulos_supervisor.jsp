@@ -1,9 +1,8 @@
 <%-- 
-Document   : inicioSesion
-Created on : 9 may. 2023, 22:51:13
-Author     : vamil
+    Document   : articulos_supervisor
+    Created on : 31 may. 2023, 17:08:33
+    Author     : vamil
 --%>
-
 <%@page import="ModeloDAO.ModificacionesDao"%>
 <%@page import="ModeloDAO.usuarios_articulosDao"%>
 <%@page import="Modelo.Usuario_articulo"%>
@@ -15,9 +14,8 @@ Author     : vamil
 <%@page import="Modelo.Articulo"%>
 <%@page import="ModeloDAO.ArticulosDao"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
 <!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -89,6 +87,7 @@ Author     : vamil
                 UsuariosDao usuarioDao = new UsuariosDao();
                 NotificacionesDao notificacionDao = new NotificacionesDao();
                 Modificacion modificacion = new Modificacion();
+
                 List<Notificacion> listaNotificaciones = notificacionDao.listarNotificaciones(rol, cedula);
                 Iterator<Notificacion> iteradorNotificacion = listaNotificaciones.iterator();
                 Collections.reverse(listaNotificaciones);
@@ -107,7 +106,6 @@ Author     : vamil
 
                 List< Notificacion> notificacionesMostradas = new ArrayList<>();
                 int rolNotificacion;
-                
                 while (iteradorNotificacion.hasNext()) {
                     notificacion = iteradorNotificacion.next();
                     nombre = usuarioDao.consultarNombre(notificacion.getCedula_usuario());
@@ -123,28 +121,22 @@ Author     : vamil
 
                     if (notificacion.getAsunto().equals("Ascenso") || notificacion.getAsunto().equals("Nuevo Usuario")) {
                         asunto = "ascenso";
-                        mostrarBoton = false;
                         notificacionesMostradas.add(notificacion);
                     } else if (notificacion.getAsunto().equals("Modificacion Articulo")) {
                         asunto = "modificacion";
-                        
-                        for (Usuario_articulo articuloAcceso : listArticulos) {
-                            boolean notificacionAgregada = false;
-                            
 
+                        for (Usuario_articulo articuloAcceso : listArticulos) {
                             for (Modificacion recorrerModificacion : listaModificaciones) {
                                 int idModificacion = recorrerModificacion.getId();
                                 int idArticuloModificacion = recorrerModificacion.getId_Articulo();
                                 int idArticuloPermiso = articuloAcceso.getId_Articulo();
                                 int cedulaArticulos = articuloAcceso.getCedula_usuario();
 
-                                if (cedula == cedulaArticulos && idArticuloPermiso == idArticuloModificacion && !notificacionAgregada) {
+                                if (cedula == cedulaArticulos && idArticuloPermiso == idArticuloModificacion) {
                                     notificacionesMostradas.add(notificacion);
-                                    notificacionAgregada = true;
                                 }
                             }
                         }
-
                     }
                 } %>
 
@@ -158,68 +150,52 @@ Author     : vamil
                 <label class="color-asunto">Asunto - <%= notificacionMostrada.getAsunto()%></label>
                 <p class="text-light"><%= notificacionMostrada.getMensaje()%></p>
 
-                <%
-                    
-                        if (estado.equals("Pendiente")) {%>
+                <% if (estado.equals("Pendiente")) {%>
                 <a href="../ControladorNotificaciones?accion=<%=asunto + "Aceptar"%>&id=<%= notificacionMostrada.getId()%>&cedula=<%=notificacionMostrada.getCedula_usuario()%>&modificacion=<%= notificacionMostrada.getId_modificacion()%>" class="btn btn-success">Aceptar</a>
                 <a href="../ControladorNotificaciones?accion=<%=asunto + "Rechazar"%>&id=<%= notificacionMostrada.getId()%>" class="btn btn-danger">Rechazar</a>
-
-                <a href="../ControladorDescargaA?accion=descargar&id=<%= notificacionMostrada.getId_modificacion() %>" class="btn btn-primary">Descargar</a>
+                <a href="../ControladorNotificaciones?accion=<%=asunto + "Descargar"%>&id=<%= notificacionMostrada.getId()%>" class="btn btn-primary">Descargar</a>
                 <% }%>
-
             </div>
             <% }%>
         </div>
+
+
+
 
         <section class="wiki-contenedor">
             <table class="table border">
                 <thead class="table-light">
                 <td>Id Articulos</td>
                 <td>Nombre Articulo</td>
-                <td>Accion</td>
+                <td>Acciones</td>
                 </thead>
                 <tbody>
                     <%
-                        ArticulosDao dao = new ArticulosDao();
-                        List<Usuario_articulo> listaArticulosAcceso = dao.listarArticulosAcceso(cedula);
 
-                        if (listaArticulosAcceso.isEmpty()) {
-                    %>
-                    <tr>
-                        <td colspan="3">No se te ha asignado ningun articulo</td>
-                    </tr>
-                    <%
-                    } else {
-                        Iterator<Usuario_articulo> iter = listaArticulosAcceso.iterator();
+                        int valorEntero = (int) request.getAttribute("valorEntero");
+
+                        ArticulosDao dao = new ArticulosDao();
+                        List<Articulo> lista = dao.obtenerArticulos(valorEntero);
+                        Iterator<Articulo> iter = lista.iterator();
                         Articulo art = null;
-                        Usuario_articulo usuario_articulo = null;
 
                         while (iter.hasNext()) {
-                            usuario_articulo = iter.next();
-                            Articulo nombreArticulo = dao.list(usuario_articulo.getId_Articulo());
+                            art = iter.next();
+
 
                     %>
                     <tr>
-                        <%
-                        %>
-                        <td><%= usuario_articulo.getId_Articulo()%></td>
-                        <td><a href="../ControladorArticulos?accion=contenido&id=<%= usuario_articulo.getId_Articulo()%>"><%= nombreArticulo.getTitulo()%></a></td>
 
-                        <td><a class="btn btn-success" href="../ControladorArticulos?accion=accesoArticuloSupervisor&idArticulo=<%= usuario_articulo.getId_Articulo()%>&rol=3">Usuarios</a></td>
+                        <td><%= art.getId()%></td>
+                        <td><a href="ControladorArticulos?accion=contenido&id=<%= art.getId()%>"><%= art.getTitulo()%></a></td>
 
-                    </tr>
-                    <%
+                        <td><a class="btn btn-success" href="ControladorArticulos?accion=accesoArticuloSupervisor&idArticulo=<%= art.getId()%>&rol=3">Usuarios</a></td>
 
-                            }
-                        }
-                    %>
+                    </tr>   
+                    <%}%>
                 </tbody>
-
 
             </table>
         </section>
-
-        <script src="js/bootstrap.min.js"></script>
-        <script src="Vistas/js/bootstrap.min.js"></script>
     </body>
 </html>

@@ -147,7 +147,7 @@
                     </div>
                     <div class="modal-body">
                         <!-- Aquí puedes colocar el enlace o el código necesario para descargar el archivo -->
-                        <a id="downloadLink" href="ControladorDescargaA?archivo=<%=textoModificado%>" download class="btn btn-primary">Descargar</a>
+                        <a id="downloadLink" href="ControladorDescargaA?archivo=<%=textoModificado%>&accion=Actualizar" download class="btn btn-primary">Descargar</a>
                     </div>
                 </div>
             </div>

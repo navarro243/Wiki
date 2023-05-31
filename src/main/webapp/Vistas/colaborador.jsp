@@ -95,11 +95,11 @@
 
                 String estado = "";
                 String asunto = "";
-
+                int rolnoti;
                 while (iteradorNotificacion.hasNext()) {
                     notificacion = iteradorNotificacion.next();
                     nombre = usuarioDao.consultarNombre(notificacion.getCedula_usuario());
-                    rol = usuarioDao.consultarRol(notificacion.getCedula_usuario());
+                    rolnoti = usuarioDao.consultarRol(notificacion.getCedula_usuario());
 
                     if (notificacion.getEstado() == 0) {
                         estado = "Pendiente";
@@ -156,7 +156,7 @@
                     <tr>
 
                         <td><%= art.getId() %></td>
-                        <td><a href="ControladorArticulos?accion=contenido&id=<%= art.getId()%>"><%= art.getTitulo() %></a></td>
+                        <td><a href="ControladorArticulos?accion=contenido&id=<%= art.getId()%>&cedula=<%=cedula%>"><%= art.getTitulo() %></a></td>
                         
                     </tr>   
                     <%}%>

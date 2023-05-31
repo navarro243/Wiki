@@ -163,9 +163,10 @@ Author     : vamil
                         if (estado.equals("Pendiente")) {%>
                 <a href="../ControladorNotificaciones?accion=<%=asunto + "Aceptar"%>&id=<%= notificacionMostrada.getId()%>&cedula=<%=notificacionMostrada.getCedula_usuario()%>&modificacion=<%= notificacionMostrada.getId_modificacion()%>" class="btn btn-success">Aceptar</a>
                 <a href="../ControladorNotificaciones?accion=<%=asunto + "Rechazar"%>&id=<%= notificacionMostrada.getId()%>" class="btn btn-danger">Rechazar</a>
-                <a href="../ControladorNotificaciones?accion=<%=asunto + "Descargar"%>&id=<%= notificacionMostrada.getId()%>" class="btn btn-primary">Descargar</a>
-                <% 
-                    }%>
+
+                <a href="../ControladorDescargaA?accion=descargar&id=<%= notificacionMostrada.getId_modificacion() %>" class="btn btn-primary">Descargar</a>
+                <% }%>
+
             </div>
             <% }%>
         </div>

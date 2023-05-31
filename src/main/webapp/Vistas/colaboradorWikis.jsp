@@ -93,11 +93,12 @@
 
                 String estado = "";
                 String asunto = "";
+                int rolnoti;
 
                 while (iteradorNotificacion.hasNext()) {
                     notificacion = iteradorNotificacion.next();
                     nombre = usuarioDao.consultarNombre(notificacion.getCedula_usuario());
-                    rol = usuarioDao.consultarRol(notificacion.getCedula_usuario());
+                    rolnoti = usuarioDao.consultarRol(notificacion.getCedula_usuario());
 
                     if (notificacion.getEstado() == 0) {
                         estado = "Pendiente";
@@ -149,7 +150,7 @@
                     %>
                     <tr>
                         <td><%= wik.getId()%></td>
-                        <td><a href="../ControladorArticulos?valorEnviado=<%=  String.valueOf(wik.getId())%>&accion=vista&rol=<%= rol %>"><%= wik.getNombre()%></a></td>
+                        <td><a href="../ControladorArticulos?valorEnviado=<%=  String.valueOf(wik.getId())%>&accion=vista&rolUsuario=<%= rol %>"><%= wik.getNombre()%></a></td>
                     </tr>
                     <%
                         }

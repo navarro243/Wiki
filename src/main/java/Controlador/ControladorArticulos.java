@@ -6,7 +6,9 @@
 package Controlador;
 
 import Modelo.Articulo;
+import Modelo.Usuario_articulo;
 import ModeloDAO.ArticulosDao;
+import ModeloDAO.usuarios_articulosDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashSet;
@@ -38,7 +40,7 @@ public class ControladorArticulos extends HttpServlet {
     String registrar = "Vistas/inicioSesion.jsp";
     String colaborador = "Vistas/colaborador.jsp";
     String supervisor = "Vistas/supervisor_Articulos.jsp";
-    String coordinador = "Vistas/coordinador_gestionArticulos.jsp"; 
+    String coordinador = "Vistas/coordinador_gestionArticulos.jsp";
     Articulo articu = new Articulo();
     ArticulosDao articuDao = new ArticulosDao();
     String valorRecibido = "";
@@ -93,7 +95,7 @@ public class ControladorArticulos extends HttpServlet {
             valorEntero = Integer.parseInt(valorRecibido);
             String rol = request.getParameter("rolUsuario");
             int rolInt = Integer.parseInt(rol);
-            System.out.println(rolInt+"**********************");
+            System.out.println(rolInt + "**********************");
             if (rolInt == 5) {
                 request.setAttribute("valorEntero", valorEntero);
                 request.getRequestDispatcher(colaborador).forward(request, response);
@@ -106,13 +108,14 @@ public class ControladorArticulos extends HttpServlet {
                 request.getRequestDispatcher(coordinador).forward(request, response);
 
             } else if (rolInt == 3) {
-               
+
                 request.setAttribute("valorEntero", valorEntero);
                 request.getRequestDispatcher(supervisor).forward(request, response);
 
-            }else if(rolInt == 4){
+            } else if (rolInt == 4) {
+
                 request.setAttribute("valorEntero", valorEntero);
-                request.getRequestDispatcher(colaborador ).forward(request, response);
+                request.getRequestDispatcher(colaborador).forward(request, response);
             }
 
         } else if (action.equalsIgnoreCase("vistaSC")) {
@@ -169,6 +172,7 @@ public class ControladorArticulos extends HttpServlet {
             int valorArticulo = Integer.parseInt(idArticulo);
             Articulo articulo = articuDao.list(valorArticulo);
             System.out.println(articulo.getContenido());
+            String cedula = request.getParameter("cedula");
             if ("Sin cuenta".equals(nomRol)) {
                 if (articulo.getContenido() == null) {
                     ruta = noDisponible;
@@ -181,6 +185,27 @@ public class ControladorArticulos extends HttpServlet {
                     response.setContentType("text/html");
                     try (PrintWriter out = response.getWriter()) {
                         out.println(htmlContent);
+                    }
+                }
+            } else if (cedula != null) {
+                int cedulaNum = Integer.parseInt(cedula);
+                usuarios_articulosDao dao = new usuarios_articulosDao();
+
+                Usuario_articulo usuarioArticulo = dao.consultarPermiso(cedulaNum);
+                String permiso = usuarioArticulo.getEstado();
+                if (permiso.equals("removido")) {
+                    request.setAttribute("valorEntero", valorEntero);
+                    request.getRequestDispatcher(colaborador).forward(request, response);
+                } else {
+                    if (articulo.getContenido() == null) {
+                        ruta = contenido;
+                        request.setAttribute("idArticulo", idArticulo);
+                        request.getRequestDispatcher(ruta).forward(request, response);
+                    } else {
+                        ruta = actualizarContenido;
+                        request.setAttribute("idArticulo", idArticulo);
+                        request.getRequestDispatcher(ruta).forward(request, response);
+
                     }
                 }
             } else {

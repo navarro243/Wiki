@@ -156,7 +156,7 @@
                     <tr>
 
                         <td><%= art.getId() %></td>
-                        <td><a href="ControladorArticulos?accion=contenido&id=<%= art.getId()%>"><%= art.getTitulo() %></a></td>
+                        <td><a href="ControladorArticulos?accion=contenido&id=<%= art.getId()%>&cedula=<%=cedula%>"><%= art.getTitulo() %></a></td>
                         
                     </tr>   
                     <%}%>

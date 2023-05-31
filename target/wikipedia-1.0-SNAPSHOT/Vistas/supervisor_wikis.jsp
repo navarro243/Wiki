@@ -102,11 +102,11 @@
                 List<Modificacion> listaModificaciones = modificacionDao.consultarModificacion();
 
                 List< Notificacion> notificacionesMostradas = new ArrayList<>();
-
+                int rolNotificacion;
                 while (iteradorNotificacion.hasNext()) {
                     notificacion = iteradorNotificacion.next();
                     nombre = usuarioDao.consultarNombre(notificacion.getCedula_usuario());
-                    rol = usuarioDao.consultarRol(notificacion.getCedula_usuario());
+                    rolNotificacion = usuarioDao.consultarRol(notificacion.getCedula_usuario());
 
                     if (notificacion.getEstado() == 0) {
                         estado = "Pendiente";
@@ -183,7 +183,7 @@
                     %>
                     <tr>
                         <td><%= wikisAcceso.getId()%></td>
-                        <td><a href="../ControladorArticulos?valorEnviado=<%=  String.valueOf(wiki.getId())%>&accion=vista&rol=<%=rol%>"><%= wiki.getNombre()%></a></td>
+                        <td><a href="../ControladorArticulos?valorEnviado=<%=  String.valueOf(wiki.getId())%>&accion=vista&rolUsuario=<%=rol%>"><%= wiki.getNombre()%></a></td>
                     </tr>
                     <%
                             }

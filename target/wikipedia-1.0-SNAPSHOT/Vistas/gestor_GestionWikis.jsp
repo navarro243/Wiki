@@ -46,7 +46,7 @@
                         }
                     }
                 }
-
+                
                 switch (rol) {
                     case 1:
                         nombreRol = "Gestor";
@@ -63,6 +63,7 @@
                     default:
                         nombreRol = "Sin cuenta";
                 }
+                System.out.println(rol + nombreRol+ "/////////" )  ;
             %>
             <div>
                 <label name="accion" value="nombreYrol"><%= nombre + " - " + nombreRol%></label>
@@ -72,7 +73,7 @@
                 <a href="#" class="btn btn-primary"data-bs-toggle="modal" data-bs-target="#exampleModal">Nueva Wiki</a>
             </div>
             <div  class="alinear-derecha">
-                <button><a href="../ControlIU?accion=cerrarsesion">Cerrar Sesion</a></button>
+                <button><a href="../Controlador?accion=cerrarsesion">Cerrar Sesion</a></button>
 
             </div>
 
@@ -92,11 +93,11 @@
 
                     String estado = "";
                     String asunto = "";
-
+                    int rolNotificacion;
                     while (iteradorNotificacion.hasNext()) {
                         notificacion = iteradorNotificacion.next();
                         nombre = usuarioDao.consultarNombre(notificacion.getCedula_usuario());
-                        rol = usuarioDao.consultarRol(notificacion.getCedula_usuario());
+                        rolNotificacion = usuarioDao.consultarRol(notificacion.getCedula_usuario());
 
                         if (notificacion.getEstado() == 0) {
                             estado = "Pendiente";
@@ -150,7 +151,7 @@
                     %>
                     <tr>
                         <td><%= wik.getId()%></td>
-                        <td><a href="../ControladorArticulos?valorEnviado=<%=  String.valueOf(wik.getId())%>&accion=vista"><%= wik.getNombre()%></a></td>
+                        <td><a href="../ControladorArticulos?valorEnviado=<%=  String.valueOf(wik.getId())%>&accion=vista&rolUsuario=<%=rol%>"><%= wik.getNombre()%></a></td>
                         <td>
                             <a class="btn btn-warning" href="../ControladorWikis?accion=editar&id=<%= wik.getId()%>">Editar</a>
                             <a class="btn btn-danger" href="../ControladorWikis?accion=eliminar&id=<%= wik.getId()%>">Eliminar</a>

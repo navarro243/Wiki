@@ -37,6 +37,8 @@ public class ControladorArticulos extends HttpServlet {
     String VistaSC = "Vistas/ContenidoSincuenta.jsp";
     String registrar = "Vistas/inicioSesion.jsp";
     String colaborador = "Vistas/colaborador.jsp";
+    String supervisor = "Vistas/supervisor_Articulos.jsp";
+    String coordinador = "Vistas/coordinador_gestionArticulos.jsp"; 
     Articulo articu = new Articulo();
     ArticulosDao articuDao = new ArticulosDao();
     String valorRecibido = "";
@@ -89,16 +91,27 @@ public class ControladorArticulos extends HttpServlet {
         if (action.equalsIgnoreCase("vista")) {
             valorRecibido = request.getParameter("valorEnviado");
             valorEntero = Integer.parseInt(valorRecibido);
-            String rol = request.getParameter("rol");
-
-            if (rol != null) {
-                
-                
+            String rol = request.getParameter("rolUsuario");
+            int rolInt = Integer.parseInt(rol);
+            System.out.println(rolInt+"**********************");
+            if (rolInt == 5) {
                 request.setAttribute("valorEntero", valorEntero);
                 request.getRequestDispatcher(colaborador).forward(request, response);
-            } else {
+            } else if (rolInt == 1) {
+
                 request.setAttribute("valorEntero", valorEntero);
                 request.getRequestDispatcher(vistaG).forward(request, response);
+            } else if (rolInt == 2) {
+                request.setAttribute("valorEntero", valorEntero);
+                request.getRequestDispatcher(coordinador).forward(request, response);
+
+            } else if (rolInt == 3) {
+               
+                request.setAttribute("valorEntero", valorEntero);
+                request.getRequestDispatcher(supervisor).forward(request, response);
+
+            }else if(rolInt == 4){
+                
             }
 
         } else if (action.equalsIgnoreCase("vistaSC")) {
@@ -148,7 +161,7 @@ public class ControladorArticulos extends HttpServlet {
             String ruta = "";
             String idArticulo = request.getParameter("id");
             nomRol = request.getParameter("nomrol");
-            
+
             System.out.println(nomRol);
             System.out.println(idArticulo);
 
@@ -218,29 +231,24 @@ public class ControladorArticulos extends HttpServlet {
 
             articuDao.cambiarEstadoRespuestaArticulo(respuesta, cedula_usuario, idArticulo);
             action = "redireccionar";
-        }
-        
-        else if (action.equalsIgnoreCase("accesoArticuloSupervisor")) {
+        } else if (action.equalsIgnoreCase("accesoArticuloSupervisor")) {
             String idArticuloURL = request.getParameter("idArticulo");
             String id_RolDirigido = request.getParameter("rol");
 
             response.sendRedirect(request.getContextPath() + "/Vistas/listarColaboradores.jsp?idArticulo=" + idArticuloURL + "&rol=" + id_RolDirigido);
-        }
-
-        else if (action.equalsIgnoreCase("removerColaborador")) {
+        } else if (action.equalsIgnoreCase("removerColaborador")) {
             String cedulaUsuario = request.getParameter("cedula");
             String idArticuloURL = request.getParameter("idArticulo");
 
             int idArticulo = Integer.parseInt(idArticuloURL);
             int cedula_usuario = Integer.parseInt(cedulaUsuario);
             String respuesta = "removido";
-            
+
             articuDao.accesoArticulo(idArticulo, cedula_usuario);
             articuDao.cambiarEstadoRespuestaArticulo(respuesta, cedula_usuario, idArticulo);
             action = "redireccionar";
         }
-        
-        
+
         if (action.equalsIgnoreCase("redireccionar")) {
             String rolDireccionar = request.getParameter("rolRedireccion");
             int rolDireccion = Integer.parseInt(rolDireccionar);

@@ -106,11 +106,11 @@ Author     : vamil
                 List<Modificacion> listaModificaciones = modificacionDao.consultarModificacion();
 
                 List< Notificacion> notificacionesMostradas = new ArrayList<>();
-
+                int rolNotificacion;
                 while (iteradorNotificacion.hasNext()) {
                     notificacion = iteradorNotificacion.next();
                     nombre = usuarioDao.consultarNombre(notificacion.getCedula_usuario());
-                    rol = usuarioDao.consultarRol(notificacion.getCedula_usuario());
+                    rolNotificacion = usuarioDao.consultarRol(notificacion.getCedula_usuario());
 
                     if (notificacion.getEstado() == 0) {
                         estado = "Pendiente";
@@ -186,7 +186,7 @@ Author     : vamil
                     <tr>
                         <td><%= art.getId()%></td>
                         <td><a href="../ControladorArticulos?accion=contenido&id=<%= art.getId()%>"><%= art.getTitulo() %></a></td>
-                        <td><a class="btn btn-success" href="../ControladorArticulos?accion=accesoArticuloSupervisor&idArticulo=<%= art.getId()%>&rol=3">Usuarios</a></td>
+                        <td><a class="btn btn-success" href="../ControladorArticulos?accion=accesoArticuloSupervisor&idArticulo=<%= art.getId()%>&rol=4">Usuarios</a></td>
                     </tr>
                     <%
                             }

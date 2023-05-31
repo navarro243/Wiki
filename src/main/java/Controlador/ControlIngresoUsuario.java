@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package Controlador;
 
 import Modelo.Usuario;
@@ -16,10 +12,6 @@ import ModeloDAO.UsuariosDao;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.Cookie;
 
-/**
- *
- * @author user
- */
 @WebServlet(name = "ControlIU", urlPatterns = {"/ControlIU"})
 public class ControlIngresoUsuario extends HttpServlet {
 
@@ -28,7 +20,7 @@ public class ControlIngresoUsuario extends HttpServlet {
     String gestor = "Vistas/gestor_GestionWikis.jsp";
     String coordinador = "Vistas/coordinador_VisualizarWikis.jsp";
     String supervisor = "Vistas/supervisor_wikis.jsp";
-    String colaborador = "Vistas/colaborador.jsp";
+    String colaborador = "Vistas/colaboradorWikis.jsp";
     String vistaSinSesion = "Vistas/vistaGeneral.jsp";
 
     UsuariosDao dao = new UsuariosDao();

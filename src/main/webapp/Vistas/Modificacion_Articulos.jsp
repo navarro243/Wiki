@@ -77,6 +77,7 @@
             </div>
         </nav>
         <div class="notificaciones-contenedor">
+            <a href="../ControladorNotificaciones?accion=ascenso" class="pedirAscenso">Pedir Ascenso</a>
             <h4 class="text-center text-light">Notificaciones</h4>
             <%
                 UsuariosDao usuarioDao = new UsuariosDao();
@@ -130,7 +131,6 @@
             <%
                 if (rol != 1) {
             %>
-            <a href="../ControladorNotificaciones?accion=ascenso" class="pedirAscenso">Pedir Ascenso</a>
             <%}%>
         </div>
 

@@ -9,9 +9,9 @@ public class conexion {
     public conexion(){
         try{
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String URL = "jdbc:sqlserver://LAPTOP-6FL1177R:1433;databaseName=basededatosWiki;trustServerCertificate=true;";
-            String USER = "usuarioSQL";
-            String PASSWORD = "321";
+            String URL = "jdbc:sqlserver://DESKTOP-2CH9L2U;databaseName=basededatosWiki;trustServerCertificate=true;";
+            String USER = "navarro";
+            String PASSWORD = "123";
             con=DriverManager.getConnection(URL, USER, PASSWORD);
               
         }

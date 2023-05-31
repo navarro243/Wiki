@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/user/OneDrive/Pictures/Documents/GitHub/Wiki/Wiki.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="0"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="200"/><column_width id="3" width="4588"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,9:mainarticulos"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="articulos" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="82"/><column index="2" value="88"/><column index="3" value="150"/><column index="4" value="118"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">PRAGMA foreign_keys = ON;
+
+CREATE TABLE IF NOT EXISTS articulos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    titulo TEXT NOT NULL,
+    contenido TEXT,
+    id_Wiki INTEGER
+);
+
+CREATE TABLE IF NOT EXISTS modificaciones (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    descripcionCambio TEXT NOT NULL,
+    contenidoNuevo TEXT NOT NULL,
+    cedula_Usuario INTEGER,
+    id_Articulo INTEGER,
+    FOREIGN KEY (cedula_Usuario) REFERENCES usuarios (cedula),
+    FOREIGN KEY (id_Articulo) REFERENCES articulos (id)
+);
+
+CREATE TABLE IF NOT EXISTS notificaciones (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    estado INTEGER NOT NULL,
+    id_modificacion INTEGER,
+    cedula_Usuario INTEGER,
+    id_Rol INTEGER,
+    asunto TEXT,
+    mensaje TEXT,
+    FOREIGN KEY (id_modificacion) REFERENCES modificaciones (id),
+    FOREIGN KEY (cedula_Usuario) REFERENCES usuarios (cedula),
+    FOREIGN KEY (id_Rol) REFERENCES roles (id)
+);
+
+CREATE TABLE IF NOT EXISTS roles (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nombre TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS usuarios (
+    cedula INTEGER PRIMARY KEY,
+    nombre TEXT NOT NULL,
+    apellido TEXT NOT NULL,
+    id_Rol INTEGER,
+    FOREIGN KEY (id_Rol) REFERENCES roles (id)
+);
+
+CREATE TABLE IF NOT EXISTS usuarios_articulos (
+    cedula_Usuario INTEGER,
+    id_Articulo INTEGER,
+    estado TEXT,
+    FOREIGN KEY (cedula_Usuario) REFERENCES usuarios (cedula),
+    FOREIGN KEY (id_Articulo) REFERENCES articulos (id)
+);
+
+CREATE TABLE IF NOT EXISTS wikis (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nombre TEXT,
+    id_Rol INTEGER,
+    FOREIGN KEY (id_Rol) REFERENCES roles (id)
+);
+
+CREATE TABLE IF NOT EXISTS wikis_usuarios (
+    cedula_usuario INTEGER,
+    id_wiki INTEGER,
+    estado TEXT,
+    FOREIGN KEY (cedula_usuario) REFERENCES usuarios (cedula),
+    FOREIGN KEY (id_wiki) REFERENCES wikis (id)
+);
+</sql><current_tab id="0"/></tab_sql></sqlb_project>

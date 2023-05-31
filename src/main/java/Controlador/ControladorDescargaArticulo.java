@@ -4,8 +4,8 @@
  */
 package Controlador;
 
-import Modelo.Articulo;
-import ModeloDAO.ArticulosDao;
+import Modelo.Modificacion;
+import ModeloDAO.ModificacionesDao;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,6 +27,9 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "ControladorDescargaA", urlPatterns = {"/ControladorDescargaA"})
 @MultipartConfig
 public class ControladorDescargaArticulo extends HttpServlet {
+
+    String action = "";
+    ModificacionesDao dao = new ModificacionesDao();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -66,27 +69,49 @@ public class ControladorDescargaArticulo extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-      String archivo = request.getParameter("archivo");
+        String archivo = request.getParameter("archivo");
+        action = request.getParameter("accion");
+        if (action.equals("Actualizar")) {
+            File file = new File(archivo);
 
+            if (file.exists()) {
+                response.setContentType("application/octet-stream");
+                response.setHeader("Content-Disposition", "attachment; filename=" + archivo);
 
-    File file = new File(archivo);
+                try (InputStream inputStream = new FileInputStream(file); OutputStream outputStream = response.getOutputStream()) {
+                    byte[] buffer = new byte[4096];
+                    int bytesRead;
 
-    if (file.exists()) {
-        response.setContentType("application/octet-stream");
-        response.setHeader("Content-Disposition", "attachment; filename=" + archivo);
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, bytesRead);
+                    }
+                }
+            } else {
+                response.getWriter().println("El archivo no existe.");
+            }
+        } else {
+            String idTxt = request.getParameter("id");
+            int idNum = Integer.parseInt(idTxt);
+            Modificacion consulta = dao.consultarUnaModificacion(idNum);
+            archivo = consulta.getContenidoNuevo();
+            File file = new File(archivo);
 
-        try (InputStream inputStream = new FileInputStream(file);
-             OutputStream outputStream = response.getOutputStream()) {
-            byte[] buffer = new byte[4096];
-            int bytesRead;
+            if (file.exists()) {
+                response.setContentType("application/octet-stream");
+                response.setHeader("Content-Disposition", "attachment; filename=" + archivo);
 
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, bytesRead);
+                try (InputStream inputStream = new FileInputStream(file); OutputStream outputStream = response.getOutputStream()) {
+                    byte[] buffer = new byte[4096];
+                    int bytesRead;
+
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, bytesRead);
+                    }
+                }
+            } else {
+                response.getWriter().println("El archivo no existe.");
             }
         }
-    } else {
-        response.getWriter().println("El archivo no existe.");
-    }
     }
 
     /**

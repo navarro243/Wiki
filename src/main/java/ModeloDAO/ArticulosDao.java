@@ -25,7 +25,7 @@ public class ArticulosDao {
     Connection con;
     Articulo Arti = new Articulo();
 
-    public List obtenerArticulos(int idart) throws SQLException {
+    public List obtenerArticulos(int idart) {
         ArrayList<Articulo> list = new ArrayList<>();
         String sql = "select * from articulos where id_Wiki = " + idart;
         try {
@@ -45,8 +45,8 @@ public class ArticulosDao {
                 }
             }
 
-        } catch (Exception e) {
-
+        } catch (SQLException e) {
+            System.out.println("DAWIDWIAWJDIJ" + e);
         }
         return list;
 
@@ -60,10 +60,7 @@ public class ArticulosDao {
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {
-            System.out.println("*************************************************************************************************");
-            System.out.println(e);
-            System.out.println(artu.getId_Wiki());
-
+            System.out.println("Error al agregar articulo" + e);
         }
 
         return false;
@@ -96,7 +93,6 @@ public class ArticulosDao {
                 Arti.setContenido(rs.getString("contenido"));
             }
         } catch (SQLException e) {
-            System.out.println("*****************************************************************");
             System.out.println(e);
         }
         return Arti;
@@ -134,23 +130,6 @@ public class ArticulosDao {
         }
     }
 
-    public boolean agregarModificacion(String ruta, String descripcion, int cedula, int idArticulo) {
-        String sql = "insert into modificaciones (descripcionCambio, contenidoNuevo, cedula_Usuario,id_Articulo) values ('"+descripcion+"','"+ruta+"','"+cedula+"','"+idArticulo+"') ";
-
-        try {
-            con = cn.getConnection();
-            ps = con.prepareStatement(sql);
-
-            ps.executeUpdate();
-
-            return true;
-        } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
-            return false;
-        }
-       
-    }
-
     public String readHtmlFile(String filePath) throws IOException {
         StringBuilder content = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
@@ -160,6 +139,80 @@ public class ArticulosDao {
             }
         }
         return content.toString();
+    }
+
+    public void cambiarEstadoRespuestaArticulo(String respuesta, int cedula, int idArticulo) {
+        String sql = "UPDATE usuarios_articulos SET estado = '" + respuesta + "' WHERE cedula_Usuario=" + cedula + "AND id_Articulo=" + idArticulo;
+        try {
+            con = cn.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+    }
+
+    public void accesoArticulo(int idArticulo, int cedula_usuario) {
+        String sql = "INSERT INTO usuarios_articulos (cedula_usuario, id_Articulo, estado) VALUES ('" + cedula_usuario + "','" + idArticulo + "','Pendiente')";
+        try {
+            con = cn.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        System.out.println("iNGRWSO SONC EXITO");
+    }
+
+    public List listarArticulosAcceso(int cedula) {
+        ArrayList<Articulo> listaArticulosAcceso = new ArrayList<>();
+        String sql = "SELECT * FROM usuarios_articulos WHERE cedula_usuario = " + cedula + "AND estado = 'asignado'";
+        try {
+            con = cn.getConnection();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Articulo articulo = new Articulo();
+                articulo.setId(rs.getInt("id_Articulo"));
+                articulo.setTitulo("estado");
+
+                listaArticulosAcceso.add(articulo);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("" + e);
+        }
+        return listaArticulosAcceso;
+    }
+
+    public void actualizarArticulo(int idArticulo, String contenido) {
+
+        StringBuilder stringBuilder = new StringBuilder(contenido);
+
+        for (int i = 0; i < stringBuilder.length(); i++) {
+            char letra = stringBuilder.charAt(i);
+            if (letra == '\\') {  // Condición para cambiar el carácter
+                stringBuilder.setCharAt(i, '/');  // Cambiar el carácter a 'x'
+            }
+        }
+
+        String nuevoContenido = stringBuilder.toString();
+        System.out.println("Nuevo contenido" + nuevoContenido);
+        String sql = "UPDATE articulos SET contenido = ? WHERE id = ?";
+        try {
+            con = cn.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, nuevoContenido);  // Parámetro para la nueva ruta del contenido
+            ps.setInt(2, idArticulo);  // Parámetro para el ID del artículo
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("---Error en actualizar Articulo---");
+            System.out.println(e);
+        }
+
     }
 
 }

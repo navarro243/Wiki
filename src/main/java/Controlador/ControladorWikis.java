@@ -63,17 +63,54 @@ public class ControladorWikis extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/Vistas/listarRoles.jsp?id="+ id+"&rol="+id_RolDirigido);
         }
         
-        else if(action.equalsIgnoreCase("asignar")){
+        
+        else if(action.equalsIgnoreCase("acceso")){
             String cedulaUsuario = request.getParameter("cedula");
-            String id = request.getParameter("idWiki");
+            String idWikiURL = request.getParameter("idWiki");
             
-            int idWiki = Integer.parseInt(id);
+            int idArticulo = Integer.parseInt(idWikiURL);
             int cedula_usuario = Integer.parseInt(cedulaUsuario);
             
-            wikiDao.accesoWiki(idWiki, cedula_usuario);
-            wikiDao.cambiarEstadoRespuesta("asignado");
+            wikiDao.accesoWiki(idArticulo, cedula_usuario);
+            wikiDao.cambiarEstadoRespuesta("Pendiente", cedula_usuario, idArticulo);
             
-            response.sendRedirect(request.getContextPath() + "/Vistas/gestor_GestionWikis.jsp");
+            action = "redireccionar";
+        }
+        
+        else if(action.equalsIgnoreCase("asignar")){
+            String cedulaUsuario = request.getParameter("cedula");
+            String idWikiURL = request.getParameter("idWiki");
+            
+            int idArticulo = Integer.parseInt(idWikiURL);
+            int cedula_usuario = Integer.parseInt(cedulaUsuario);
+            String respuesta = "asignado";
+            
+            wikiDao.cambiarEstadoRespuesta(respuesta, cedula_usuario, idArticulo );
+            action = "redireccionar";
+        }
+        
+        else if(action.equalsIgnoreCase("remover")){
+            String cedulaUsuario = request.getParameter("cedula");
+            String idArticuloURL = request.getParameter("idWiki");
+            
+            int idArticulo = Integer.parseInt(idArticuloURL);
+            int cedula_usuario = Integer.parseInt(cedulaUsuario);
+            String respuesta = "removido";
+            
+            wikiDao.cambiarEstadoRespuesta(respuesta, cedula_usuario, idArticulo );
+            action = "redireccionar";
+        }
+        
+        if(action.equalsIgnoreCase("redireccionar")){
+            String rolDireccionar = request.getParameter("rolRedireccion");
+            int rolDireccion = Integer.parseInt(rolDireccionar);
+            
+            System.out.println(rolDireccion);
+            if(rolDireccion == 3){
+                response.sendRedirect(request.getContextPath() + "/Vistas/supervisor_wikis.jsp");
+            }else{
+                response.sendRedirect(request.getContextPath() + "/Vistas/gestor_GestionWikis.jsp");
+            }
         }
     }
     @Override

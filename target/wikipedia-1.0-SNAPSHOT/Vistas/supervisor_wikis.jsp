@@ -3,6 +3,10 @@
     Created on : 12 may. 2023, 17:20:19
     Author     : vamil
 --%>
+<%@page import="ModeloDAO.ModificacionesDao"%>
+<%@page import="Modelo.Modificacion"%>
+<%@page import="ModeloDAO.usuarios_articulosDao"%>
+<%@page import="Modelo.Usuario_articulo"%>
 <%@page import="Modelo.Notificacion"%>
 <%@page import="ModeloDAO.NotificacionesDao"%>
 <%@page import="ModeloDAO.UsuariosDao"%>
@@ -16,9 +20,11 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="Vistas/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="Vistas/css/estilosPropios.css">
         <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" href="css/estilosPropios.css">
-        <title>Gestor</title>
+        <link rel="stylesheet" type="text/css" href="css/estilosPropios.css">
+        <title>Supervisor Wikis</title>
     </head>
     <body>
         <nav>
@@ -40,7 +46,6 @@
                         }
                     }
                 }
-
                 switch (rol) {
                     case 1:
                         nombreRol = "Gestor";
@@ -62,18 +67,24 @@
                 <label name="accion" value="nombreYrol"><%= nombre + " - " + nombreRol%></label>
             </div>
 
+            <div  class="alinear-centro">
+                <a class="btn btn-primary" href="supervisor_Articulos.jsp"">Lista Articulos</a>
+            </div>
+
             <div  class="alinear-derecha">
-                <button><a href="../Controlador?accion=cerrarsesion">Cerrar Sesion</a></button>
+                <button><a href="../ControlIU?accion=cerrarsesion">Cerrar Sesion</a></button>
 
             </div>
 
         </nav>
-
         <div class="notificaciones-contenedor">
+            <a href="../ControladorNotificaciones?accion=ascenso" class="pedirAscenso">Pedir Ascenso</a>
             <h4 class="text-center text-light">Notificaciones</h4>
+            <hr>
             <%
                 UsuariosDao usuarioDao = new UsuariosDao();
                 NotificacionesDao notificacionDao = new NotificacionesDao();
+                Modificacion modificacion = new Modificacion();
                 List<Notificacion> listaNotificaciones = notificacionDao.listarNotificaciones(rol, cedula);
                 Iterator<Notificacion> iteradorNotificacion = listaNotificaciones.iterator();
                 Collections.reverse(listaNotificaciones);
@@ -83,6 +94,15 @@
                 String estado = "";
                 String asunto = "";
 
+                Usuario_articulo usuarioArticulo = new Usuario_articulo();
+                usuarios_articulosDao usuariosArticulosDao = new usuarios_articulosDao();
+                ModificacionesDao modificacionDao = new ModificacionesDao();
+
+                List<Usuario_articulo> listArticulos = usuariosArticulosDao.consultarUsuario(cedula);
+                List<Modificacion> listaModificaciones = modificacionDao.consultarModificacion();
+
+                List< Notificacion> notificacionesMostradas = new ArrayList<>();
+
                 while (iteradorNotificacion.hasNext()) {
                     notificacion = iteradorNotificacion.next();
                     nombre = usuarioDao.consultarNombre(notificacion.getCedula_usuario());
@@ -90,37 +110,48 @@
 
                     if (notificacion.getEstado() == 0) {
                         estado = "Pendiente";
-
                     } else if (notificacion.getEstado() == 1) {
                         estado = "Aceptado";
-
                     } else if (notificacion.getEstado() == 2) {
                         estado = "Rechazado";
                     }
 
                     if (notificacion.getAsunto().equals("Ascenso") || notificacion.getAsunto().equals("Nuevo Usuario")) {
                         asunto = "ascenso";
-
-                    } else if (notificacion.getAsunto().equals("modificacion")) {
+                    } else if (notificacion.getAsunto().equals("Modificacion Articulo")) {
                         asunto = "modificacion";
-                    }
 
+                        for (Usuario_articulo articuloAcceso : listArticulos) {
+                            for (Modificacion recorrerModificacion : listaModificaciones) {
+                                int idModificacion = recorrerModificacion.getId();
+                                int idArticuloModificacion = recorrerModificacion.getId_Articulo();
+                                int idArticuloPermiso = articuloAcceso.getId_Articulo();
+                                int cedulaArticulos = articuloAcceso.getCedula_usuario();
+
+                                if (cedula == cedulaArticulos && idArticuloPermiso == idArticuloModificacion) {
+                                    notificacionesMostradas.add(notificacion);
+                                }
+                            }
+                        }
+                    }
+                } %>
+
+            <% for (Notificacion notificacionMostrada : notificacionesMostradas) {
+                    estado = (notificacionMostrada.getEstado() == 0) ? "Pendiente" : (notificacionMostrada.getEstado() == 1) ? "Aceptado" : "Rechazado";
+                    asunto = (notificacionMostrada.getAsunto().equals("Ascenso") || notificacionMostrada.getAsunto().equals("Nuevo Usuario")) ? "ascenso" : "modificacion";
             %>
+
             <div class="notificaciones">
                 <label class="notificacion-estado-<%=estado%>"><%=estado%></label><br>
-                <label class="color-asunto">Asunto - <%= notificacion.getAsunto()%></label>
-                <p class="text-light"><%= notificacion.getMensaje()%> </p> 
+                <label class="color-asunto">Asunto - <%= notificacionMostrada.getAsunto()%></label>
+                <p class="text-light"><%= notificacionMostrada.getMensaje()%></p>
 
-                <%
-                    if (estado.equals("Pendiente")) {
-                %>
-                <a href="../ControladorNotificaciones?accion=<%=asunto + "Aceptar"%>&id=<%= notificacion.getId()%>&cedula=<%=notificacion.getCedula_usuario()%>" class="btn btn-success">Aceptar</a>
-                <a href="../ControladorNotificaciones?accion=<%=asunto + "Rechazar"%>&id=<%= notificacion.getId()%>" class="btn btn-danger">Rechazar</a>
-                <%}%> 
+                <% if (estado.equals("Pendiente")) {%>
+                <a href="../ControladorNotificaciones?accion=<%=asunto + "Aceptar"%>&id=<%= notificacionMostrada.getId()%>&cedula=<%=notificacionMostrada.getCedula_usuario()%>&modificacion=<%= notificacionMostrada.getId_modificacion()%>" class="btn btn-success">Aceptar</a>
+                <a href="../ControladorNotificaciones?accion=<%=asunto + "Rechazar"%>&id=<%= notificacionMostrada.getId()%>" class="btn btn-danger">Rechazar</a>
+                <% }%>
             </div>
-
-            <%}%>
-            <a href="../ControladorNotificaciones?accion=ascenso" class="pedirAscenso">Pedir Ascenso</a>
+            <% }%>
         </div>
 
         <section class="wiki-contenedor">
@@ -128,31 +159,39 @@
                 <thead class="table-light">
                 <td>Id Wiki</td>
                 <td>Nombre Wiki</td>
-
-
                 </thead>
+
                 <tbody>
                     <%
                         WikisDao dao = new WikisDao();
                         List<Wiki> listaWikisAcceso = dao.listarWikisAcceso(cedula);
-                        
-                        Iterator<Wiki> iter = listaWikisAcceso.iterator();
-                        Wiki wiki = null;
-                        while (iter.hasNext()) {
-                            wiki = iter.next();
-                            int id = wiki.getId();
-                            Wiki wikisAccesos = dao.obtenerWikiAcceso(id);
-                            
+
+                        if (listaWikisAcceso.isEmpty()) {
                     %>
                     <tr>
-                        <td><%= id%></td>
-                        <td><a href="#"><%= wikisAccesos.getNombre() %></a></td>
+                        <td colspan="3">No se te ha asignado ninguna Wiki</td>
                     </tr>
                     <%
+                    } else {
+
+                        Iterator<Wiki> iter = listaWikisAcceso.iterator();
+                        Wiki wikisAcceso = null;
+
+                        while (iter.hasNext()) {
+                            wikisAcceso = iter.next();
+                            Wiki wiki = dao.obtenerWikiAcceso(wikisAcceso.getId());
+                    %>
+                    <tr>
+                        <td><%= wikisAcceso.getId()%></td>
+                        <td><a href="../ControladorArticulos?valorEnviado=<%=  String.valueOf(wiki.getId())%>&accion=vista&rol=<%=rol%>"><%= wiki.getNombre()%></a></td>
+                    </tr>
+                    <%
+                            }
                         }
                     %>
 
                 </tbody>
+            </table>
         </section>
         <script src="js/bootstrap.min.js"></script>
     </body>

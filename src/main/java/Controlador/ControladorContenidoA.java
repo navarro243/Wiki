@@ -1,11 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package Controlador;
 
 import Modelo.Articulo;
-import java.io.BufferedReader;
+import Modelo.Modificacion;
+import Modelo.Notificacion;
 import java.io.PrintWriter;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -16,11 +13,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import ModeloDAO.ArticulosDao;
+import ModeloDAO.ModificacionesDao;
+import ModeloDAO.NotificacionesDao;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -33,6 +33,10 @@ public class ControladorContenidoA extends HttpServlet {
     String idTxt = "";
     int id = 0;
     ArticulosDao cargar = new ArticulosDao();
+    NotificacionesDao notificacionDao = new NotificacionesDao();
+    Notificacion notificacion = new Notificacion();
+    ModificacionesDao modificacionDao = new ModificacionesDao();
+
     Articulo listar = new Articulo();
 
     /**
@@ -109,6 +113,7 @@ public class ControladorContenidoA extends HttpServlet {
         //obtener id del articulo
         idTxt = request.getParameter("id");
         id = Integer.parseInt(idTxt);
+
         listar = cargar.list(id);
         if (listar.getContenido() == null) {
             // Obtiene el archivo enviado en la solicitud
@@ -135,11 +140,12 @@ public class ControladorContenidoA extends HttpServlet {
                     outputStream.write(buffer, 0, bytesRead);
                 }
             }
+
             cargar.agregarRuta(filePath, id);
 
         } else {
             String descripcion = request.getParameter("descripcion");
-            String cedula =request.getParameter("cedula");
+            String cedula = request.getParameter("cedula");
             int cedulaint = Integer.parseInt(cedula);
             // Obtiene el archivo enviado en la solicitud
             Part filePart = request.getPart("file");
@@ -165,18 +171,38 @@ public class ControladorContenidoA extends HttpServlet {
                     outputStream.write(buffer, 0, bytesRead);
                 }
             }
-            cargar.agregarModificacion(filePath, descripcion,cedulaint,id);
+            
 
+            Articulo articulo = cargar.list(id);
+            modificacionDao.agregarModificacion(filePath, descripcion, cedulaint, id);
+            
+            List<Modificacion> listaModificaciones =  modificacionDao.consultarModificacion();
+            String nombre = articulo.getTitulo();
+            System.out.println(nombre);
+            
+            String asunto = "Modificacion Articulo";
+            String mensaje = cedulaint + " Ha propuesto un cambio en el articulo de " + nombre;
+            int idModificacion = 0;
+            for(Modificacion modi : listaModificaciones){
+                idModificacion = modi.getId() ;
+            }
+            System.out.println("Esto es la modificacion de controladorA"+idModificacion);
+            
+            
+            notificacion.setEstado(0);
+            
+            notificacion.setCedula_usuario(cedulaint);
+            notificacion.setId_modificacion(idModificacion);
+            notificacion.setId_Rol(3);
+            notificacion.setAsunto(asunto);
+            notificacion.setMensaje(mensaje);
+
+            
+            notificacionDao.notificacionModificacion(notificacion);
         }
 
     }
 
-// Método para leer el contenido de un archivo HTML
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";

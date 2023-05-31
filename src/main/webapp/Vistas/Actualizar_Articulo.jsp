@@ -17,9 +17,44 @@
 
     <body>
         <nav>
-            <div>
+            <%
+                Cookie[] cookies = request.getCookies();
+                int cedula = 0;
+                String nombre = "";
+                int rol = 0;
+                String nombreRol;
+                if (cookies != null) {
+                    for (Cookie cookie : cookies) {
+                        if (cookie.getName().equals("usuario")) {
+                            String value = cookie.getValue();
+                            String[] values = value.split(":");
 
-                <label></label>
+                            cedula = Integer.parseInt(values[0]);
+                            nombre = values[1];
+                            rol = Integer.parseInt(values[2]);
+                        }
+                    }
+                }
+
+                switch (rol) {
+                    case 1:
+                        nombreRol = "Gestor";
+                        break;
+                    case 2:
+                        nombreRol = "Coordinador";
+                        break;
+                    case 3:
+                        nombreRol = "Supervisor";
+                        break;
+                    case 4:
+                        nombreRol = "Colaborador";
+                        break;
+                    default:
+                        nombreRol = "Sin cuenta";
+                }
+            %>
+            <div>
+                <label name="accion" value="nombreYrol"><%= nombre + " - " + nombreRol%></label>
             </div>
 
             <div class="alinear-centro">
@@ -55,31 +90,13 @@
         <section class="wiki-contenedor">
 
             <%
-                Cookie[] cookies = request.getCookies();
-                int cedula = 0;
-                String nombre = "";
-                int rol = 0;
-                String nombreRol;
-                if (cookies != null) {
-                    for (Cookie cookie : cookies) {
-                        if (cookie.getName().equals("usuario")) {
-                            String value = cookie.getValue();
-                            String[] values = value.split(":");
-
-                            cedula = Integer.parseInt(values[0]);
-                            nombre = values[1];
-                            rol = Integer.parseInt(values[2]);
-                        }
-                    }
-                }
-
                 String idArticuloStr = request.getAttribute("idArticulo").toString();
                 int idArticulo = Integer.parseInt(idArticuloStr);
                 ArticulosDao ArtiDao = new ArticulosDao();
                 Articulo articu = ArtiDao.list(idArticulo);
                 System.out.println("archivo_ruta==" + articu.getContenido());
 
-                String texto =articu.getContenido() ;
+                String texto = articu.getContenido();
                 StringBuilder stringBuilder = new StringBuilder(texto);
 
                 for (int i = 0; i < stringBuilder.length(); i++) {

@@ -92,6 +92,7 @@ public class ArticulosDao {
                 Arti.setId(rs.getInt("id"));
                 Arti.setTitulo(rs.getString("titulo"));
                 Arti.setContenido(rs.getString("contenido"));
+                Arti.setId_Wiki(rs.getInt("id_Wiki"));
             }
         } catch (SQLException e) {
             System.out.println(e);

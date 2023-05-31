@@ -127,7 +127,7 @@ public class ControladorNotificaciones extends HttpServlet {
             int idNotificacion = Integer.parseInt(idNotificacionURL);
 
             notificacionDao.cambiarEstadoNotificacion(idNotificacion, 2);
-            
+
         } else if (action.equalsIgnoreCase("modificacionAceptar")) {
             String idNotificacionURL = request.getParameter("id");
             String idModificacionURL = request.getParameter("modificacion");
@@ -135,21 +135,27 @@ public class ControladorNotificaciones extends HttpServlet {
             int idModificacion = Integer.parseInt(idModificacionURL);
             int idNotificacion = Integer.parseInt(idNotificacionURL);
 
-            Modificacion modificacion  = modificacionDao.consultarUnaModificacion(idModificacion);
-            
+            Modificacion modificacion = modificacionDao.consultarUnaModificacion(idModificacion);
+
             int idArticulo = modificacion.getId_Articulo();
             String contenidoNuevo = modificacion.getContenidoNuevo();
 
             articuloDao.actualizarArticulo(idArticulo, contenidoNuevo);
             notificacionDao.cambiarEstadoNotificacion(idNotificacion, 1);
-            
+
         } else if (action.equalsIgnoreCase("modificacionAceptar")) {
             String idNotificacionURL = request.getParameter("id");
             int idNotificacion = Integer.parseInt(idNotificacionURL);
 
+            notificacionDao.cambiarEstadoNotificacion(idNotificacion, 1);
+            
+        } else if (action.equalsIgnoreCase("ascensoRechazar")) {
+            String idNotificacionURL = request.getParameter("id");
+            int idNotificacion = Integer.parseInt(idNotificacionURL);
+
             notificacionDao.cambiarEstadoNotificacion(idNotificacion, 2);
+            response.sendRedirect(acceso);
         }
-        response.sendRedirect(acceso);
     }
 
     @Override

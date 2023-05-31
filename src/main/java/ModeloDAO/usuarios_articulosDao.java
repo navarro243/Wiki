@@ -36,7 +36,7 @@ public class usuarios_articulosDao {
     }
     
     public List wikis_usuarios(int cedula){
-        String sql = "SELECT * FROM usuarios_articulos WHERE cedula_Usuario="+cedula;
+        String sql = "SELECT * FROM wikis_usuarios WHERE cedula_Usuario="+cedula;
         ArrayList <Usuario_articulo> accesosWikis = new ArrayList <Usuario_articulo>();
         
         try{
@@ -57,6 +57,26 @@ public class usuarios_articulosDao {
         return accesosWikis;
     }
     
+    public Usuario_articulo consultarWiki(int idWiki){
+        String sql = "SELECT * FROM wikis_usuarios WHERE id_wiki="+idWiki;
+        Usuario_articulo wiki = new Usuario_articulo();
+        try{
+            con = cn.getConnection();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                
+                wiki.setCedula_usuario(rs.getInt("cedula_usuario"));
+                wiki.setId_Articulo(rs.getInt("id_wiki"));
+                wiki.setEstado(rs.getString("estado"));
+                
+                
+            }
+        }catch(SQLException e){
+            System.out.println("Error en el consultar permisos de wikis" + e);
+        }
+        return wiki;
+    }
     
     
 }

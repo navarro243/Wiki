@@ -73,7 +73,7 @@
                 <a href="gestor_GestionWikis.jsp" class="btn btn-primary">Volver</a>
             </div>
             <div  class="alinear-derecha">
-                <button><a href="../Controlador?accion=cerrarsesion">Cerrar Sesion</a></button>
+                <button><a href="../ControlIU?accion=cerrarsesion">Cerrar Sesion</a></button>
 
             </div>
 

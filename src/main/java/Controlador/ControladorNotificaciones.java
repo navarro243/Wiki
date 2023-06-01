@@ -114,7 +114,12 @@ public class ControladorNotificaciones extends HttpServlet {
             notificacion.setId_Rol(1);
 
             notificacionDao.enviarNotificacionAscenso(notificacion);
-            
+
+            String referer = request.getHeader("referer");
+
+            // Redirige al usuario a la página anterior
+            response.sendRedirect(referer);
+
         } else if (action.equalsIgnoreCase("ascensoAceptar")) {
             String idNotificacionURL = request.getParameter("id");
             String cedulaURL = request.getParameter("cedula");
@@ -123,12 +128,18 @@ public class ControladorNotificaciones extends HttpServlet {
             cedula = Integer.parseInt(cedulaURL);
 
             usuarioDao.ascenderUsuario(cedula, idNotificacion);
+            String referer = request.getHeader("referer");
+
+            // Redirige al usuario a la página anterior
+            response.sendRedirect(referer);
         } else if (action.equalsIgnoreCase("ascensoRechazar")) {
             String idNotificacionURL = request.getParameter("id");
             int idNotificacion = Integer.parseInt(idNotificacionURL);
 
             notificacionDao.cambiarEstadoNotificacion(idNotificacion, 2);
+            String referer = request.getHeader("referer");
 
+            response.sendRedirect(referer);
         } else if (action.equalsIgnoreCase("modificacionAceptar")) {
             String idNotificacionURL = request.getParameter("id");
             String idModificacionURL = request.getParameter("modificacion");
@@ -143,6 +154,20 @@ public class ControladorNotificaciones extends HttpServlet {
 
             articuloDao.actualizarArticulo(idArticulo, contenidoNuevo);
             notificacionDao.cambiarEstadoNotificacion(idNotificacion, 1);
+            String referer = request.getHeader("referer");
+
+
+            // Redirige al usuario a la página anterior
+            response.sendRedirect(referer);
+        } else if (action.equalsIgnoreCase("modificacionAceptar")) {
+            String idNotificacionURL = request.getParameter("id");
+            int idNotificacion = Integer.parseInt(idNotificacionURL);
+
+            notificacionDao.cambiarEstadoNotificacion(idNotificacion, 1);
+            String referer = request.getHeader("referer");
+
+            // Redirige al usuario a la página anterior
+            response.sendRedirect(referer);
 
         } else if (action.equalsIgnoreCase("modificacionRechazar")) {
             String idNotificacionURL = request.getParameter("id");
@@ -150,6 +175,7 @@ public class ControladorNotificaciones extends HttpServlet {
 
             notificacionDao.cambiarEstadoNotificacion(idNotificacion, 2);
             
+
         } else if (action.equalsIgnoreCase("ascensoRechazar")) {
             String idNotificacionURL = request.getParameter("id");
             int idNotificacion = Integer.parseInt(idNotificacionURL);

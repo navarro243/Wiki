@@ -72,11 +72,13 @@
             </div>
             
             <div  class="alinear-centro">
-                <a href="colaboradorWikis.jsp" class="btn btn-primary">Volver</a>
+                <a href="Vistas/colaboradorWikis.jsp" class="btn btn-primary">Volver</a>
             </div>
             
             <div  class="alinear-derecha">
-                <button><a href="/ControlIU?accion=cerrarsesion">Cerrar Sesion</a></button>
+
+                <button><a href="ControlIU?accion=cerrarsesion">Cerrar Sesion</a></button>
+
 
             </div>
 

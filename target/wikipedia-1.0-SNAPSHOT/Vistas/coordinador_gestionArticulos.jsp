@@ -130,7 +130,7 @@
             </div>
             <%}%>
         </div>
-    </nav>    
+    
 
     <section class="wiki-contenedor">
         <table class="table border">

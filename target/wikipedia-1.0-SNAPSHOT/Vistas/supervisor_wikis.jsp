@@ -98,29 +98,27 @@ Author     : vamil
                 String estado = "";
                 String asunto = "";
 
-                Usuario_articulo usuarioArticulo = new Usuario_articulo();
+                
                 usuarios_articulosDao usuariosArticulosDao = new usuarios_articulosDao();
                 ModificacionesDao modificacionDao = new ModificacionesDao();
 
                 List<Usuario_articulo> listArticulos = usuariosArticulosDao.consultarUsuario(cedula);
                 List<Modificacion> listaModificaciones = modificacionDao.consultarModificacion();
                 List<Usuario_articulo> listaWikis = usuariosArticulosDao.wikis_usuarios(cedula);
-
+                
                 List< Notificacion> notificacionesMostradas = new ArrayList<>();
-                int rolnoti;
                 while (iteradorNotificacion.hasNext()) {
                     notificacion = iteradorNotificacion.next();
-                    rolnoti = usuarioDao.consultarRol(notificacion.getCedula_usuario());
 
                     if (notificacion.getAsunto().equals("Ascenso") || notificacion.getAsunto().equals("Nuevo Usuario")) {
                         asunto = "ascenso";
+                        notificacionesMostradas.add(notificacion);
 
                     } else if (notificacion.getAsunto().equals("Modificacion Articulo")) {
                         asunto = "modificacion";
-
                         for (Usuario_articulo articuloAcceso : listArticulos) {
                             boolean notificacionAgregada = false;
-                            System.out.println("Hola sou el primer fro");
+
                             for (Modificacion recorrerModificacion : listaModificaciones) {
                                 int idModificacion = recorrerModificacion.getId();
                                 int idArticuloModificacion = recorrerModificacion.getId_Articulo();
@@ -130,22 +128,23 @@ Author     : vamil
                                 if (cedula == cedulaArticulos && idArticuloPermiso == idArticuloModificacion && !notificacionAgregada) {
                                     notificacionesMostradas.add(notificacion);
                                     notificacionAgregada = true;
-                                    
                                 }
                             }
                         }
-
                     }
                 } %>
 
             <% for (Notificacion notificacionMostrada : notificacionesMostradas) {
-                    if (notificacion.getEstado() == 0) {
+                    if (notificacionMostrada.getEstado() == 0) {
                         estado = "Pendiente";
-                    } else if (notificacion.getEstado() == 1) {
+
+                    } else if (notificacionMostrada.getEstado() == 1) {
                         estado = "Aceptado";
-                    } else if (notificacion.getEstado() == 2) {
+
+                    } else if (notificacionMostrada.getEstado() == 2) {
                         estado = "Rechazado";
                     }
+                    
             %>
 
             <div class="notificaciones">
@@ -153,14 +152,14 @@ Author     : vamil
                 <label class="color-asunto">Asunto - <%= notificacionMostrada.getAsunto()%></label>
                 <p class="text-light"><%= notificacionMostrada.getMensaje()%></p>
 
-
-                <% if (estado.equals("Pendiente")) {%>
+                
+                <% if (estado.equals("Pendiente") && !notificacionMostrada.getAsunto().equals("Ascenso")) {%>
                 <a href="../ControladorNotificaciones?accion=<%=asunto + "Aceptar"%>&id=<%= notificacionMostrada.getId()%>&cedula=<%=notificacionMostrada.getCedula_usuario()%>&modificacion=<%= notificacionMostrada.getId_modificacion()%>" class="btn btn-success">Aceptar</a>
                 <a href="../ControladorNotificaciones?accion=<%=asunto + "Rechazar"%>&id=<%= notificacionMostrada.getId()%>" class="btn btn-danger">Rechazar</a>
                 <a href="../ControladorDescargaA?accion=descargar&id=<%= notificacionMostrada.getId_modificacion()%>" class="btn btn-primary">Descargar</a>
                 <% }%>
             </div>
-            <% }%>
+                <% System.out.println(notificacionMostrada);}%>
         </div>
 
         <section class="wiki-contenedor">

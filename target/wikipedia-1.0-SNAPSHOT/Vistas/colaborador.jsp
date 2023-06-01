@@ -76,7 +76,7 @@
             </div>
             
             <div  class="alinear-derecha">
-                <button><a href="../wikipedia/Vistas/ControlIU?accion=cerrarsesion">Cerrar Sesion</a></button>
+                <button><a href="/ControlIU?accion=cerrarsesion">Cerrar Sesion</a></button>
 
             </div>
 

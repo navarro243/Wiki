@@ -16,18 +16,20 @@ public class usuarios_articulosDao {
     public List consultarUsuario(int cedula) {
         String sql = "SELECT * FROM usuarios_articulos WHERE cedula_Usuario=" + cedula;
         ArrayList<Usuario_articulo> accesosArticulos = new ArrayList<Usuario_articulo>();
-
+        
         try {
+            
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
                 Usuario_articulo usuarioArticulo = new Usuario_articulo();
-                usuarioArticulo.setCedula_usuario(rs.getInt("cedula_usuario"));
+                usuarioArticulo.setCedula_usuario(rs.getInt("cedula_Usuario"));
                 usuarioArticulo.setId_Articulo(rs.getInt("id_Articulo"));
                 usuarioArticulo.setEstado(rs.getString("estado"));
-
+                System.out.println("chao");
                 accesosArticulos.add(usuarioArticulo);
+                System.out.println("Ingreso a consultarUsuariosArticulos");
             }
         } catch (SQLException e) {
             System.out.println("Error en el consultar permisos de articulos" + e);

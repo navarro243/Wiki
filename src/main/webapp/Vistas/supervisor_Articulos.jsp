@@ -72,7 +72,7 @@ Author     : vamil
             </div>
 
             <div  class="alinear-centro">
-                <a class="btn btn-primary" href="supervisor_wikis.jsp"">Lista Wikis</a>
+                <a class="btn btn-primary" href="Vistas/supervisor_wikis.jsp"">Lista Wikis</a>
             </div>
             <div  class="alinear-derecha">
                 <button><a href="../ControlIU?accion=cerrarsesion">Cerrar Sesion</a></button>
@@ -123,14 +123,13 @@ Author     : vamil
 
                     if (notificacion.getAsunto().equals("Ascenso") || notificacion.getAsunto().equals("Nuevo Usuario")) {
                         asunto = "ascenso";
-                        mostrarBoton = false;
                         notificacionesMostradas.add(notificacion);
+                        
                     } else if (notificacion.getAsunto().equals("Modificacion Articulo")) {
                         asunto = "modificacion";
                         
                         for (Usuario_articulo articuloAcceso : listArticulos) {
                             boolean notificacionAgregada = false;
-                            
 
                             for (Modificacion recorrerModificacion : listaModificaciones) {
                                 int idModificacion = recorrerModificacion.getId();

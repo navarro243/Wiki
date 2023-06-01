@@ -104,7 +104,6 @@ public class ControladorNotificaciones extends HttpServlet {
 
         if (action.equalsIgnoreCase("ascenso")) {
 
-            
             mensaje = cedula + " - " + nombre + " Quiere ser " + rolAscender;
 
             notificacion.setEstado(0);

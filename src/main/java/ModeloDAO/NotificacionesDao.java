@@ -149,7 +149,7 @@ public class NotificacionesDao {
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
         } catch (SQLException e) {
-            System.out.println("Hola COmo estas" + e);
+            System.out.println("Error en notificacion de modificacion" + e);
         }
     }
 }

@@ -97,7 +97,6 @@ Author     : vamil
 
                 String estado = "";
                 String asunto = "";
-                
 
                 Usuario_articulo usuarioArticulo = new Usuario_articulo();
                 usuarios_articulosDao usuariosArticulosDao = new usuarios_articulosDao();
@@ -108,20 +107,20 @@ Author     : vamil
                 List<Usuario_articulo> listaWikis = usuariosArticulosDao.wikis_usuarios(cedula);
 
                 List< Notificacion> notificacionesMostradas = new ArrayList<>();
-
+                int rolnoti;
                 while (iteradorNotificacion.hasNext()) {
                     notificacion = iteradorNotificacion.next();
+                    rolnoti = usuarioDao.consultarRol(notificacion.getCedula_usuario());
 
                     if (notificacion.getAsunto().equals("Ascenso") || notificacion.getAsunto().equals("Nuevo Usuario")) {
                         asunto = "ascenso";
-                        
-                        
+
                     } else if (notificacion.getAsunto().equals("Modificacion Articulo")) {
                         asunto = "modificacion";
 
                         for (Usuario_articulo articuloAcceso : listArticulos) {
-                            boolean notificacionAgregada = false; 
-
+                            boolean notificacionAgregada = false;
+                            System.out.println("Hola sou el primer fro");
                             for (Modificacion recorrerModificacion : listaModificaciones) {
                                 int idModificacion = recorrerModificacion.getId();
                                 int idArticuloModificacion = recorrerModificacion.getId_Articulo();
@@ -130,7 +129,8 @@ Author     : vamil
 
                                 if (cedula == cedulaArticulos && idArticuloPermiso == idArticuloModificacion && !notificacionAgregada) {
                                     notificacionesMostradas.add(notificacion);
-                                    notificacionAgregada = true;  
+                                    notificacionAgregada = true;
+                                    
                                 }
                             }
                         }
@@ -153,10 +153,11 @@ Author     : vamil
                 <label class="color-asunto">Asunto - <%= notificacionMostrada.getAsunto()%></label>
                 <p class="text-light"><%= notificacionMostrada.getMensaje()%></p>
 
-                <% if (estado.equals("Pendiente" )) {%>
+
+                <% if (estado.equals("Pendiente")) {%>
                 <a href="../ControladorNotificaciones?accion=<%=asunto + "Aceptar"%>&id=<%= notificacionMostrada.getId()%>&cedula=<%=notificacionMostrada.getCedula_usuario()%>&modificacion=<%= notificacionMostrada.getId_modificacion()%>" class="btn btn-success">Aceptar</a>
                 <a href="../ControladorNotificaciones?accion=<%=asunto + "Rechazar"%>&id=<%= notificacionMostrada.getId()%>" class="btn btn-danger">Rechazar</a>
-                <a href="../ControladorDescargaA?accion=descargar&id=<%= notificacionMostrada.getId_modificacion() %>" class="btn btn-primary">Descargar</a>
+                <a href="../ControladorDescargaA?accion=descargar&id=<%= notificacionMostrada.getId_modificacion()%>" class="btn btn-primary">Descargar</a>
                 <% }%>
             </div>
             <% }%>

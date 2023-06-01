@@ -72,7 +72,7 @@ public class ControladorWikis extends HttpServlet {
             int cedula_usuario = Integer.parseInt(cedulaUsuario);
             
             wikiDao.accesoWiki(idArticulo, cedula_usuario);
-            wikiDao.cambiarEstadoRespuesta("Pendiente", cedula_usuario, idArticulo);
+            wikiDao.cambiarEstadoRespuesta("asignado", cedula_usuario, idArticulo);
             
             action = "redireccionar";
         }

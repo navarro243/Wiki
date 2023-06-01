@@ -156,7 +156,6 @@ public class ControladorNotificaciones extends HttpServlet {
             notificacionDao.cambiarEstadoNotificacion(idNotificacion, 1);
             String referer = request.getHeader("referer");
 
-
             // Redirige al usuario a la página anterior
             response.sendRedirect(referer);
         } else if (action.equalsIgnoreCase("modificacionAceptar")) {
@@ -174,7 +173,11 @@ public class ControladorNotificaciones extends HttpServlet {
             int idNotificacion = Integer.parseInt(idNotificacionURL);
 
             notificacionDao.cambiarEstadoNotificacion(idNotificacion, 2);
-            
+
+            String referer = request.getHeader("referer");
+
+            // Redirige al usuario a la página anterior
+            response.sendRedirect(referer);
 
         } else if (action.equalsIgnoreCase("ascensoRechazar")) {
             String idNotificacionURL = request.getParameter("id");
@@ -183,7 +186,7 @@ public class ControladorNotificaciones extends HttpServlet {
             notificacionDao.cambiarEstadoNotificacion(idNotificacion, 2);
             response.sendRedirect(acceso);
         }
-        response.sendRedirect(acceso);
+        
     }
 
     @Override

@@ -73,7 +73,7 @@
                 <a href="#" class="btn btn-primary"data-bs-toggle="modal" data-bs-target="#exampleModal">Nueva Wiki</a>
             </div>
             <div  class="alinear-derecha">
-                <button><a href="../Controlador?accion=cerrarsesion">Cerrar Sesion</a></button>
+                <button><a href="../ControlIU?accion=cerrarsesion">Cerrar Sesion</a></button>
 
             </div>
 

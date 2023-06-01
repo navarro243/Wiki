@@ -171,36 +171,36 @@ public class ControladorContenidoA extends HttpServlet {
                     outputStream.write(buffer, 0, bytesRead);
                 }
             }
-            
 
             Articulo articulo = cargar.list(id);
             modificacionDao.agregarModificacion(filePath, descripcion, cedulaint, id);
-            
-            List<Modificacion> listaModificaciones =  modificacionDao.consultarModificacion();
+
+            List<Modificacion> listaModificaciones = modificacionDao.consultarModificacion();
             String nombre = articulo.getTitulo();
             System.out.println(nombre);
-            
+
             String asunto = "Modificacion Articulo";
             String mensaje = cedulaint + " Ha propuesto un cambio en el articulo de " + nombre;
             int idModificacion = 0;
-            for(Modificacion modi : listaModificaciones){
-                idModificacion = modi.getId() ;
+            for (Modificacion modi : listaModificaciones) {
+                idModificacion = modi.getId();
             }
-            System.out.println("Esto es la modificacion de controladorA"+idModificacion);
-            
-            
+            System.out.println("Esto es la modificacion de controladorA" + idModificacion);
+
             notificacion.setEstado(0);
-            
+
             notificacion.setCedula_usuario(cedulaint);
             notificacion.setId_modificacion(idModificacion);
             notificacion.setId_Rol(3);
             notificacion.setAsunto(asunto);
             notificacion.setMensaje(mensaje);
 
-            
             notificacionDao.notificacionModificacion(notificacion);
         }
+        String referer = request.getHeader("referer");
 
+        // Redirige al usuario a la página anterior
+        response.sendRedirect(referer);
     }
 
     @Override

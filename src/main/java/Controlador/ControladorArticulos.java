@@ -136,6 +136,10 @@ public class ControladorArticulos extends HttpServlet {
             articu.setId_Wiki(valorEntero);
 
             articuDao.agregarArticulo(articu);
+            String referer = request.getHeader("referer");
+
+            // Redirige al usuario a la página anterior
+            response.sendRedirect(referer);
 
         } else if (action.equalsIgnoreCase("eliminar")) {
             id = Integer.parseInt(request.getParameter("id"));
@@ -193,11 +197,8 @@ public class ControladorArticulos extends HttpServlet {
 
                 Usuario_articulo usuarioArticulo = dao.consultarPermiso(cedulaNum);
                 String permiso = usuarioArticulo.getEstado();
-                if (permiso.equals("removido")) {
-                    request.setAttribute("valorEntero", valorEntero);
-                    request.getRequestDispatcher(colaborador).forward(request, response);
-                } else {
-                    if (articulo.getContenido() == null) {
+                if (usuarioArticulo.getEstado() ==null) {
+                   if (articulo.getContenido() == null) {
                         ruta = contenido;
                         request.setAttribute("idArticulo", idArticulo);
                         request.getRequestDispatcher(ruta).forward(request, response);
@@ -207,6 +208,9 @@ public class ControladorArticulos extends HttpServlet {
                         request.getRequestDispatcher(ruta).forward(request, response);
 
                     }
+                } else if(permiso.equals("removido")) {
+                    request.setAttribute("valorEntero", valorEntero);
+                    request.getRequestDispatcher(colaborador).forward(request, response);
                 }
             } else {
                 if (articulo.getContenido() == null) {

@@ -4,6 +4,8 @@
     Author     : vamil
 --%>
 
+<%@page import="ModeloDAO.ArticulosDao"%>
+<%@page import="Modelo.Modificacion"%>
 <%@page import="ModeloDAO.UsuariosDao"%>
 <%@page import="java.util.*"%>
 <%@page import="Modelo.Wiki"%>

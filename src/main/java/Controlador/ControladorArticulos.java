@@ -199,8 +199,8 @@ public class ControladorArticulos extends HttpServlet {
 
                 Usuario_articulo usuarioArticulo = dao.consultarPermiso(cedulaNum);
                 String permiso = usuarioArticulo.getEstado();
-                if (usuarioArticulo.getEstado() ==null) {
-                   if (articulo.getContenido() == null) {
+                if (usuarioArticulo.getEstado() == null) {
+                    if (articulo.getContenido() == null) {
                         ruta = contenido;
                         request.setAttribute("idArticulo", idArticulo);
                         request.getRequestDispatcher(ruta).forward(request, response);
@@ -210,9 +210,25 @@ public class ControladorArticulos extends HttpServlet {
                         request.getRequestDispatcher(ruta).forward(request, response);
 
                     }
-                } else if(permiso.equals("removido")) {
-                    request.setAttribute("valorEntero", valorEntero);
-                    request.getRequestDispatcher(colaborador).forward(request, response);
+                } else if (permiso.equals("removido")) {
+                    String idTxt = request.getParameter("id");
+                    int idnum = Integer.parseInt(idTxt);
+                    if (usuarioArticulo.getId_Articulo() == idnum) {
+                        request.setAttribute("valorEntero", valorEntero);
+                        request.getRequestDispatcher(colaborador).forward(request, response);
+                    } else {
+                        if (articulo.getContenido() == null) {
+                            ruta = contenido;
+                            request.setAttribute("idArticulo", idArticulo);
+                            request.getRequestDispatcher(ruta).forward(request, response);
+                        } else {
+                            ruta = actualizarContenido;
+                            request.setAttribute("idArticulo", idArticulo);
+                            request.getRequestDispatcher(ruta).forward(request, response);
+
+                        }
+                    }
+
                 }
             } else {
                 if (articulo.getContenido() == null) {

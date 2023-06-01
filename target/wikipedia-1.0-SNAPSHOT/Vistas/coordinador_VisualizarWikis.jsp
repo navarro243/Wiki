@@ -4,6 +4,10 @@
     Author     : vamil
 --%>
 
+<%@page import="ModeloDAO.ModificacionesDao"%>
+<%@page import="Modelo.Articulo"%>
+<%@page import="ModeloDAO.usuarios_articulosDao"%>
+<%@page import="Modelo.Usuario_articulo"%>
 <%@page import="ModeloDAO.ArticulosDao"%>
 <%@page import="Modelo.Modificacion"%>
 <%@page import="ModeloDAO.UsuariosDao"%>
@@ -67,12 +71,10 @@
                 <label name="accion" value="nombreYrol"><%= nombre +" - "+ nombreRol%></label>
             </div>
 
-            <div  class="alinear-centro">
-                <a href="#" class="btn btn-primary"data-bs-toggle="modal" data-bs-target="#exampleModal">Nueva Wiki</a>
-            </div>
+
 
             <div  class="alinear-derecha">
-                <button><a href="../Controlador?accion=cerrarsesion">Cerrar Sesion</a></button>
+                <button><a href="../ControlIU?accion=cerrarsesion">Cerrar Sesion</a></button>
             </div>
         </nav>
 
@@ -161,7 +163,7 @@
                 <thead class="table-light">
                 <td>Id Articulos</td>
                 <td>Nombre Articulo</td>
-                <td>Acciones</td>
+              
                 </thead>
                 <tbody>
                     <%
@@ -174,10 +176,8 @@
                     %>
                     <tr>
                         <td><%= wik.getId()%></td>
-                        <td><a href="gestor_gestionArticulos.jsp"><%= wik.getNombre()%></a></td>
-                        <td>
-                            <a class="btn btn-warning" href="../ControladorWikis?accion=editar&id=<%= wik.getId()%>">Editar</a>
-                        </td>
+                        <td><a href="../ControladorArticulos?valorEnviado=<%=  String.valueOf(wik.getId())%>&accion=vista&rolUsuario=<%=rol%>"><%= wik.getNombre()%></a></td>
+                        
                     </tr>
                     <%}%>
                 </tbody>

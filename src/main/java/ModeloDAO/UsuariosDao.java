@@ -48,8 +48,8 @@ public class UsuariosDao {
 
     public Usuario MostrarUsuario(int cedula) {
 
-        String sql = "SELECT * FROM usuarios  ";
-        Usuario u = new Usuario();
+        String sql = "SELECT * FROM usuarios WHERE cedula=" + cedula;
+        Usuario usuario = new Usuario();
         try {
 
             con = cn.getConnection();
@@ -58,17 +58,17 @@ public class UsuariosDao {
             rs = ps.executeQuery();
             while (rs.next()) {
                 if (cedula == rs.getInt("cedula")) {
-                    u.setCedula(rs.getInt("cedula"));
-                    u.setNombre(rs.getString("nombre"));
-                    u.setApellido(rs.getString("apellido"));
-                    u.setId_rol(rs.getInt("id_Rol"));
+                    usuario.setNombre(rs.getString("nombre"));
+                    usuario.setCedula(rs.getInt("cedula"));
+                    usuario.setApellido(rs.getString("apellido"));
+                    usuario.setId_rol(rs.getInt("id_Rol"));
                 }
             }
 
         } catch (Exception e) {
             // Manejar la excepción apropiadamente
         }
-        return u;
+        return usuario;
     }
 
     public int consultarRol(int cedula) {

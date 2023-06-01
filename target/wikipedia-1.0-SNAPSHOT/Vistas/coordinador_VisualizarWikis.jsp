@@ -78,85 +78,59 @@
             </div>
         </nav>
 
-        <div class="notificaciones-contenedor">
+        
+            <div class="notificaciones-contenedor">
             <a href="../ControladorNotificaciones?accion=ascenso" class="pedirAscenso">Pedir Ascenso</a>
             <h4 class="text-center text-light">Notificaciones</h4>
-            <hr>
             <%
                 UsuariosDao usuarioDao = new UsuariosDao();
                 NotificacionesDao notificacionDao = new NotificacionesDao();
-                Modificacion modificacion = new Modificacion();
-                ArticulosDao articuloDao = new ArticulosDao();
-                
-
                 List<Notificacion> listaNotificaciones = notificacionDao.listarNotificaciones(rol, cedula);
                 Iterator<Notificacion> iteradorNotificacion = listaNotificaciones.iterator();
                 Collections.reverse(listaNotificaciones);
-
                 Notificacion notificacion = null;
 
                 String estado = "";
                 String asunto = "";
 
-                Usuario_articulo usuarioArticulo = new Usuario_articulo();
-                usuarios_articulosDao usuariosArticulosDao = new usuarios_articulosDao();
-                ModificacionesDao modificacionDao = new ModificacionesDao();
-
-                List<Usuario_articulo> listArticulos = usuariosArticulosDao.consultarUsuario(cedula);
-                List<Modificacion> listaModificaciones = modificacionDao.consultarModificacion();
-                List<Usuario_articulo> listaWikis = usuariosArticulosDao.wikis_usuarios(cedula);
-
-                List< Notificacion> notificacionesMostradas = new ArrayList<>();
-
                 while (iteradorNotificacion.hasNext()) {
                     notificacion = iteradorNotificacion.next();
-                    
-                    if (notificacion.getAsunto().equals("Ascenso") || notificacion.getAsunto().equals("Nuevo Usuario")) {
-                        asunto = "ascenso";
-                    } else if (notificacion.getAsunto().equals("Modificacion Articulo")) {
-                        asunto = "modificacion";
-                        
-                        for (Usuario_articulo articuloAcceso : listArticulos) {
-                        
-                            for (Modificacion recorrerModificacion : listaModificaciones) {
-                                int idModificacion = recorrerModificacion.getId();
-                                int idArticuloModificacion = recorrerModificacion.getId_Articulo();
-                                int idArticuloPermiso = articuloAcceso.getId_Articulo();
-                                int cedulaArticulos = articuloAcceso.getCedula_usuario();
-                                String articuloEstado = articuloAcceso.getEstado();
-                                Articulo idWiki = articuloDao.list(idArticuloPermiso);
+                    nombre = usuarioDao.consultarNombre(notificacion.getCedula_usuario());
+                    rol = usuarioDao.consultarRol(notificacion.getCedula_usuario());
 
-                                if (cedula == cedulaArticulos && idArticuloPermiso == idArticuloModificacion && articuloEstado.equals("asignado")) {
-                                    notificacionesMostradas.add(notificacion);
-                                }
-                            }
-                        }
-                    }
-                } %>
-
-            <% for (Notificacion notificacionMostrada : notificacionesMostradas) {
                     if (notificacion.getEstado() == 0) {
                         estado = "Pendiente";
+
                     } else if (notificacion.getEstado() == 1) {
                         estado = "Aceptado";
+
                     } else if (notificacion.getEstado() == 2) {
                         estado = "Rechazado";
                     }
-            %>
 
+                    if (notificacion.getAsunto().equals("Ascenso") || notificacion.getAsunto().equals("Nuevo Usuario")) {
+                        asunto = "ascenso";
+
+                    } else if (notificacion.getAsunto().equals("modificacion")) {
+                        asunto = "modificacion";
+                    }
+
+            %>
             <div class="notificaciones">
                 <label class="notificacion-estado-<%=estado%>"><%=estado%></label><br>
-                <label class="color-asunto">Asunto - <%= notificacionMostrada.getAsunto()%></label>
-                <p class="text-light"><%= notificacionMostrada.getMensaje()%></p>
+                <label class="color-asunto">Asunto - <%= notificacion.getAsunto()%></label>
+                <p class="text-light"><%= notificacion.getMensaje()%> </p> 
 
-                <% if (estado.equals("Pendiente")) {%>
-                <a href="../ControladorNotificaciones?accion=<%=asunto + "Aceptar"%>&id=<%= notificacionMostrada.getId()%>&cedula=<%=notificacionMostrada.getCedula_usuario()%>&modificacion=<%= notificacionMostrada.getId_modificacion()%>" class="btn btn-success">Aceptar</a>
-                <a href="../ControladorNotificaciones?accion=<%=asunto + "Rechazar"%>&id=<%= notificacionMostrada.getId()%>" class="btn btn-danger">Rechazar</a>
-                <a href="../ControladorDescargaA?accion=descargar&id=<%= notificacionMostrada.getId_modificacion() %>" class="btn btn-primary">Descargar</a>
-                <% }%>
+                <%
+                    if (estado.equals("Pendiente") && rol != 2) {
+                %>
+                <a href="../ControladorNotificaciones?accion=<%=asunto + "Aceptar"%>&id=<%= notificacion.getId()%>&cedula=<%=notificacion.getCedula_usuario()%>" class="btn btn-success">Aceptar</a>
+                <a href="../ControladorNotificaciones?accion=<%=asunto + "Rechazar"%>&id=<%= notificacion.getId()%>" class="btn btn-danger">Rechazar</a>
+                <%}%> 
             </div>
-            <% }%>
+            <%}%>
         </div>
+            
 
         <section class="wiki-contenedor">
             <table class="table border">

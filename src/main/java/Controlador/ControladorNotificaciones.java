@@ -103,7 +103,8 @@ public class ControladorNotificaciones extends HttpServlet {
         }
 
         if (action.equalsIgnoreCase("ascenso")) {
-
+            
+            int rolDirigido;
             mensaje = cedula + " - " + nombre + " Quiere ser " + rolAscender;
 
             notificacion.setEstado(0);
@@ -111,7 +112,15 @@ public class ControladorNotificaciones extends HttpServlet {
             notificacion.setMensaje(mensaje);
             notificacion.setId_modificacion(0);
             notificacion.setCedula_usuario(cedula);
-            notificacion.setId_Rol(1);
+            
+            usuario = usuarioDao.MostrarUsuario(cedula);
+            
+            if(usuario.getId_rol() == 4){
+                rolDirigido = 2;
+            }else{
+                rolDirigido = 1;
+            }
+            notificacion.setId_Rol(rolDirigido);
 
             notificacionDao.enviarNotificacionAscenso(notificacion);
 
@@ -156,7 +165,6 @@ public class ControladorNotificaciones extends HttpServlet {
             notificacionDao.cambiarEstadoNotificacion(idNotificacion, 1);
             String referer = request.getHeader("referer");
 
-
             // Redirige al usuario a la página anterior
             response.sendRedirect(referer);
         } else if (action.equalsIgnoreCase("modificacionAceptar")) {
@@ -174,7 +182,11 @@ public class ControladorNotificaciones extends HttpServlet {
             int idNotificacion = Integer.parseInt(idNotificacionURL);
 
             notificacionDao.cambiarEstadoNotificacion(idNotificacion, 2);
-            
+
+            String referer = request.getHeader("referer");
+
+            // Redirige al usuario a la página anterior
+            response.sendRedirect(referer);
 
         } else if (action.equalsIgnoreCase("ascensoRechazar")) {
             String idNotificacionURL = request.getParameter("id");
@@ -183,7 +195,7 @@ public class ControladorNotificaciones extends HttpServlet {
             notificacionDao.cambiarEstadoNotificacion(idNotificacion, 2);
             response.sendRedirect(acceso);
         }
-        response.sendRedirect(acceso);
+        
     }
 
     @Override

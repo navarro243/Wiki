@@ -104,6 +104,7 @@ public class ControladorNotificaciones extends HttpServlet {
 
         if (action.equalsIgnoreCase("ascenso")) {
 
+            
             mensaje = cedula + " - " + nombre + " Quiere ser " + rolAscender;
 
             notificacion.setEstado(0);
@@ -114,10 +115,12 @@ public class ControladorNotificaciones extends HttpServlet {
             notificacion.setId_Rol(1);
 
             notificacionDao.enviarNotificacionAscenso(notificacion);
+
             String referer = request.getHeader("referer");
 
             // Redirige al usuario a la página anterior
             response.sendRedirect(referer);
+
         } else if (action.equalsIgnoreCase("ascensoAceptar")) {
             String idNotificacionURL = request.getParameter("id");
             String cedulaURL = request.getParameter("cedula");
@@ -154,6 +157,7 @@ public class ControladorNotificaciones extends HttpServlet {
             notificacionDao.cambiarEstadoNotificacion(idNotificacion, 1);
             String referer = request.getHeader("referer");
 
+
             // Redirige al usuario a la página anterior
             response.sendRedirect(referer);
         } else if (action.equalsIgnoreCase("modificacionAceptar")) {
@@ -165,6 +169,14 @@ public class ControladorNotificaciones extends HttpServlet {
 
             // Redirige al usuario a la página anterior
             response.sendRedirect(referer);
+
+        } else if (action.equalsIgnoreCase("modificacionRechazar")) {
+            String idNotificacionURL = request.getParameter("id");
+            int idNotificacion = Integer.parseInt(idNotificacionURL);
+
+            notificacionDao.cambiarEstadoNotificacion(idNotificacion, 2);
+            
+
         } else if (action.equalsIgnoreCase("ascensoRechazar")) {
             String idNotificacionURL = request.getParameter("id");
             int idNotificacion = Integer.parseInt(idNotificacionURL);
@@ -172,6 +184,7 @@ public class ControladorNotificaciones extends HttpServlet {
             notificacionDao.cambiarEstadoNotificacion(idNotificacion, 2);
             response.sendRedirect(acceso);
         }
+        response.sendRedirect(acceso);
     }
 
     @Override

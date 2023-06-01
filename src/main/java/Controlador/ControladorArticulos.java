@@ -93,10 +93,12 @@ public class ControladorArticulos extends HttpServlet {
         if (action.equalsIgnoreCase("vista")) {
             valorRecibido = request.getParameter("valorEnviado");
             valorEntero = Integer.parseInt(valorRecibido);
+
             String rol = request.getParameter("rolUsuario");
             int rolInt = Integer.parseInt(rol);
             System.out.println(rolInt + "**********************");
             if (rolInt == 5) {
+
                 request.setAttribute("valorEntero", valorEntero);
                 request.getRequestDispatcher(colaborador).forward(request, response);
             } else if (rolInt == 1) {
@@ -277,6 +279,9 @@ public class ControladorArticulos extends HttpServlet {
             articuDao.accesoArticulo(idArticulo, cedula_usuario);
             articuDao.cambiarEstadoRespuestaArticulo(respuesta, cedula_usuario, idArticulo);
             action = "redireccionar";
+        } else if (action.equalsIgnoreCase("vistaArtSuper")) {
+            request.setAttribute("valorEntero", valorEntero);
+            request.getRequestDispatcher("Vistas/articulos_supervisor.jsp").forward(request, response);
         }
 
         if (action.equalsIgnoreCase("redireccionar")) {

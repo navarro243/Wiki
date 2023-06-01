@@ -104,10 +104,10 @@ Author     : vamil
 
                 List<Usuario_articulo> listArticulos = usuariosArticulosDao.consultarUsuario(cedula);
                 List<Modificacion> listaModificaciones = modificacionDao.consultarModificacion();
-                
 
                 List< Notificacion> notificacionesMostradas = new ArrayList<>();
                 int rolNotificacion;
+                
                 while (iteradorNotificacion.hasNext()) {
                     notificacion = iteradorNotificacion.next();
                     nombre = usuarioDao.consultarNombre(notificacion.getCedula_usuario());
@@ -123,21 +123,28 @@ Author     : vamil
 
                     if (notificacion.getAsunto().equals("Ascenso") || notificacion.getAsunto().equals("Nuevo Usuario")) {
                         asunto = "ascenso";
+                        mostrarBoton = false;
+                        notificacionesMostradas.add(notificacion);
                     } else if (notificacion.getAsunto().equals("Modificacion Articulo")) {
                         asunto = "modificacion";
-
+                        
                         for (Usuario_articulo articuloAcceso : listArticulos) {
+                            boolean notificacionAgregada = false;
+                            
+
                             for (Modificacion recorrerModificacion : listaModificaciones) {
                                 int idModificacion = recorrerModificacion.getId();
                                 int idArticuloModificacion = recorrerModificacion.getId_Articulo();
                                 int idArticuloPermiso = articuloAcceso.getId_Articulo();
                                 int cedulaArticulos = articuloAcceso.getCedula_usuario();
 
-                                if (cedula == cedulaArticulos && idArticuloPermiso == idArticuloModificacion ) {
+                                if (cedula == cedulaArticulos && idArticuloPermiso == idArticuloModificacion && !notificacionAgregada) {
                                     notificacionesMostradas.add(notificacion);
+                                    notificacionAgregada = true;
                                 }
                             }
                         }
+
                     }
                 } %>
 
@@ -151,11 +158,15 @@ Author     : vamil
                 <label class="color-asunto">Asunto - <%= notificacionMostrada.getAsunto()%></label>
                 <p class="text-light"><%= notificacionMostrada.getMensaje()%></p>
 
-                <% if (estado.equals("Pendiente")) {%>
+                <%
+                    
+                        if (estado.equals("Pendiente")) {%>
                 <a href="../ControladorNotificaciones?accion=<%=asunto + "Aceptar"%>&id=<%= notificacionMostrada.getId()%>&cedula=<%=notificacionMostrada.getCedula_usuario()%>&modificacion=<%= notificacionMostrada.getId_modificacion()%>" class="btn btn-success">Aceptar</a>
                 <a href="../ControladorNotificaciones?accion=<%=asunto + "Rechazar"%>&id=<%= notificacionMostrada.getId()%>" class="btn btn-danger">Rechazar</a>
+
                 <a href="../ControladorDescargaA?accion=descargar&id=<%= notificacionMostrada.getId_modificacion() %>" class="btn btn-primary">Descargar</a>
                 <% }%>
+
             </div>
             <% }%>
         </div>
@@ -186,21 +197,19 @@ Author     : vamil
                         while (iter.hasNext()) {
                             usuario_articulo = iter.next();
                             Articulo nombreArticulo = dao.list(usuario_articulo.getId_Articulo());
-     
+
                     %>
                     <tr>
                         <%
-                            
-                            
                         %>
                         <td><%= usuario_articulo.getId_Articulo()%></td>
-                        <td><a href="../ControladorArticulos?accion=contenido&id=<%= usuario_articulo.getId_Articulo()%>"><%= nombreArticulo.getTitulo() %></a></td>
+                        <td><a href="../ControladorArticulos?accion=contenido&id=<%= usuario_articulo.getId_Articulo()%>"><%= nombreArticulo.getTitulo()%></a></td>
 
                         <td><a class="btn btn-success" href="../ControladorArticulos?accion=accesoArticuloSupervisor&idArticulo=<%= usuario_articulo.getId_Articulo()%>&rol=3">Usuarios</a></td>
-                        
+
                     </tr>
                     <%
-                        
+
                             }
                         }
                     %>

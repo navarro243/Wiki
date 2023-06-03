@@ -152,4 +152,32 @@ public class NotificacionesDao {
             System.out.println("Error en notificacion de modificacion" + e);
         }
     }
+    
+    public List notificacionesGestor(){
+        ArrayList<Notificacion> NotificacionesGestor = new ArrayList<>();
+        String sql = "SELECT * FROM notificaciones WHERE asunto='Ascenso' OR asunto='Nuevo Usuario'" ;
+
+        try {
+            con = cn.getConnection();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Notificacion notificacion = new Notificacion();
+
+                notificacion.setId(rs.getInt("id"));
+                notificacion.setEstado(rs.getInt("estado"));
+                notificacion.setId_modificacion(rs.getInt("id_modificacion"));
+                notificacion.setCedula_usuario(rs.getInt("cedula_Usuario"));
+                notificacion.setId_Rol(rs.getInt("id_Rol"));
+                notificacion.setAsunto(rs.getString("asunto"));
+                notificacion.setMensaje(rs.getString("mensaje"));
+
+                NotificacionesGestor.add(notificacion);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return NotificacionesGestor;
+    }
 }

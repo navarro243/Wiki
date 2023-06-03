@@ -76,16 +76,14 @@
             </div>
             
             <div  class="alinear-derecha">
-
                 <button><a href="ControlIU?accion=cerrarsesion">Cerrar Sesion</a></button>
-
 
             </div>
 
         </nav>
 
         <div class="notificaciones-contenedor">
-            <a href="../ControladorNotificaciones?accion=ascenso" class="pedirAscenso">Pedir Ascenso</a>
+            <a href="ControladorNotificaciones?accion=ascenso" class="pedirAscenso">Pedir Ascenso</a>
             <h4 class="text-center text-light">Notificaciones</h4>
             <%
                 UsuariosDao usuarioDao = new UsuariosDao();

@@ -84,7 +84,7 @@
             <%
                 UsuariosDao usuarioDao = new UsuariosDao();
                 NotificacionesDao notificacionDao = new NotificacionesDao();
-                List<Notificacion> listaNotificaciones = notificacionDao.listarNotificaciones(rol, cedula);
+                List<Notificacion> listaNotificaciones = notificacionDao.notificacionesGestor();
                 Iterator<Notificacion> iteradorNotificacion = listaNotificaciones.iterator();
                 Collections.reverse(listaNotificaciones);
 

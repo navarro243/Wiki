@@ -89,7 +89,7 @@ public class UsuariosDao {
     }
 
     public String consultarNombre(int cedula) {
-        String consultarRol = "SELECT TOP 1 * FROM usuarios WHERE cedula=" + cedula;
+        String consultarRol = "SELECT * FROM usuarios WHERE cedula=" + cedula;
         String nombre = "";
         try {
             con = cn.getConnection();

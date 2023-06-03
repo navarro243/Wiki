@@ -7,26 +7,25 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
-public final class conexion {
+public class conexion {
 
     Connection con;
     PreparedStatement ps;
     ResultSet rs;
     public conexion() {
-        try {
-            Class.forName("org.sqlite.JDBC");
-            // Establecer la URL de conexión para una base de datos en memoria RAM
-            String url = "jdbc:sqlite:Wiki.db:";
-
-            // Establecer la conexión con la base de datos en memoria RAM
-            con = DriverManager.getConnection(url);
+     
+        try{
+               Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String URL = "jdbc:sqlserver://DESKTOP-2CH9L2U;databaseName=basededatosWiki;trustServerCertificate=true;";
+            String USER = "navarro";
+            String PASSWORD = "123";
             
           
-            
+              con=DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (Exception e) {
             System.out.println("Error" + e);
         }
-      AgregarGestor();
+      
     }
 
     public Connection getConnection() {

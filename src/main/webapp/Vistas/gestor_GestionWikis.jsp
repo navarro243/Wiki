@@ -127,6 +127,7 @@
                     %>
                     <a href="../ControladorNotificaciones?accion=<%=asunto + "Aceptar"%>&id=<%= notificacion.getId()%>&cedula=<%=notificacion.getCedula_usuario()%>" class="btn btn-success">Aceptar</a>
                     <a href="../ControladorNotificaciones?accion=<%=asunto + "Rechazar"%>&id=<%= notificacion.getId()%>" class="btn btn-danger">Rechazar</a>
+                     <a href="../ControladorDescargaA?accion=descargar&id=<%= notificacion.getId_modificacion() %>" class="btn btn-primary">Descargar</a>
                     <%}%> 
                 </div>
                 <%}%>

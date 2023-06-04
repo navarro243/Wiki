@@ -32,6 +32,8 @@ public class ControladorContenidoA extends HttpServlet {
 
     String idTxt = "";
     int id = 0;
+    String rolTxt = "";
+    int rol = 0;
     ArticulosDao cargar = new ArticulosDao();
     NotificacionesDao notificacionDao = new NotificacionesDao();
     Notificacion notificacion = new Notificacion();
@@ -113,7 +115,8 @@ public class ControladorContenidoA extends HttpServlet {
         //obtener id del articulo
         idTxt = request.getParameter("id");
         id = Integer.parseInt(idTxt);
-
+        rolTxt = request.getParameter("rol");
+        id = Integer.parseInt(rolTxt);
         listar = cargar.list(id);
         if (listar.getContenido() == null) {
             // Obtiene el archivo enviado en la solicitud
@@ -144,63 +147,94 @@ public class ControladorContenidoA extends HttpServlet {
             cargar.agregarRuta(filePath, id);
 
         } else {
-            String descripcion = request.getParameter("descripcion");
-            String cedula = request.getParameter("cedula");
-            int cedulaint = Integer.parseInt(cedula);
-            // Obtiene el archivo enviado en la solicitud
-            Part filePart = request.getPart("file");
+            if (rol != 4) {
+                // Obtiene el archivo enviado en la solicitud
+                Part filePart = request.getPart("file");
 
-            // Obtiene el nombre del archivo
-            String fileName = filePart.getSubmittedFileName();
+                // Obtiene el nombre del archivo
+                String fileName = filePart.getSubmittedFileName();
 
-            // Ruta de la carpeta de destino donde se guardará el archivo
-            String uploadPath = request.getServletContext().getRealPath("vistashtml");
+                // Ruta de la carpeta de destino donde se guardará el archivo
+                String uploadPath = request.getServletContext().getRealPath("Vistas");
 
-            // Guarda el archivo en la carpeta de destino
-            File uploadDir = new File(uploadPath);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdirs();
-            }
-
-            String filePath = uploadPath + File.separator + fileName;
-            System.out.println("filePath: " + filePath);
-            try (InputStream inputStream = filePart.getInputStream(); OutputStream outputStream = new FileOutputStream(filePath)) {
-                byte[] buffer = new byte[4096];
-                int bytesRead;
-                while ((bytesRead = inputStream.read(buffer)) != -1) {
-                    outputStream.write(buffer, 0, bytesRead);
+                // Guarda el archivo en la carpeta de destino
+                File uploadDir = new File(uploadPath);
+                if (!uploadDir.exists()) {
+                    uploadDir.mkdirs();
                 }
+
+                String filePath = uploadPath + File.separator + fileName;
+                System.out.println("filePath: " + filePath);
+                try (InputStream inputStream = filePart.getInputStream(); OutputStream outputStream = new FileOutputStream(filePath)) {
+                    byte[] buffer = new byte[4096];
+                    int bytesRead;
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, bytesRead);
+                    }
+                }
+
+                cargar.agregarRuta(filePath, id);
+
+            } else {
+                String descripcion = request.getParameter("descripcion");
+                String cedula = request.getParameter("cedula");
+                int cedulaint = Integer.parseInt(cedula);
+                // Obtiene el archivo enviado en la solicitud
+                Part filePart = request.getPart("file");
+
+                // Obtiene el nombre del archivo
+                String fileName = filePart.getSubmittedFileName();
+
+                // Ruta de la carpeta de destino donde se guardará el archivo
+                String uploadPath = request.getServletContext().getRealPath("vistashtml");
+
+                // Guarda el archivo en la carpeta de destino
+                File uploadDir = new File(uploadPath);
+                if (!uploadDir.exists()) {
+                    uploadDir.mkdirs();
+                }
+
+                String filePath = uploadPath + File.separator + fileName;
+                System.out.println("filePath: " + filePath);
+                try (InputStream inputStream = filePart.getInputStream(); OutputStream outputStream = new FileOutputStream(filePath)) {
+                    byte[] buffer = new byte[4096];
+                    int bytesRead;
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, bytesRead);
+                    }
+                }
+
+                Articulo articulo = cargar.list(id);
+                modificacionDao.agregarModificacion(filePath, descripcion, cedulaint, id);
+
+                List<Modificacion> listaModificaciones = modificacionDao.consultarModificacion();
+                String nombre = articulo.getTitulo();
+                System.out.println(nombre);
+
+                String asunto = "Modificacion Articulo";
+                String mensaje = cedulaint + " Ha propuesto un cambio en el articulo de " + nombre;
+                int idModificacion = 0;
+                for (Modificacion modi : listaModificaciones) {
+                    idModificacion = modi.getId();
+                }
+                System.out.println("Esto es la modificacion de controladorA" + idModificacion);
+
+                notificacion.setEstado(0);
+
+                notificacion.setCedula_usuario(cedulaint);
+                notificacion.setId_modificacion(idModificacion);
+                notificacion.setId_Rol(3);
+                notificacion.setAsunto(asunto);
+                notificacion.setMensaje(mensaje);
+
+                notificacionDao.notificacionModificacion(notificacion);
             }
-
-            Articulo articulo = cargar.list(id);
-            modificacionDao.agregarModificacion(filePath, descripcion, cedulaint, id);
-
-            List<Modificacion> listaModificaciones = modificacionDao.consultarModificacion();
-            String nombre = articulo.getTitulo();
-            System.out.println(nombre);
-
-            String asunto = "Modificacion Articulo";
-            String mensaje = cedulaint + " Ha propuesto un cambio en el articulo de " + nombre;
-            int idModificacion = 0;
-            for (Modificacion modi : listaModificaciones) {
-                idModificacion = modi.getId();
-            }
-            System.out.println("Esto es la modificacion de controladorA" + idModificacion);
-
-            notificacion.setEstado(0);
-
-            notificacion.setCedula_usuario(cedulaint);
-            notificacion.setId_modificacion(idModificacion);
-            notificacion.setId_Rol(3);
-            notificacion.setAsunto(asunto);
-            notificacion.setMensaje(mensaje);
-
-            notificacionDao.notificacionModificacion(notificacion);
+           
         }
-        String referer = request.getHeader("referer");
+         String referer = request.getHeader("referer");
 
-        // Redirige al usuario a la página anterior
-        response.sendRedirect(referer);
+            // Redirige al usuario a la página anterior
+            response.sendRedirect(referer);
     }
 
     @Override

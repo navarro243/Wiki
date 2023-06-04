@@ -98,11 +98,11 @@
 
                 String estado = "";
                 String asunto = "";
-
+                int rolnoti =0;
                 while (iteradorNotificacion.hasNext()) {
                     notificacion = iteradorNotificacion.next();
                     nombre = usuarioDao.consultarNombre(notificacion.getCedula_usuario());
-                    rol = usuarioDao.consultarRol(notificacion.getCedula_usuario());
+                    rolnoti = usuarioDao.consultarRol(notificacion.getCedula_usuario());
 
                     if (notificacion.getEstado() == 0) {
                         estado = "Pendiente";
@@ -158,7 +158,7 @@
                     </div>
                     <div class="modal-body">
                         <!-- Aqu� puedes colocar el formulario o el c�digo necesario para subir el archivo -->
-                        <form action="ControladorContenidoA?id=<%=articu.getId()%>" method="post" enctype="multipart/form-data">
+                        <form action="ControladorContenidoA?id=<%=articu.getId()%>&rol=<%=rol%>" method="post" enctype="multipart/form-data">
                             <input type="file" name="file">
                             <input type="submit" value="Subir">
                         </form>

@@ -54,6 +54,10 @@ public class ControlIngresoUsuario extends HttpServlet {
 
             int cedula = Integer.parseInt(cedulaTexto);
             int rol_vista = dao.Obtenerusuario(cedula);
+            if(rol_vista==0 ){
+                dao.AgregarGestor();
+                acceso = request.getHeader("referer");
+            }else{
             String nombre_usuario = dao.consultarNombre(cedula);
 
             String valorCookie = cedula + ":" + nombre_usuario + ":" + rol_vista;
@@ -80,6 +84,7 @@ public class ControlIngresoUsuario extends HttpServlet {
                 default:
                     acceso = base;
                     break;
+            }
             }
         }
         if (action.equalsIgnoreCase("cerrarSesion")) {

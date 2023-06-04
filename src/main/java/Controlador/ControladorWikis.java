@@ -27,7 +27,7 @@ public class ControladorWikis extends HttpServlet {
             String nombre = request.getParameter("nombre");
             
             wiki.setNombre(nombre);
-            wikiDao.agregarWiki(wiki);
+            wikiDao.agregarWiki(nombre);
 
             response.sendRedirect(crearWiki);    
             

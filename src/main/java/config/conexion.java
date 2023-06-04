@@ -101,7 +101,7 @@ public class conexion {
             String createWikisTableSQL = "CREATE TABLE IF NOT EXISTS wikis ("
                     + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + "nombre TEXT,"
-                    + "id_Rol INTEGER,"
+                    + "id_Rol INTEGER NULL ,"
                     + "FOREIGN KEY (id_Rol) REFERENCES roles (id)"
                     + ")";
             ps = con.prepareStatement(createWikisTableSQL);

@@ -6,57 +6,66 @@ import config.conexion;
 import java.util.*;
 import java.util.List;
 import Modelo.Wiki;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.sqlite.SQLiteException;
 
 public class WikisDao {
 
     conexion cn = new conexion();
     PreparedStatement ps;
     ResultSet rs;
-    Connection con;
+    Connection con = cn.getConnection();;
     Wiki wiki = new Wiki();
     Usuario usuario = new Usuario();
 
-    public List obtenerWikis() throws SQLException {
+    public List obtenerWikis()   {
         ArrayList<Wiki> list = new ArrayList<>();
-        String sql = "select * from wikis";
+        String sql = "SELECT * FROM wikis";
         try {
-            con = cn.getConnection();
+            
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
-                Wiki wiki = new Wiki();
-                wiki.setId(rs.getInt("id"));
-                wiki.setNombre(rs.getString("nombre"));
-                list.add(wiki);
+                Wiki wiki1 = new Wiki();
+                wiki1.setId(rs.getInt("id"));
+                wiki1.setNombre(rs.getString("nombre"));
+                list.add(wiki1);
+                System.out.println(list.toString());
             }
 
         } catch (Exception e) {
-
+            System.out.println("Error en obtenerWikis");
         }   
         return list;
 
     }
 
-    public boolean agregarWiki(Wiki wiki) {
-        String sql = "insert into wikis (nombre) values (' "+wiki.getNombre() +" ') " ;
+    public void agregarWiki(String nombre)  {
+        String sql = "INSERT INTO wikis (nombre) values ('"+nombre+"') " ;
         try {
-            con = cn.getConnection();
+           
             ps = con.prepareStatement(sql);
-            ps.executeUpdate();
-            return true;
-        } catch (SQLException e) {
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Se ha insertado la wiki correctamente.");
+            } else {
+                System.out.println("No se pudo insertar el rol.");
+            }
+        } catch (SQLiteException e) {
             System.out.println("Error en Insertar Wikis"+ e);
 
+        } catch (SQLException ex) {
+            Logger.getLogger(WikisDao.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
-
+        
     }
 
     public Wiki list(int id) {
         String sql = "SELECT * FROM wikis WHERE id=" + id;
 
         try {
-            con = cn.getConnection();
+          
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -74,7 +83,7 @@ public class WikisDao {
         String sql = "UPDATE wikis SET nombre = '" + wiki.getNombre() + "' WHERE id = " + wiki.getId();
 
         try {
-            con = cn.getConnection();
+
             ps = con.prepareStatement(sql);
             ps.executeUpdate();
 
@@ -87,7 +96,7 @@ public class WikisDao {
     public boolean eliminar(int id) {
         String sql = "delete from wikis where id=" + id;
         try {
-            con = cn.getConnection();
+          
             ps = con.prepareStatement(sql);
             ps.executeUpdate();
 
@@ -100,7 +109,7 @@ public class WikisDao {
     public void accesoWiki(int idWiki, int cedula_usuario) {
         String sql = "INSERT INTO wikis_usuarios (cedula_usuario, id_wiki, estado) VALUES ('" + cedula_usuario + "','" + idWiki + "','Pendiente')";
         try {
-            con = cn.getConnection();
+        
             ps = con.prepareStatement(sql);
             ps.executeUpdate();
 
@@ -114,7 +123,7 @@ public class WikisDao {
         String sql = "SELECT * FROM wikis_usuarios WHERE cedula_usuario = " + cedula + "AND estado = 'asignado'";
         
         try {
-            con = cn.getConnection();
+          
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -135,7 +144,7 @@ public class WikisDao {
         Wiki wiki = null;
         String sql = "SELECT * FROM wikis WHERE id = ?";
         try {
-            con = cn.getConnection();
+
             ps = con.prepareStatement(sql);
             ps.setInt(1, idWiki);
             rs = ps.executeQuery();
@@ -153,7 +162,7 @@ public class WikisDao {
     public void cambiarEstadoRespuesta(String respuesta, int cedula_usuario, int idWiki) {
         String sql = "UPDATE wikis_usuarios SET estado = '"+respuesta+"' WHERE cedula_Usuario="+ cedula_usuario + "AND id_wiki="+ idWiki;
         try {
-            con = cn.getConnection();
+   
             ps = con.prepareStatement(sql);
             ps.executeUpdate();
 
@@ -167,7 +176,7 @@ public class WikisDao {
         String sql = "SELECT * FROM wikis_usuarios";
         ArrayList <Wiki> listaRespuesta = new ArrayList();
         try {
-            con = cn.getConnection();
+
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {

@@ -189,6 +189,7 @@ public class UsuariosDao {
                 System.out.println("No se pudo insertar el usuario.");
 
             }
+            
         } catch (SQLException e) {
             System.err.println("Error al establecer la conexión con la base de datos: " + e.getMessage());
         }

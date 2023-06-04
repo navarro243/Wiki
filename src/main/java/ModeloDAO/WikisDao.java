@@ -111,7 +111,7 @@ public class WikisDao {
 
     public List listarWikisAcceso(int cedula) {
         ArrayList<Wiki> listaWikisAcceso = new ArrayList<>();
-        String sql = "SELECT * FROM wikis_usuarios WHERE cedula_usuario = " + cedula + "AND estado = 'asignado'";
+        String sql = "SELECT * FROM wikis_usuarios WHERE cedula_usuario = " + cedula + " AND (estado = 'asignado')";
         
         try {
             con = cn.getConnection();
@@ -151,14 +151,14 @@ public class WikisDao {
     }
 
     public void cambiarEstadoRespuesta(String respuesta, int cedula_usuario, int idWiki) {
-        String sql = "UPDATE wikis_usuarios SET estado = '"+respuesta+"' WHERE cedula_Usuario="+ cedula_usuario + "AND (id_wiki="+ idWiki + ")";
+        String sql = "UPDATE wikis_usuarios SET estado = '"+respuesta+"' WHERE cedula_Usuario="+ cedula_usuario + " AND (id_wiki="+ idWiki + ")";
         try {
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Error al cambiar estado de respuestas wikis");
 
         }
     }

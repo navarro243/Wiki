@@ -8,10 +8,10 @@ import java.util.List;
 
 public class usuarios_articulosDao {
 
-    conexion cn = new conexion();
-    PreparedStatement ps;
-    ResultSet rs;
-    Connection con;
+    private final conexion cn = conexion.getInstance();
+    private Connection con;
+    private PreparedStatement ps;
+    private ResultSet rs;
 
     public List consultarUsuario(int cedula) {
         String sql = "SELECT * FROM usuarios_articulos WHERE cedula_Usuario=" + cedula;
@@ -27,9 +27,7 @@ public class usuarios_articulosDao {
                 usuarioArticulo.setCedula_usuario(rs.getInt("cedula_Usuario"));
                 usuarioArticulo.setId_Articulo(rs.getInt("id_Articulo"));
                 usuarioArticulo.setEstado(rs.getString("estado"));
-                System.out.println("chao");
                 accesosArticulos.add(usuarioArticulo);
-                System.out.println("Ingreso a consultarUsuariosArticulos");
             }
         } catch (SQLException e) {
             System.out.println("Error en el consultar permisos de articulos" + e);

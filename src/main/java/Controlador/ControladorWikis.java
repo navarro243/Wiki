@@ -25,10 +25,11 @@ public class ControladorWikis extends HttpServlet {
         
         if(action.equalsIgnoreCase("agregar")){
             String nombre = request.getParameter("nombre");
+            System.out.println(nombre);
             
             wiki.setNombre(nombre);
-            wikiDao.agregarWiki(nombre);
-
+            wikiDao.agregarWiki(wiki);
+            
             response.sendRedirect(crearWiki);    
             
         }else if (action.equalsIgnoreCase("editar")){

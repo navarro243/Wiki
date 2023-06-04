@@ -70,10 +70,10 @@
             </div>
 
             <div  class="alinear-centro">
-                <a class="btn btn-primary" href="supervisor_wikis.jsp"">Lista Wikis</a>
+                <a class="btn btn-primary" href="/ControladorWikis?accion=rolRedireccion=3"">Lista Wikis</a>
             </div>
             <div  class="alinear-derecha">
-                <button><a href="../ControlIU?accion=cerrarsesion">Cerrar Sesion</a></button>
+                <button><a href="ControlIU?accion=cerrarsesion">Cerrar Sesion</a></button>
 
             </div>
 

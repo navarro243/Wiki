@@ -256,7 +256,7 @@ public class ControladorArticulos extends HttpServlet {
             int cedula_usuario = Integer.parseInt(cedulaUsuario);
 
             articuDao.accesoArticulo(idArticulo, cedula_usuario);
-            articuDao.cambiarEstadoRespuestaArticulo("Pendiente", cedula_usuario, idArticulo);
+            articuDao.cambiarEstadoRespuestaArticulo("asignado", cedula_usuario, idArticulo);
 
             action = "redireccionar";
         } else if (action.equalsIgnoreCase("remover")) {

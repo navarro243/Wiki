@@ -159,7 +159,7 @@ Author     : vamil
                 <a href="../ControladorDescargaA?accion=descargar&id=<%= notificacionMostrada.getId_modificacion()%>" class="btn btn-primary">Descargar</a>
                 <% }%>
             </div>
-                <% System.out.println(notificacionMostrada);}%>
+                <%}%>
         </div>
 
         <section class="wiki-contenedor">

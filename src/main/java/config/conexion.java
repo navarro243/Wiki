@@ -3,32 +3,20 @@ package config;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class conexion {
+    private static conexion instance;
+    private Connection con;
 
-    Connection con;
-    PreparedStatement ps;
-    ResultSet rs;
-
-
-    public conexion() {
-
+    private conexion() {
         try {
             Class.forName("org.sqlite.JDBC");
-            // Establecer la URL de conexión para una base de datos en memoria RAM
             String url = "jdbc:sqlite::memory:";
-
-            // Establecer la conexión con la base de datos en memoria RAM
             con = DriverManager.getConnection(url);
+            PreparedStatement ps;
 
-            // Habilitar las claves foráneas
-            String enableForeignKeysSQL = "PRAGMA foreign_keys = ON;";
-            ps = con.prepareStatement(enableForeignKeysSQL);
-            ps.execute();
-
-            // Crear la tabla "articulos"
+             // Crear la tabla "articulos"
             String createArticulosTableSQL = "CREATE TABLE IF NOT EXISTS articulos ("
                     + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + "titulo TEXT NOT NULL,"
@@ -100,9 +88,7 @@ public class conexion {
             // Crear la tabla "wikis"
             String createWikisTableSQL = "CREATE TABLE IF NOT EXISTS wikis ("
                     + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    + "nombre TEXT,"
-                    + "id_Rol INTEGER,"
-                    + "FOREIGN KEY (id_Rol) REFERENCES roles (id)"
+                    + "nombre varchar (40)"
                     + ")";
             ps = con.prepareStatement(createWikisTableSQL);
             ps.execute();
@@ -117,20 +103,20 @@ public class conexion {
                     + ")";
             ps = con.prepareStatement(createWikisUsuariosTableSQL);
             ps.execute();
-         
-                
-            
 
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
+    }
 
+    public static conexion getInstance() {
+        if (instance == null) {
+            instance = new conexion();
+        }
+        return instance;
     }
 
     public Connection getConnection() {
         return con;
     }
-
-    
-
 }

@@ -20,10 +20,11 @@ import java.io.IOException;
  */
 public class ArticulosDao {
 
-    conexion cn = new conexion();
-    PreparedStatement ps;
-    ResultSet rs;
-    Connection con;
+    private final conexion cn = conexion.getInstance();
+    private Connection con;
+    private PreparedStatement ps;
+    private ResultSet rs;
+    
     Articulo Arti = new Articulo();
 
     public List obtenerArticulos(int idart) {
@@ -47,7 +48,7 @@ public class ArticulosDao {
             }
 
         } catch (SQLException e) {
-            System.out.println("DAWIDWIAWJDIJ" + e);
+            System.out.println("Error en obtener articulos" + e);
         }
         return list;
 
@@ -109,7 +110,7 @@ public class ArticulosDao {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            System.out.println("*****************************************************************");
+            System.out.println("Error en editar articulos");
             System.out.println(e);
 
         }
@@ -144,14 +145,14 @@ public class ArticulosDao {
     }
 
     public void cambiarEstadoRespuestaArticulo(String respuesta, int cedula, int idArticulo) {
-        String sql = "UPDATE usuarios_articulos SET estado = '" + respuesta + "' WHERE cedula_Usuario=" + cedula + "AND id_Articulo=" + idArticulo;
+        String sql = "UPDATE usuarios_articulos SET estado = '" + respuesta + "' WHERE cedula_Usuario=" + cedula + " AND (id_Articulo=" + idArticulo + ")";
         try {
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Error en articulosdao cambiar estadoRespuesta");
 
         }
     }
@@ -164,14 +165,13 @@ public class ArticulosDao {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println("Error en articulosDAO acceso Articulos"+e);
         }
-        System.out.println("iNGRWSO SONC EXITO");
     }
 
     public List listarArticulosAcceso(int cedula) {
         ArrayList<Usuario_articulo> listaArticulosAcceso = new ArrayList<>();
-        String sql = "SELECT * FROM usuarios_articulos WHERE cedula_usuario = " + cedula + "AND estado = 'asignado'";
+        String sql = "SELECT * FROM usuarios_articulos WHERE cedula_usuario = " + cedula + " AND (estado = 'asignado')";
         try {
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
@@ -185,7 +185,7 @@ public class ArticulosDao {
             }
 
         } catch (SQLException e) {
-            System.out.println("" + e);
+            System.out.println("Error en articulos, Listar Acceso" + e);
         }
         return listaArticulosAcceso;
     }

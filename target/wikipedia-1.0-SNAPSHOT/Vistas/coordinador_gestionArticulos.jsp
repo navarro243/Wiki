@@ -122,7 +122,7 @@
                 <p class="text-light"><%= notificacion.getMensaje()%> </p> 
 
                 <%
-                    if (estado.equals("Pendiente")) {
+                    if (estado.equals("Pendiente") && rol == 2) {
                 %>
                 <a href="../ControladorNotificaciones?accion=<%=asunto + "Aceptar"%>&id=<%= notificacion.getId()%>&cedula=<%=notificacion.getCedula_usuario()%>" class="btn btn-success">Aceptar</a>
                 <a href="../ControladorNotificaciones?accion=<%=asunto + "Rechazar"%>&id=<%= notificacion.getId()%>" class="btn btn-danger">Rechazar</a>

@@ -68,7 +68,6 @@
             </div>
 
             <div  class="alinear-centro">
-                <a href="#" class="btn btn-primary"data-bs-toggle="modal" data-bs-target="#exampleModal">Nueva Wiki</a>
 
             </div>
 
@@ -77,7 +76,6 @@
             </div>
         </nav>
         <div class="notificaciones-contenedor">
-            <a href="../ControladorNotificaciones?accion=ascenso" class="pedirAscenso">Pedir Ascenso</a>
             <h4 class="text-center text-light">Notificaciones</h4>
             <%
                 UsuariosDao usuarioDao = new UsuariosDao();

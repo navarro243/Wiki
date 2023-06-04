@@ -13,10 +13,10 @@ import java.util.List;
 
 public class UsuariosDao {
 
-    conexion cn = new conexion();
-    PreparedStatement ps;
-    ResultSet rs;
-    Connection con;
+    private final conexion cn = conexion.getInstance();
+    private Connection con;
+    private PreparedStatement ps;
+    private ResultSet rs;
 
     Usuario usua = new Usuario();
     Usuario usuario = new Usuario();

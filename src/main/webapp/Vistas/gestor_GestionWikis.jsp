@@ -46,7 +46,7 @@
                         }
                     }
                 }
-                
+
                 switch (rol) {
                     case 1:
                         nombreRol = "Gestor";
@@ -63,7 +63,7 @@
                     default:
                         nombreRol = "Sin cuenta";
                 }
-                System.out.println(rol + nombreRol+ "/////////" )  ;
+                System.out.println(rol + nombreRol + "/////////");
             %>
             <div>
                 <label name="accion" value="nombreYrol"><%= nombre + " - " + nombreRol%></label>
@@ -127,7 +127,6 @@
                     %>
                     <a href="../ControladorNotificaciones?accion=<%=asunto + "Aceptar"%>&id=<%= notificacion.getId()%>&cedula=<%=notificacion.getCedula_usuario()%>" class="btn btn-success">Aceptar</a>
                     <a href="../ControladorNotificaciones?accion=<%=asunto + "Rechazar"%>&id=<%= notificacion.getId()%>" class="btn btn-danger">Rechazar</a>
-                     <a href="../ControladorDescargaA?accion=descargar&id=<%= notificacion.getId_modificacion() %>" class="btn btn-primary">Descargar</a>
                     <%}%> 
                 </div>
                 <%}%>
@@ -147,9 +146,6 @@
                         List<Wiki> lista = dao.obtenerWikis();
                         Iterator<Wiki> iter = lista.iterator();
                         Wiki wik = null;
-                        if(lista.isEmpty() ){
-                            System.out.println("Error en listar Wikis");
-                        }
                         while (iter.hasNext()) {
                             wik = iter.next();
                     %>
@@ -186,6 +182,6 @@
                 </div>
             </div>
         </div>
-            <script src="js/bootstrap.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
     </body>
 </html>

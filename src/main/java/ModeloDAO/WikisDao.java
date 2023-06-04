@@ -9,10 +9,10 @@ import Modelo.Wiki;
 
 public class WikisDao {
 
-    conexion cn = new conexion();
-    PreparedStatement ps;
-    ResultSet rs;
-    Connection con;
+    private final conexion cn = conexion.getInstance();
+    private Connection con;
+    private PreparedStatement ps;
+    private ResultSet rs;
     Wiki wiki = new Wiki();
     Usuario usuario = new Usuario();
 
@@ -30,15 +30,16 @@ public class WikisDao {
                 list.add(wiki);
             }
 
-        } catch (Exception e) {
-
+        } catch (SQLException e) {
+            System.out.println("Error al obtener las wikis: " + e.getMessage());
         }   
         return list;
 
     }
 
     public boolean agregarWiki(Wiki wiki) {
-        String sql = "insert into wikis (nombre) values (' "+wiki.getNombre() +" ') " ;
+        String sql = "INSERT INTO wikis (nombre) VALUES ('" + wiki.getNombre() + "')";
+
         try {
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
@@ -46,7 +47,6 @@ public class WikisDao {
             return true;
         } catch (SQLException e) {
             System.out.println("Error en Insertar Wikis"+ e);
-
         }
         return false;
 
@@ -151,7 +151,7 @@ public class WikisDao {
     }
 
     public void cambiarEstadoRespuesta(String respuesta, int cedula_usuario, int idWiki) {
-        String sql = "UPDATE wikis_usuarios SET estado = '"+respuesta+"' WHERE cedula_Usuario="+ cedula_usuario + "AND id_wiki="+ idWiki;
+        String sql = "UPDATE wikis_usuarios SET estado = '"+respuesta+"' WHERE cedula_Usuario="+ cedula_usuario + "AND (id_wiki="+ idWiki + ")";
         try {
             con = cn.getConnection();
             ps = con.prepareStatement(sql);

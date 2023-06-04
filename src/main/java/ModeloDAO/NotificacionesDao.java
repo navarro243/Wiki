@@ -9,19 +9,19 @@ import java.util.List;
 
 public class NotificacionesDao {
 
-    conexion cn = new conexion();
-    PreparedStatement ps;
-    ResultSet rs;
-    Connection con;
+    private final conexion cn = conexion.getInstance();
+    private Connection con;
+    private PreparedStatement ps;
+    private ResultSet rs;
 
     public void enviarNotificacionAscenso(Notificacion notificacion) {
         String sql = "INSERT INTO notificaciones (estado, cedula_Usuario, id_Rol, asunto, mensaje) VALUES ('" + notificacion.getEstado() + "','" + notificacion.getCedula_usuario() + "','" + notificacion.getId_Rol() + "', '" + notificacion.getAsunto() + "','" + notificacion.getMensaje() + "')";
         try {
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
-            rs = ps.executeQuery();
+            ps.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println("Error en insertar notificaciones"+e);
         }
     }
 
@@ -59,7 +59,7 @@ public class NotificacionesDao {
         try {
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
-            rs = ps.executeQuery();
+            ps.executeUpdate();
 
         } catch (SQLException e) {
             System.out.println(e);
@@ -95,7 +95,7 @@ public class NotificacionesDao {
 
     public List listarWikisAcceso(int cedula) {
         ArrayList<Articulo> listaArticulosAcceso = new ArrayList<>();
-        String sql = "SELECT * FROM wikis_usuarios WHERE cedula_usuario = " + cedula + "AND (estado = 'activo' )";
+        String sql = "SELECT * FROM wikis_usuarios WHERE cedula_usuario = " + cedula + " AND (estado = 'activo' )";
         try {
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
@@ -116,7 +116,7 @@ public class NotificacionesDao {
 
     public List NotificacionesSupervisor(String asunto, int cedula) {
         ArrayList<Notificacion> NotificacionesSupervisor = new ArrayList<>();
-        String sql = "SELECT * FROM notificaciones WHERE asunto='Modificacion Articulo' OR cedula_Usuario=" + cedula ;
+        String sql = "SELECT * FROM notificaciones WHERE asunto='Modificacion Articulo' OR (cedula_Usuario=" + cedula + ")";
 
         try {
             con = cn.getConnection();
@@ -147,7 +147,7 @@ public class NotificacionesDao {
         try {
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
-            rs = ps.executeQuery();
+            ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Error en notificacion de modificacion" + e);
         }

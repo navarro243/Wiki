@@ -92,11 +92,11 @@
 
                 String estado = "";
                 String asunto = "";
-
+                int rolNotificacion;
                 while (iteradorNotificacion.hasNext()) {
                     notificacion = iteradorNotificacion.next();
                     nombre = usuarioDao.consultarNombre(notificacion.getCedula_usuario());
-                    rol = usuarioDao.consultarRol(notificacion.getCedula_usuario());
+                    rolNotificacion = usuarioDao.consultarRol(notificacion.getCedula_usuario());
 
                     if (notificacion.getEstado() == 0) {
                         estado = "Pendiente";
@@ -122,7 +122,7 @@
                 <p class="text-light"><%= notificacion.getMensaje()%> </p> 
 
                 <%
-                    if (estado.equals("Pendiente") && rol != 2) {
+                    if (estado.equals("Pendiente") && rol == 2) {
                 %>
                 <a href="../ControladorNotificaciones?accion=<%=asunto + "Aceptar"%>&id=<%= notificacion.getId()%>&cedula=<%=notificacion.getCedula_usuario()%>" class="btn btn-success">Aceptar</a>
                 <a href="../ControladorNotificaciones?accion=<%=asunto + "Rechazar"%>&id=<%= notificacion.getId()%>" class="btn btn-danger">Rechazar</a>

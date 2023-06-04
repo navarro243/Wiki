@@ -1,9 +1,3 @@
-<%-- 
-    Document   : noDisponible
-    Created on : 1 jun 2023, 7:23:24
-    Author     : user
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

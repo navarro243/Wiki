@@ -83,7 +83,7 @@
         </nav>
 
         <div class="notificaciones-contenedor">
-            <a href="../ControladorNotificaciones?accion=ascenso" class="pedirAscenso">Pedir Ascenso</a>
+            <a href="ControladorNotificaciones?accion=ascenso" class="pedirAscenso">Pedir Ascenso</a>
             <h4 class="text-center text-light">Notificaciones</h4>
             <%
                 UsuariosDao usuarioDao = new UsuariosDao();

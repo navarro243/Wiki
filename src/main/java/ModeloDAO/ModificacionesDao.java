@@ -12,10 +12,10 @@ import java.util.List;
 
 public class ModificacionesDao {
 
-    conexion cn = new conexion();
-    PreparedStatement ps;
-    ResultSet rs;
-    Connection con;
+    private final conexion cn = conexion.getInstance();
+    private Connection con;
+    private PreparedStatement ps;
+    private ResultSet rs;
     
     NotificacionesDao notificacionDao = new NotificacionesDao();
 

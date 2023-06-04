@@ -79,7 +79,7 @@
             <%
                 UsuariosDao usuarioDao = new UsuariosDao();
                 NotificacionesDao notificacionDao = new NotificacionesDao();
-                List<Notificacion> listaNotificaciones = notificacionDao.listarNotificaciones(rol, cedula);
+                List<Notificacion> listaNotificaciones = notificacionDao.notificacionesGestor();
                 Iterator<Notificacion> iteradorNotificacion = listaNotificaciones.iterator();
                 Collections.reverse(listaNotificaciones);
 
@@ -125,7 +125,6 @@
                 %>
                 <a href="ControladorNotificaciones?accion=<%=asunto + "Aceptar"%>&id=<%= notificacion.getId()%>&cedula=<%=notificacion.getCedula_usuario()%>" class="btn btn-success">Aceptar</a>
                 <a href="../ControladorNotificaciones?accion=<%=asunto + "Rechazar"%>&id=<%= notificacion.getId()%>" class="btn btn-danger">Rechazar</a>
-               <a href="ControladorDescargaA?accion=descargar&id=<%= notificacion.getId_modificacion() %>" class="btn btn-primary">Descargar</a>
                 <%}%> 
             </div>
             <%}%>

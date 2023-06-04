@@ -127,7 +127,7 @@
                     </div>
                     <div class="modal-body">
                         <!-- Aquí puedes colocar el formulario o el código necesario para subir el archivo -->
-                        <form action="ControladorContenidoA?id=<%=articu.getId()%>&cedula=<%=cedula%>" method="post" enctype="multipart/form-data">
+                        <form action="ControladorContenidoA?id=<%=articu.getId()%>&cedula=<%=cedula%>&rol=<%=rol%>" method="post" enctype="multipart/form-data">
                             <input type="text" name="descripcion">
                             <input type="file" name="file">
                             <input type="submit" value="Subir">

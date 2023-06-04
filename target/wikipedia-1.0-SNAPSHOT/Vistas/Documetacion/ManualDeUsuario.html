@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <h2>Introducción</h2>
+        <p>Este es el manual de usuario para la wikipedia. Este manual proporciona información detallada sobre sus funcionamiento,
+            como se navega dentro del sistema, cómo acceder a las funcionalidades dependiendo del rol que se tenga y los usuarios ya registrados previamente dentro del sistema
+            La wikipedia es un lugar en la cual hay información de ciertas temáticas, nuestro sistema divide todo por Wikis que tienen artículos,
+            estos mismos son los encargados de proporcionar la información a los usuarios sobre lo que se desee leer. 
+        </p>
+       
+        <h2>Acceso </h2>
+        <p>El sistema wikipedia contiene varios roles para garantizar el correcto uso de este mismo. 
+
+            Gestor: 
+            Cédula: 123
+            Nombre: Juan
+            Apellido: Navarro
+
+            Coordinador: 
+            Cédula: 456
+            Nombre: Albeiro
+            Apellido: Gonzalez
+
+            Supervisor:
+            Cédula: 789
+            Nombre: Laura
+            Apellido: Cruz
+
+
+            Colaborador: No tiene datos debido a que se puede registrar y empezar desde este mismo siempre y cuando un supervisor lo acepte en el sistema
+
+            Estos son los usuarios dentro del sistema registrados para su correcto funcionamiento desde el principio, en caso de que se quiera agregar más usuarios
+            estos deberán de pasar por todos los roles desde el más bajo (Colaborador) hasta el más alto (Gestor) 
+        </p>
+
+        <h2>¿Cómo empezar?</h2>
+        <p>Se empieza primero iniciando sesión para que se puedan insertar los roles y usuarios en la base de datos se puede colocar cualquier
+            número ya que este no se guardará debido a que se está indicando al sistema que primero se están creando los roles.Como segundo se 
+            empezará registrando a un usuario para que este sea colaborador, se ingresa al sistema y deberá registrar un usuario. Al enviar los datos, le llegará una 
+            notificación al gestor diciendo un usuario quiere ingresar al sistema, el supervisor decidirá si dejarlo ingresar o no al sistema, cuando el colaborador está
+            permitido, tiene acceso a la lista de wikis que lleva a los artículos</p>
+
+        <h2>Edición y Contribución</h2>
+        <p>El colaborador puede cambiar el contenido del artículo descargando el fichero HTML y lo edita, una vez haya terminado de
+            hacer los cambios envía este archivo como propuesta a un supervisor y ya el supervisor decide cual desea dejar en el sistema de wikipedia.</p>
+       
+        <h2>Propuesta de ascenso</h2>
+        <p>Todos los roles pueden pedir ser ascendidos al rol superior al suyo y esta notificación le llegará a los gestores, estos deciden si aceptar los cambios o no</p>
+        
+        <h2>Gestión de wikis y artículos</h2>
+        <p>Para gestionar las wikis se accede como gestor para crear artículos  se accede como un coordinador para este tendra la opcion de crear, editar, eliminar y asignar supervisores a una wiki o a un artículo 
+            En caso del coordinador solo podrá crear artículos y asignar supervisores 
+            les aparecerá a los supervisores una lista ya sea de los artículos o las wikis que tiene disponible para supervisar 
+        </p>
+        
+        <h2>Cerrado de sesión</h2>
+        <p>Al iniciar sesión el sistema guarda la información del usuario en una cookie para poder mostrar en pantalla información relacionada al usuario con la sesión activa. Al cerrar la sesión todos los datos del usuario guardadas en la cookie se borrarán</p>
+        <a href="index.html">Volver a la documentacion</a>
+    </body>
+</html>

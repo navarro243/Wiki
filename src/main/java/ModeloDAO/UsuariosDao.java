@@ -164,7 +164,7 @@ public class UsuariosDao {
         try {
            
             // Insertar un registro en la tabla "roles" para el rol "Gestor"
-            String insertRoleSQL = "INSERT INTO roles (nombre) VALUES ('Gestor')";
+            String insertRoleSQL = "INSERT INTO roles (nombre) VALUES ('Gestor'), ('Coordinador'),('Supervisor'), ('Colaborador'), ('Sin Cuenta')";
             ps = con.prepareStatement(insertRoleSQL);
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {
@@ -180,7 +180,7 @@ public class UsuariosDao {
             // Procesar el resultado si es necesario
 
             // Insertar un registro en la tabla "usuarios" para el usuario "Juan Gonzales"
-            String insertUserSQL = "INSERT INTO usuarios (cedula, nombre, apellido, id_Rol) VALUES (123, 'Juan', 'Navarro', 1)";
+            String insertUserSQL = "INSERT INTO usuarios (cedula, nombre, apellido, id_Rol) VALUES (123, 'Juan', 'Navarro', 1), (456, 'Albeiro', 'Gonzales', 2 ), (789, 'Laura', 'Cruz', 3)";
             ps = con.prepareStatement(insertUserSQL);
             rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {

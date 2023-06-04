@@ -147,6 +147,9 @@
                         List<Wiki> lista = dao.obtenerWikis();
                         Iterator<Wiki> iter = lista.iterator();
                         Wiki wik = null;
+                        if(lista.isEmpty() ){
+                            System.out.println("Error en listar Wikis");
+                        }
                         while (iter.hasNext()) {
                             wik = iter.next();
                     %>

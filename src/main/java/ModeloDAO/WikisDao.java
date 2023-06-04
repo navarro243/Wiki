@@ -38,14 +38,14 @@ public class WikisDao {
     }
 
     public boolean agregarWiki(Wiki wiki) {
-        String sql = "INSERT INTO wikis (nombre) VALUES ('" + wiki.getNombre() + "')";
+        String sql = "insert into wikis (nombre) values (' "+wiki.getNombre() +" ') " ;
         try {
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Error en Insertar Wikis"+ e);
 
         }
         return false;

@@ -28,7 +28,7 @@
             </div>
 
             <div class= "alinear-centro">
-                <img  src="" alt="">
+                <a class="btn btn-primary" href="Documetacion/index.html">Documentacion </a>
             </div>
 
             <div  class="alinear-derecha">

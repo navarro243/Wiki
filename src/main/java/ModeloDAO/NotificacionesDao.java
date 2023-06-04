@@ -27,7 +27,7 @@ public class NotificacionesDao {
 
     public List listarNotificaciones(int id_Rol, int cedula) {
         ArrayList<Notificacion> listaNotificaciones = new ArrayList<>();
-        String sql = "SELECT * FROM notificaciones WHERE id_Rol=" + id_Rol + "OR cedula_Usuario=" + cedula;
+        String sql = "SELECT * FROM notificaciones WHERE id_Rol=" + id_Rol + " OR (cedula_Usuario=" + cedula + ")";
 
         try {
             con = cn.getConnection();
@@ -47,7 +47,7 @@ public class NotificacionesDao {
                 listaNotificaciones.add(notificacion);
             }
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println("Error en listar notificaciones:"+e);
         }
 
         return listaNotificaciones;
@@ -95,7 +95,7 @@ public class NotificacionesDao {
 
     public List listarWikisAcceso(int cedula) {
         ArrayList<Articulo> listaArticulosAcceso = new ArrayList<>();
-        String sql = "SELECT * FROM wikis_usuarios WHERE cedula_usuario = " + cedula + "AND estado = 'activo'";
+        String sql = "SELECT * FROM wikis_usuarios WHERE cedula_usuario = " + cedula + "AND (estado = 'activo' )";
         try {
             con = cn.getConnection();
             ps = con.prepareStatement(sql);

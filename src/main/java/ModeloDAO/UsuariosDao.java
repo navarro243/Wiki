@@ -17,11 +17,10 @@ public class UsuariosDao {
     PreparedStatement ps;
     ResultSet rs;
     Connection con;
-    
 
     Usuario usua = new Usuario();
     Usuario usuario = new Usuario();
-    
+
     NotificacionesDao notificacionDao = new NotificacionesDao();
 
     public int Obtenerusuario(int CEDULA) {
@@ -73,7 +72,7 @@ public class UsuariosDao {
 
     public int consultarRol(int cedula) {
         int id = 0;
-        String consultarRol = "SELECT TOP 1 * FROM usuarios WHERE cedula=" + cedula;
+        String consultarRol = "SELECT * FROM usuarios WHERE cedula=" + cedula;
         try {
             con = cn.getConnection();
             ps = con.prepareStatement(consultarRol);
@@ -89,7 +88,7 @@ public class UsuariosDao {
     }
 
     public String consultarNombre(int cedula) {
-        String consultarRol = "SELECT TOP 1 * FROM usuarios WHERE cedula=" + cedula;
+        String consultarRol = "SELECT * FROM usuarios WHERE cedula=" + cedula;
         String nombre = "";
         try {
             con = cn.getConnection();
@@ -128,20 +127,19 @@ public class UsuariosDao {
     public void registrarUsuario(Usuario usuario) {
         String sql = "INSERT INTO usuarios(cedula, nombre, apellido, id_Rol) VALUES ('" + usuario.getCedula() + "','" + usuario.getNombre() + "','" + usuario.getApellido() + "','" + usuario.getId_rol() + "')";
 
-        try{
+        try {
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
             ps.executeUpdate();
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println("Excepcion en insertar usuario" + e);
         }
 
     }
 
-    
-     public List listarSupervisores(int rol) {
+    public List listarSupervisores(int rol) {
         ArrayList<Usuario> listaSupervisores = new ArrayList<>();
-        String sql = "SELECT * FROM usuarios where id_Rol = "+ rol;
+        String sql = "SELECT * FROM usuarios where id_Rol = " + rol;
         try {
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
@@ -151,15 +149,49 @@ public class UsuariosDao {
                 usuario.setCedula(rs.getInt("cedula"));
                 usuario.setNombre(rs.getString("nombre"));
                 usuario.setId_rol(rs.getInt("id_Rol"));
-                
+
                 listaSupervisores.add(usuario);
             }
         } catch (SQLException e) {
             System.out.println(e);
         }
-         
+
         return listaSupervisores;
     }
-    
-    
+
+    public void AgregarGestor() {
+
+        try {
+           
+            // Insertar un registro en la tabla "roles" para el rol "Gestor"
+            String insertRoleSQL = "INSERT INTO roles (nombre) VALUES ('Gestor'), ('Coordinador'),('Supervisor'), ('Colaborador'), ('Sin Cuenta')";
+            ps = con.prepareStatement(insertRoleSQL);
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Se ha insertado el rol correctamente.");
+            } else {
+                System.out.println("No se pudo insertar el rol.");
+            }
+
+            // Obtener el ID del rol insertado
+            String lastInsertIDSQL = "SELECT last_insert_rowid()";
+            ps = con.prepareStatement(lastInsertIDSQL);
+            rs = ps.executeQuery();
+            // Procesar el resultado si es necesario
+
+            // Insertar un registro en la tabla "usuarios" para el usuario "Juan Gonzales"
+            String insertUserSQL = "INSERT INTO usuarios (cedula, nombre, apellido, id_Rol) VALUES (123, 'Juan', 'Navarro', 1), (456, 'Albeiro', 'Gonzales', 2 ), (789, 'Laura', 'Cruz', 3)";
+            ps = con.prepareStatement(insertUserSQL);
+            rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Se ha insertado el usuario correctamente.");
+            } else {
+                System.out.println("No se pudo insertar el usuario.");
+
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al establecer la conexión con la base de datos: " + e.getMessage());
+        }
+    }
+
 }

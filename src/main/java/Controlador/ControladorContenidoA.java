@@ -180,7 +180,7 @@ public class ControladorContenidoA extends HttpServlet {
             System.out.println(nombre);
 
             String asunto = "Modificacion Articulo";
-            String mensaje = cedulaint + " Ha propuesto un cambio en el articulo de " + nombre;
+            String mensaje = cedulaint + " Ha propuesto un cambio en el articulo de " + nombre + "Descripcion: " + descripcion;
             int idModificacion = 0;
             for (Modificacion modi : listaModificaciones) {
                 idModificacion = modi.getId();

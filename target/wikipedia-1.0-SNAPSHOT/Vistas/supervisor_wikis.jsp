@@ -118,14 +118,17 @@ Author     : vamil
                         asunto = "modificacion";
                         for (Usuario_articulo articuloAcceso : listArticulos) {
                             boolean notificacionAgregada = false;
-
+                            
                             for (Modificacion recorrerModificacion : listaModificaciones) {
                                 int idModificacion = recorrerModificacion.getId();
                                 int idArticuloModificacion = recorrerModificacion.getId_Articulo();
                                 int idArticuloPermiso = articuloAcceso.getId_Articulo();
                                 int cedulaArticulos = articuloAcceso.getCedula_usuario();
-
-                                if (cedula == cedulaArticulos && idArticuloPermiso == idArticuloModificacion && !notificacionAgregada) {
+                                
+                                
+                                
+                                
+                                if (cedula == cedulaArticulos && idArticuloPermiso == idArticuloModificacion && !notificacionAgregada ) {
                                     notificacionesMostradas.add(notificacion);
                                     notificacionAgregada = true;
                                 }
